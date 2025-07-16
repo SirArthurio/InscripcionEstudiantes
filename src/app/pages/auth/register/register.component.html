@@ -1,0 +1,224 @@
+<app-floating-configurator />
+<div
+  class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden"
+>
+  <div class="flex flex-col items-center justify-center">
+    <div
+      style="
+        border-radius: 56px;
+        padding: 0.3rem;
+        background: linear-gradient(
+          180deg,
+          var(--primary-color) 10%,
+          rgba(33, 150, 243, 0) 30%
+        );
+      "
+    >
+      <div
+        class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20"
+        style="border-radius: 53px"
+      >
+        <div class="text-center mb-8">
+          <div class="mx-auto w-10 h-10 flex items-center justify-center">
+            <img
+              class="w-full h-full object-contain"
+              src="assets/image/shared/logo.png"
+              alt="logo UPC"
+            />
+          </div>
+
+          <div
+            class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4"
+          >
+            Inscripción Estudiantes
+          </div>
+
+          <span class="text-muted-color font-medium">
+            Registrate para continuar
+          </span>
+        </div>
+
+        <div>
+          <form [formGroup]="formRegister">
+            <label
+              for="text"
+              class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+              >Nombre</label
+            >
+            <input
+              pInputText
+              id="text"
+              type="text"
+              placeholder="Nombre"
+              class="w-full md:w-[30rem] mb-8"
+              formControlName="name"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  formRegister.get('name')?.invalid &&
+                  (formRegister.get('name')?.dirty ||
+                    formRegister.get('name')?.touched)
+              }"
+            />
+            <label
+              for="lastname"
+              class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+              >Apellido</label
+            >
+            <input
+              pInputText
+              id="lastname"
+              type="text"
+              placeholder="lastname "
+              class="w-full md:w-[30rem] mb-8"
+              formControlName="lastname"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  formRegister.get('lastname')?.invalid &&
+                  (formRegister.get('lastname')?.dirty ||
+                    formRegister.get('lastname')?.touched)
+              }"
+            />
+            <label
+              for="birthdate"
+              class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+              >Fecha Cumpleaños</label
+            >
+            <input
+              pInputText
+              id="date"
+              type="date"
+              class="w-full md:w-[30rem] mb-8"
+              formControlName="birthdate"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  formRegister.get('birthdate')?.invalid &&
+                  (formRegister.get('birthdate')?.dirty ||
+                    formRegister.get('birthdate')?.touched)
+              }"
+            />
+            <label
+              for="documentType"
+              class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+              >Tipo documento</label
+            >
+            <p-select
+              formControlName="documentType"
+              [options]="documentsTypes"
+              class="w-full md:w-[30rem] mb-8"
+              optionLabel="documentType"
+              placeholder="selecciona un tipo de documento"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  formRegister.get('documentType')?.invalid &&
+                  (formRegister.get('documentType')?.dirty ||
+                    formRegister.get('documentType')?.touched)
+              }"
+            />
+
+            <!-- <input
+              pInputText
+              id="documentType"
+              type="text"
+              placeholder="documentType "
+              class="w-full md:w-[30rem] mb-8"
+              formControlName="documentType"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  formRegister.get('documentType')?.invalid &&
+                  (formRegister.get('documentType')?.dirty ||
+                    formRegister.get('documentType')?.touched)
+              }"
+            /> -->
+
+            <label
+              for="documentNumber"
+              class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+              >Numero documento</label
+            >
+            <input
+              pInputText
+              id="documentNumber"
+              type="number"
+              placeholder="numero documento "
+              class="w-full md:w-[30rem] mb-8"
+              formControlName="documentNumber"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  formRegister.get('documentNumber')?.invalid &&
+                  (formRegister.get('documentNumber')?.dirty ||
+                    formRegister.get('documentNumber')?.touched)
+              }"
+            />
+            <label
+              for="phone"
+              class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+              >Numero de celular</label
+            >
+            <input
+              pInputText
+              id="phone"
+              type="number"
+              placeholder="phone "
+              class="w-full md:w-[30rem] mb-8"
+              formControlName="phone"
+              maxlength="10"
+              minlength="10"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  formRegister.get('phone')?.invalid &&
+                  (formRegister.get('phone')?.dirty ||
+                    formRegister.get('phone')?.touched)
+              }"
+            />
+            <label
+              for="email1"
+              class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+              >Email</label
+            >
+            <input
+              pInputText
+              id="email1"
+              type="text"
+              placeholder="Email "
+              class="w-full md:w-[30rem] mb-8"
+              formControlName="email"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  formRegister.get('email')?.invalid &&
+                  (formRegister.get('email')?.dirty ||
+                    formRegister.get('email')?.touched)
+              }"
+            />
+
+            <label
+              for="password1"
+              class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+              >Password</label
+            >
+            <p-password
+              id="password1"
+              formControlName="password"
+              placeholder="Password"
+              [toggleMask]="true"
+              styleClass="mb-4"
+              [fluid]="true"
+              [feedback]="false"
+            ></p-password>
+          </form>
+
+          <p-button
+            (click)="enviarFormulario()"
+            label="Registrarse"
+            styleClass="w-full mb-4"
+          ></p-button>
+          <p-button
+            routerLink="/auth/login"
+            label="Volver "
+            styleClass="w-full"
+            severity="secondary"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
