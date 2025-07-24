@@ -6,12 +6,16 @@ export const routes: Routes = [
   {
     path: '',
     component: AppLayout,
-    children: [{ path: '', component: Dashboard }],
+    children: [
+      { path: '', component: Dashboard },
+      { path: 'pages', loadChildren: () => import('./pages/pages.routes') },
+    ],
   },
   {
     path: 'auth',
     loadChildren: () => import('./pages/auth/auth.routes'),
   },
+
   {
     path: 'pagina-no-encontrada',
     loadComponent: () =>

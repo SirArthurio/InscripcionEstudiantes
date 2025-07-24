@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -14,15 +14,30 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
-import { login } from '../../../core/shared/models/type/AUTH/Login.type';
 import { AppFloatingConfigurator } from '../../../layout/component/app.floatingconfigurator';
-import { UnicesarValidator } from '../../../core/shared/models/type/Validators/UnicesarValidator.type';
+import { UnicesarValidator } from '../../../core/shared/Validators/UnicesarValidator.type';
 import { documentTypes } from '../../../utils/const/documentTypes.const';
 import { SelectModule } from 'primeng/select';
+import { RegistroUsuario } from './model/Register.type';
+import { VerificacionFechasLimiteService } from '../../../core/shared/service/VerficacionFechasLimites.service';
+import { AlertasService } from '../../../core/shared/service/Alertas/alertas.service';
+import { ToastModule } from 'primeng/toast';
+import { ErroesformService } from '../../../core/shared/service/ErroresForm/erroesform.service';
+import { InputNumberModule } from 'primeng/inputnumber';
+import {
+  documentNumberValidator,
+  longitudExactaValidator,
+} from '../../../core/shared/Validators/RangeValidator.type';
 
+interface documentType {
+  id: number;
+  documentType: string;
+}
 @Component({
   selector: 'app-register',
   imports: [
+    ToastModule,
+    MessageModule,
     ButtonModule,
     CheckboxModule,
     InputTextModule,
@@ -35,21 +50,21 @@ import { SelectModule } from 'primeng/select';
     MessageModule,
     CommonModule,
     SelectModule,
+    InputNumberModule,
     RouterLink,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
+  edadadService = inject(VerificacionFechasLimiteService);
   formRegister!: FormGroup;
   form = inject(FormBuilder);
+  formErroresService = inject(ErroesformService);
   route = inject(Router);
-  email: string = '';
-
-  password: string = '';
-
+  alertService = inject(AlertasService);
   checked: boolean = false;
-  documentsTypes = documentTypes;
+  documentsTypes = signal<documentType[] | []>(documentTypes);
   RegisterForm() {
     this.formRegister = this.form.group({
       email: ['', [Validators.required, UnicesarValidator()]],
@@ -57,21 +72,29 @@ export class RegisterComponent {
       name: ['', Validators.required],
       lastname: ['', Validators.required],
       birthdate: ['', Validators.required],
-      documentNumber: ['', Validators.required],
+      documentNumber: [
+        '',
+        [Validators.required, documentNumberValidator(6, 10)],
+      ],
       documentType: ['', Validators.required],
-      phone: ['', Validators.required],
+      phone: ['', [Validators.required, longitudExactaValidator(10)]],
     });
   }
   enviarFormulario() {
     if (this.formRegister.valid) {
       this.enviarDatos(this.formRegister.value);
-      this.route.navigate(['/']);
+      this.route.navigate(['/auth/login']);
     } else {
-      this.formRegister.markAsDirty();
-      console.log('error', this.formRegister.value);
+      this.formErroresService.marcarFormularioError(this.formRegister);
+
+      this.alertService.showErrors(
+        this.formErroresService.mostrarErroresFormulario(this.formRegister)
+      );
+      console.log('error', this.formRegister);
     }
   }
-  enviarDatos(usuario: login) {
+  manejoErrores() {}
+  enviarDatos(usuario: RegistroUsuario) {
     console.log(usuario);
   }
   ngOnInit() {

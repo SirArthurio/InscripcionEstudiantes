@@ -1,0 +1,69 @@
+<div class="card">
+  <header class="flex flex-row items-center">
+    <i
+      class="pi pi-book"
+      style="font-size: 4rem"
+      style="color: var(--primary-color)"
+    ></i>
+    <div class="ml-2 text-2xl font-bold">{{ texto.title }}</div>
+  </header>
+  <hr />
+  @if(misCursos()){ @for (item of misCursos(); track $index) {
+  <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
+    <div class="text-xl font-semibold">{{ item.title }}</div>
+    <div class="flex flex-row justify-between items-center w-full m-2">
+      <div class="text-sm font-light">
+        {{ item.code }} - {{ item.credits }} {{ texto.credits }}
+      </div>
+
+      <p-button
+        class="pr-2"
+        [label]="item.status"
+        [severity]="statusColor(item.status)"
+        [disabled]="item.availableSeats === 0"
+      />
+    </div>
+
+    <div class="text-sm m-2">
+      {{ item.about }}
+    </div>
+
+    <div class="text-sm font-light flex flex-wrap">
+      <section class="p-2">
+        <i
+          class="pi pi-user"
+          style="font-size: 4rem"
+          style="color: var(--primary-color)"
+        ></i>
+        {{ item.teacher }}
+      </section>
+
+      <section class="p-2">
+        <i
+          class="pi pi-calendar-clock"
+          style="font-size: 4rem"
+          style="color: var(--primary-color)"
+        ></i>
+        {{ item.date }}
+      </section>
+
+      <section class="p-2">
+        <i
+          class="pi pi-id-card"
+          style="font-size: 4rem"
+          style="color: var(--primary-color)"
+        ></i
+        >{{ item.room }}
+      </section>
+    </div>
+
+    <div class="text-sm font-light">
+      {{ texto.availableSeats }}:
+
+      <p-tag [severity]="statusColor(item.status)">{{
+        item.availableSeats
+      }}</p-tag>
+    </div>
+  </div>
+  } }
+</div>

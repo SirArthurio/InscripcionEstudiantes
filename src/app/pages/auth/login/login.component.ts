@@ -13,9 +13,10 @@ import { AppFloatingConfigurator } from '../../../layout/component/app.floatingc
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { login } from '../../../core/shared/models/type/AUTH/Login.type';
+import { login } from './model/Login.type';
 import { MessageModule } from 'primeng/message';
 import { CommonModule } from '@angular/common';
+import { UnicesarValidator } from '../../../core/shared/Validators';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit {
   checked: boolean = false;
   LoginForm() {
     this.formLogin = this.form.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, UnicesarValidator()]],
       password: ['', Validators.required],
     });
   }
