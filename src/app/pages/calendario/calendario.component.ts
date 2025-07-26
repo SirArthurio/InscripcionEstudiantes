@@ -8,12 +8,12 @@ import {
 } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import { convocatoriasData } from '../../components/shared/convocatorias-activas/data/data';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import esLocale from '@fullcalendar/core/locales/es';
 
 import interactionPlugin from '@fullcalendar/interaction';
+import { convocatoriasData } from '../../core/shared/components/convocatorias-activas/data/data';
 interface convocatorias {
   title: string;
   start: string;

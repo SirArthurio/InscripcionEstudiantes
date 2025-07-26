@@ -1,0 +1,21 @@
+<app-card-formulario [datos]="datos">
+  <form [formGroup]="formConvocatoria">
+    <h2 class="md:col-span-2">Datos Personales</h2>
+    <div class="contenedor">
+      <label
+        for="text"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Nombre</label
+      >
+      <input
+        pInputText
+        id="text"
+        type="text"
+        placeholder="Nombre"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="name"
+        appValidationClass
+      />
+    </div>
+  </form>
+</app-card-formulario>

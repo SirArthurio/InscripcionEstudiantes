@@ -28,6 +28,9 @@ import {
   documentNumberValidator,
   longitudExactaValidator,
 } from '../../../core/shared/Validators/RangeValidator.type';
+import { programas, genre } from '../../../utils/const/index.const';
+import { CardFormularioComponent } from '../../../core/shared/components/card-formulario/card-formulario.component';
+import { dataRegister } from './const/data-register.const';
 
 interface documentType {
   id: number;
@@ -45,13 +48,13 @@ interface documentType {
     FormsModule,
     RouterModule,
     RippleModule,
-    AppFloatingConfigurator,
     ReactiveFormsModule,
     MessageModule,
     CommonModule,
     SelectModule,
     InputNumberModule,
     RouterLink,
+    CardFormularioComponent,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -64,7 +67,11 @@ export class RegisterComponent {
   route = inject(Router);
   alertService = inject(AlertasService);
   checked: boolean = false;
+  generos = genre;
+  programas = programas;
   documentsTypes = signal<documentType[] | []>(documentTypes);
+  data = dataRegister;
+
   RegisterForm() {
     this.formRegister = this.form.group({
       email: ['', [Validators.required, UnicesarValidator()]],
@@ -72,14 +79,24 @@ export class RegisterComponent {
       name: ['', Validators.required],
       lastname: ['', Validators.required],
       birthdate: ['', Validators.required],
+      program: ['', [Validators.required]],
+      semester: [
+        '',
+        [Validators.required, Validators.min(1), Validators.max(20)],
+      ],
+      placeBirth: ['', [Validators.required]],
+      placeRecidence: ['', [Validators.required]],
       documentNumber: [
         '',
         [Validators.required, documentNumberValidator(6, 10)],
       ],
       documentType: ['', Validators.required],
+      genre: ['', Validators.required],
       phone: ['', [Validators.required, longitudExactaValidator(10)]],
+      entrydate: ['', [Validators.required]],
     });
   }
+
   enviarFormulario() {
     if (this.formRegister.valid) {
       this.enviarDatos(this.formRegister.value);

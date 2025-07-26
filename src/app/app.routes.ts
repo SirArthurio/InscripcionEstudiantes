@@ -9,6 +9,10 @@ export const routes: Routes = [
     children: [
       { path: '', component: Dashboard },
       { path: 'pages', loadChildren: () => import('./pages/pages.routes') },
+      {
+        path: 'admin',
+        loadChildren: () => import('./pages/Admin/admin.routes'),
+      },
     ],
   },
   {

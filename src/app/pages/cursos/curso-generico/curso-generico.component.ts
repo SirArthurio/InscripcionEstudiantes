@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { HeaderDashboardComponent } from '../../../components/shared/header-dashboard/header-dashboard.component';
-import { headerDasboard } from '../../../components/dashboard/constants/text.headerDashboardEstudiante.const';
+import { HeaderDashboardComponent } from '../../../core/shared/components/header-dashboard/header-dashboard.component';
+import { headerDasboard } from '../../dashboard/constants/text.headerDashboardEstudiante.const';
 import { headerDasboardType } from '../../../core/shared/types/dashboard';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DashboardGenericComponent } from '../../components/dashboard/dashboard-generic/dashboard.Generic.component';
+import { DashboardGenericComponent } from './components/dashboard-generic/dashboard.Generic.component';
 
 @Component({
   selector: 'app-dashboard',

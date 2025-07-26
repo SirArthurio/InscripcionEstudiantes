@@ -4,7 +4,12 @@ export type RegistroUsuario = {
   name: string;
   lastname: string;
   birthdate: string;
+  program: string;
+  semester: string;
+  placeBirth: string;
+  placeRecidence: string;
   documentNumber: string;
   documentType: string;
+  genre: string;
   phone: string;
 };

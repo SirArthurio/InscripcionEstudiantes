@@ -1,4 +1,4 @@
-import { convocatoria } from '../../../../core/shared/types/convocatorias/convocatorias.type';
+import { convocatoria } from '../../../types/convocatorias';
 
 export const convocatoriasData: convocatoria[] = [
   {

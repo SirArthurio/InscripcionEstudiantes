@@ -1,4 +1,4 @@
-import { cursoDisponible } from '../../../../core/shared/types/curso/cursoDisponible.type';
+import { cursoDisponible } from '../../../types/curso/cursoDisponible.type';
 
 export const cursosDisponiblesMock: cursoDisponible[] = [
   {

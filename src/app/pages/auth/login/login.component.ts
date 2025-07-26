@@ -17,6 +17,8 @@ import { login } from './model/Login.type';
 import { MessageModule } from 'primeng/message';
 import { CommonModule } from '@angular/common';
 import { UnicesarValidator } from '../../../core/shared/Validators';
+import { CardFormularioComponent } from '../../../core/shared/components/card-formulario/card-formulario.component';
+import { datosLogin } from './const/datos-login.const';
 
 @Component({
   selector: 'app-login',
@@ -28,10 +30,10 @@ import { UnicesarValidator } from '../../../core/shared/Validators';
     FormsModule,
     RouterModule,
     RippleModule,
-    AppFloatingConfigurator,
     ReactiveFormsModule,
     MessageModule,
     CommonModule,
+    CardFormularioComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -40,11 +42,7 @@ export class LoginComponent implements OnInit {
   formLogin!: FormGroup;
   form = inject(FormBuilder);
   route = inject(Router);
-  email: string = '';
-
-  password: string = '';
-
-  checked: boolean = false;
+  datos = datosLogin;
   LoginForm() {
     this.formLogin = this.form.group({
       email: ['', [Validators.required, UnicesarValidator()]],
