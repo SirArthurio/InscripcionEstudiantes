@@ -1,0 +1,17 @@
+<div
+  #carta
+  class="pointer-events-none absolute inset-0 rounded-[inherit] overflow-hidden"
+  [style.border-radius]="borderRadius"
+>
+  <div
+    class="absolute animate-border-beam"
+    [class]="className"
+    [style.width.px]="beamWidth"
+    [style.height.px]="beamHeight"
+    [style.background]="gradientBackground"
+    [style.animation-duration.s]="duration"
+    [style.animation-delay.s]="-delay"
+    [style.animation-direction]="reverse ? 'reverse' : 'normal'"
+    [style.border-radius.px]="borderRadius"
+  ></div>
+</div>

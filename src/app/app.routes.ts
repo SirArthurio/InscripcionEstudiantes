@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './layout/component/app.layout';
-import { Dashboard } from './pages/dashboard/dashboard';
+import { Dashboard } from './pages/shared/dashboard/dashboard';
 
 export const routes: Routes = [
   {
@@ -13,6 +13,10 @@ export const routes: Routes = [
         path: 'admin',
         loadChildren: () => import('./pages/Admin/admin.routes'),
       },
+      {
+        path: 'students',
+        loadChildren: () => import('./pages/Students/students.routes'),
+      },
     ],
   },
   {
@@ -21,12 +25,9 @@ export const routes: Routes = [
   },
 
   {
-    path: 'pagina-no-encontrada',
-    loadComponent: () =>
-      import('./core/shared/pages/nofound/nofound.component').then(
-        (e) => e.NofoundComponent
-      ),
+    path: 'commom',
+    loadChildren: () => import('./core/shared/pages/shared.routes'),
   },
 
-  { path: '**', redirectTo: 'pagina-no-encontrada', pathMatch: 'full' },
+  { path: '**', redirectTo: 'commom/nofound', pathMatch: 'full' },
 ];

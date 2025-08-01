@@ -1,0 +1,133 @@
+<app-card-formulario-validacion
+  [validacionData]="validacionData()"
+  [data]="datos"
+  [progress]="progress()"
+  (nuevaAccion)="nuevaConvocatoria()"
+>
+  <form
+    #formulario
+    class="relative grid grid-cols-1 md:grid-cols-2 justify-items-center border-transparent rounded-xl p-2"
+    [formGroup]="formConvocatoria"
+  >
+    <div class="contenedor">
+      <label
+        for="code"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Codigo</label
+      >
+      <input
+        pInputText
+        id="code"
+        type="text"
+        placeholder="Codigo"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="code"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="titulo"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Titulo</label
+      >
+      <input
+        pInputText
+        id="titulo"
+        type="text"
+        placeholder="Titulo"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="title"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="description"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Descripcion</label
+      >
+      <input
+        pInputText
+        id="description"
+        type="text"
+        placeholder="description"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="description"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="totalSlots"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Cupos Totales</label
+      >
+      <p-inputNumber
+        id="totalSlots"
+        type="number"
+        [min]="1"
+        placeholder="Cupos Totales"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="totalSlots"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="range"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Fecha Convocatoria
+      </label>
+      <p-datepicker
+        id="range"
+        formControlName="rangeDates"
+        selectionMode="range"
+        [readonlyInput]="true"
+        [showButtonBar]="true"
+        [minDate]="minDate"
+        placeholder="Selecciona un rango"
+        [showIcon]="true"
+        class="w-full md:w-[30rem] mb-8"
+        appValidationClass
+      ></p-datepicker>
+    </div>
+    <div class="contenedor">
+      <label
+        for="text"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Modalidad</label
+      >
+      <p-select
+        id="modality"
+        type="text"
+        [options]="modalidades"
+        optionLabel="name"
+        optionValue="name"
+        placeholder="modalidad"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="modality"
+        appValidationClass
+      />
+    </div>
+    <p-confirmdialog />
+
+    <div class="grid grid-cols-2">
+      @if (progress()===0) {<p-button
+        class="w-full mb-4"
+        (click)="confirm1($event)"
+        label="Crear convocatoria"
+        [outlined]="true"
+      />}@else if(progress()===1){ }
+    </div>
+
+    <app-carta
+      [duration]="6"
+      [delay]="2"
+      [borderWidth]="2"
+      borderRadius="xl"
+      [reverse]="true"
+    >
+    </app-carta>
+  </form>
+</app-card-formulario-validacion>

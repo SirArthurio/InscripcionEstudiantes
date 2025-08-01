@@ -1,0 +1,72 @@
+<div [class]="'no-data-container size-' + size">
+  <!-- Character Animation -->
+  <div class="character-section">
+    <div class="character-container">
+      <div class="character-main">{{ config.character }}</div>
+      <div class="character-shadow"></div>
+
+      <!-- Floating Elements -->
+      <div class="floating-elements">
+        <div class="floating-element" style="--delay: 0s">✨</div>
+        <div class="floating-element" style="--delay: 1s">💫</div>
+        <div class="floating-element" style="--delay: 2s">⭐</div>
+        <div class="floating-element" style="--delay: 0.5s">🌟</div>
+      </div>
+
+      <!-- Character Speech Bubble -->
+      <div class="speech-bubble">
+        <p class="speech-text">¡Hola! Soy {{ config.characterName }}</p>
+        <div class="speech-tail"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="content-section">
+    <!-- Title and Message -->
+    <div class="text-content">
+      <h3 class="no-data-title">{{ displayTitle }}</h3>
+      <p class="no-data-message">{{ displayMessage }}</p>
+    </div>
+
+    <!-- Educational Tips -->
+    <div class="tips-section" *ngIf="showTips && config.tips.length > 0">
+      <h4 class="tips-title">
+        <span class="tips-icon">💡</span>
+        Consejos útiles:
+      </h4>
+      <ul class="tips-list">
+        <li
+          *ngFor="let tip of config.tips; let i = index"
+          class="tip-item"
+          [style.animation-delay]="i * 0.2 + 's'"
+          (click)="onTipClick(tip)"
+        >
+          <span class="tip-bullet">{{ i + 1 }}</span>
+          <span class="tip-text">{{ tip }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Motivational Quote -->
+    <div class="quote-section">
+      <div class="quote-container">
+        <div class="quote-icon">📜</div>
+        <blockquote class="quote-text">
+          "Cada gran logro educativo comienza con el primer paso. ¡Tú puedes
+          hacerlo!"
+        </blockquote>
+        <div class="quote-author">- Equipo Educativo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative Elements -->
+  <div class="decorative-elements">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+    <div class="deco-circle deco-3"></div>
+    <div class="deco-line deco-line-1"></div>
+    <div class="deco-line deco-line-2"></div>
+  </div>
+</div>

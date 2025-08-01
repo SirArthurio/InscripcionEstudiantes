@@ -1,4 +1,4 @@
-export const dataRegister = {
-  title: 'Inscripción Estudiantes',
+export const dataRegisterGeneric = {
+  title: 'Inscripción ',
   description: 'Registrate para continuar',
 };

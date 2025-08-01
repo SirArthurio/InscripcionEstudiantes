@@ -2,7 +2,7 @@ import { itemsMenu } from '../model/type/menuItems.type';
 
 export const menu: itemsMenu[] = [
   {
-    label: 'Home',
+    label: 'Menu Principal',
     roles: ['profesor', 'estudiante'],
     items: [
       {
@@ -11,6 +11,7 @@ export const menu: itemsMenu[] = [
         routerLink: ['/'],
         roles: ['profesor', 'estudiante'],
       },
+
       {
         label: 'Mis cursos',
         icon: 'pi pi-book',
@@ -27,13 +28,25 @@ export const menu: itemsMenu[] = [
   },
   {
     label: 'Gestion',
-    roles: ['admin'],
+    roles: ['superadmin', 'profesor'],
     items: [
       {
         label: 'Convocatorias',
         icon: 'pi pi-cog',
-        routerLink: ['/admin/crear-convocatorias'],
-        roles: ['admin'],
+        items: [
+          {
+            icon: 'pi pi-cog',
+            label: 'Crear Nueva Convocatoria',
+            routerLink: ['/admin/convocatorias/crear-convocatorias'],
+            roles: ['superadmin', 'profesor'],
+          },
+          {
+            icon: 'pi pi-cog',
+            label: 'Ver Convocatorias',
+            routerLink: ['/admin/convocatorias/ver-convocatorias'],
+            roles: ['superadmin', 'profesor'],
+          },
+        ],
       },
     ],
   },

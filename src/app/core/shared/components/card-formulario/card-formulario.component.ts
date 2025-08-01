@@ -1,15 +1,16 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { AppFloatingConfigurator } from '../../../../layout/component/app.floatingconfigurator';
-interface cardFormulario {
-  title: string;
-  description: string;
-}
+import { cardFormulario } from './models/cardFormulario.type';
+import { cardFormularioDataGeneric } from './const/cardFormularioGenericData.const';
+import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
+
 @Component({
   selector: 'app-card-formulario',
-  imports: [AppFloatingConfigurator],
+  imports: [AppFloatingConfigurator, ToastModule, DialogModule],
   templateUrl: './card-formulario.component.html',
   styleUrl: './card-formulario.component.scss',
 })
 export class CardFormularioComponent {
-  datos = input<cardFormulario | null>();
+  datos = input<cardFormulario>(cardFormularioDataGeneric);
 }

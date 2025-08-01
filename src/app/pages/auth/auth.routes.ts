@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 export default [
   {
     path: 'login',
@@ -8,6 +7,16 @@ export default [
   },
   {
     path: 'register',
-    component: RegisterComponent,
+    loadComponent: () =>
+      import('./register/register-estudiante/register-estudiante.component'),
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./reset-password/reset-password.component'),
+  },
+  {
+    path: 'email-confirmation',
+    loadComponent: () =>
+      import('./email-confirmation/email-confirmation.component'),
   },
 ] as Routes;

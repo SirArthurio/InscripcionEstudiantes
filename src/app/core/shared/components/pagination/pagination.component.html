@@ -1,0 +1,85 @@
+<p-toolbar class="pagination-toolbar">
+  @if (totalPages() > 0) {
+  <div class="pagination-container">
+    <!-- Botón Primera Página (solo si hay muchas páginas) -->
+    @if (totalPages() > maxVisiblePages() && currentPage() > 3) {
+    <p-button
+      fill="clear"
+      size="small"
+      color="medium"
+      (click)="goToFirstPage()"
+      class="nav-button first-page"
+    >
+      <label>1</label>
+    </p-button>
+    }
+
+    <!-- Botón Anterior -->
+    <p-button
+      fill="clear"
+      size="small"
+      color="primary"
+      [disabled]="!hasPreviousPage()"
+      (click)="goToPreviousPage()"
+      class="nav-button"
+    >
+      <i class="pi pi-angle-left"></i>
+    </p-button>
+
+    <!-- Lista de páginas -->
+    <div class="pages-wrapper">
+      @for (item of pageList(); track item.page) { @if (item.type === 'page') {
+      <p-button
+        size="small"
+        (click)="goToPage(item.page)"
+        class="page-button"
+        [class.active]="isActivePage(item.page)"
+        [attr.aria-label]="'Ir a página ' + item.page"
+        [attr.aria-current]="isActivePage(item.page) ? 'page' : null"
+      >
+        {{ item.page }}
+      </p-button>
+      } @else {
+      <p-chip class="ellipsis-chip" color="medium" aria-hidden="true">
+        <i name="ellipsis-horizontal"></i>
+      </p-chip>
+      } }
+    </div>
+
+    <!-- Botón Siguiente -->
+    <p-button
+      fill="clear"
+      size="small"
+      color="primary"
+      [disabled]="!hasNextPage()"
+      (click)="goToNextPage()"
+      class="nav-button"
+    >
+      <i class="pi pi-angle-right"></i>
+    </p-button>
+
+    <!-- Botón Última Página (solo si hay muchas páginas) -->
+    @if (totalPages() > maxVisiblePages() && currentPage() < totalPages() - 2) {
+    <p-button
+      fill="clear"
+      size="small"
+      color="medium"
+      (click)="goToLastPage()"
+      class="nav-button last-page"
+    >
+      <label>{{ totalPages() }}</label>
+    </p-button>
+    }
+  </div>
+
+  <!-- Información de paginación -->
+  @if (paginationInfo().isValid) {
+  <div class="pagination-info">
+    <label color="medium">
+      <small>
+        Página {{ paginationInfo().current }} de {{ paginationInfo().total }}
+      </small>
+    </label>
+  </div>
+  } }
+</p-toolbar>

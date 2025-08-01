@@ -16,4 +16,4 @@ import { AppFloatingConfigurator } from '../../../../layout/component/app.floati
   templateUrl: './error.component.html',
   styleUrl: './error.component.scss',
 })
-export class ErrorComponent {}
+export default class ErrorComponent {}

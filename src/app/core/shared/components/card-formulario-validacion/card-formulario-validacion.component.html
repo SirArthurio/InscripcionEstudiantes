@@ -1,0 +1,53 @@
+<div class="card shadow-lg shadow-primary">
+  <p-toast />
+
+  <h2 class="text-center">{{ data()?.title || "no hay datos" }}</h2>
+  <p-steps [model]="items" [readonly]="false" [activeIndex]="progress()" />
+  <h4 class="font-light text-center">
+    {{ subTitulo() }}
+  </h4>
+  @if(progress()===0){
+  <ng-content #formulario></ng-content>
+
+  } @if(progress()===1){
+  <div
+    class="border-primary rounded-lg grid grid-cols-1 md:grid-cols-2 relative"
+  >
+    @for(item of validacionData();track $index ){
+
+    <div class="grid grid-cols-1 md:grid-cols-2 m-1 p-1">
+      <label class="text-start font-semibold p-1">{{ item.name }}: </label>
+      <label for="text-end  font-light p-1"> {{ item.content }}</label>
+      <hr />
+    </div>
+
+    }
+    <div class="col-span-2 m-2 flex flex-row items-center justify-center gap-4">
+      <p-button
+        (click)="nuevoFormulario()"
+        class="w-60"
+        styleClass="w-full"
+        [label]="data()?.buttonText"
+        [outlined]="true"
+      />
+      <p-button
+        [routerLink]="['/']"
+        class="w-60"
+        styleClass="w-full"
+        label="Salir"
+        [outlined]="true"
+      />
+    </div>
+
+    <app-carta
+      [duration]="6"
+      [delay]="2"
+      [borderWidth]="2"
+      borderRadius="xl"
+      [reverse]="true"
+    >
+    </app-carta>
+  </div>
+
+  }
+</div>

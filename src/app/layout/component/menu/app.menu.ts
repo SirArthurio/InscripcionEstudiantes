@@ -1,17 +1,18 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from '../app.menuitem';
 import { itemsMenu } from './model/type/menuItems.type';
 import { menu } from './const/menu-datos.const';
+import { currentStore } from 'src/app/pages/auth/store/current.store';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
   imports: [CommonModule, AppMenuitem, RouterModule],
   template: `<ul class="layout-menu">
-    <ng-container *ngFor="let item of model; let i = index">
+    <ng-container *ngFor="let item of model(); let i = index">
       <li
         app-menuitem
         *ngIf="!item.separator"
@@ -24,8 +25,16 @@ import { menu } from './const/menu-datos.const';
   </ul> `,
 })
 export class AppMenu {
-  model: MenuItem[] = [];
-  rol = signal<string>('admin');
+  model = signal<MenuItem[]>([]);
+  currentUserStore = inject(currentStore);
+  rol = signal<string>('');
+
+  role = effect(() => {
+    this.rol.set(this.currentUserStore.role());
+    const menuItems = menu;
+    this.model.set(this.filterMenuByRole(menuItems, this.rol()) as MenuItem[]);
+    console.log('rol:', this.rol());
+  });
 
   filterMenuByRole(items: itemsMenu[], role: string): MenuItem[] {
     return items
@@ -41,8 +50,5 @@ export class AppMenu {
       .filter((item) => item.items === undefined || item.items.length > 0);
   }
 
-  ngOnInit() {
-    const menuItems = menu;
-    this.model = this.filterMenuByRole(menuItems, this.rol()) as MenuItem[];
-  }
+  ngOnInit() {}
 }

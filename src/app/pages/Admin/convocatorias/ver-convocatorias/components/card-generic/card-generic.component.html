@@ -1,0 +1,45 @@
+<div class="card">
+  <header class="flex flex-row items-center">
+    <i
+      class="pi pi-calendar"
+      style="font-size: 4rem"
+      style="color: var(--primary-color)"
+    ></i>
+    <div class="ml-2 text-2xl font-bold">{{ texto().title }}</div>
+  </header>
+  <hr />
+  @if(convocatoria().length>0){ @for (item of convocatoria(); track $index) {
+  <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
+    <div class="text-xl font-semibold">{{ item.title }}</div>
+    <div class="flex flex-row justify-between items-center w-full m-2">
+      <div class="text-sm font-light">
+        {{ item.startDate }} - {{ item.endDate }}
+      </div>
+      <p-tag [severity]="statusColor(item.status)">
+        {{ item.status }}
+      </p-tag>
+    </div>
+
+    <div class="text-sm m-2">
+      {{ item.description }}
+    </div>
+
+    @if(editarConvocatoria()){
+    <p-button
+      class="m-2 p-2"
+      label="Editar"
+      [severity]="'primary'"
+      (click)="editar(item.id!)"
+    />
+    }
+    <p-button
+      class="m-2 p-2"
+      label="Acceder"
+      [severity]="statusColor(item.status)"
+      [disabled]="habilitar(item.status)"
+    />
+  </div>
+  } }@else {
+  <app-no-data [type]="type()" />
+  }
+</div>

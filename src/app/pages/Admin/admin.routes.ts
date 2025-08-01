@@ -1,9 +1,23 @@
 import { Routes } from '@angular/router';
-import { CrearConvocatoriaComponent } from './crear-convocatoria/crear-convocatoria.component';
 
 export default [
   {
-    path: 'crear-convocatorias',
-    component: CrearConvocatoriaComponent,
+    path: 'convocatorias',
+    children: [
+      {
+        path: 'crear-convocatorias',
+        loadComponent: () =>
+          import(
+            './convocatorias/crear-convocatoria/crear-convocatoria.component'
+          ),
+      },
+      {
+        path: 'ver-convocatorias',
+        loadComponent: () =>
+          import(
+            './convocatorias/ver-convocatorias/ver-convocatorias.component'
+          ),
+      },
+    ],
   },
 ] as Routes;

@@ -1,11 +1,11 @@
 export const genre = [
   {
-    id: 1,
+    code: 'male',
     genre: 'masculino',
   },
 
   {
-    id: 2,
+    code: 'female',
     genre: 'femenino',
   },
   {

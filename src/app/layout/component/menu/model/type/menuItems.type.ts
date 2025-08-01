@@ -6,6 +6,7 @@ export type itemsMenu = {
 export type items = {
   label: string;
   icon: string;
-  routerLink: string[];
-  roles: string[];
+  routerLink?: string[];
+  roles?: string[];
+  items?: items[];
 };

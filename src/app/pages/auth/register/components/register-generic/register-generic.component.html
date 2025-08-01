@@ -1,0 +1,19 @@
+<app-card-formulario [datos]="data()">
+  <p-toast />
+  <p-confirmdialog styleClass="custom-confirm-dialog" />
+
+  <div>
+    <ng-content #formulario></ng-content>
+
+    <p-button
+      (click)="enviarFormulario()"
+      label="Registrarse"
+      styleClass="w-full mb-4"
+    ></p-button>
+    <p-button
+      routerLink="/auth/login"
+      label="Volver "
+      styleClass="w-full"
+      severity="secondary"
+    ></p-button></div
+></app-card-formulario>

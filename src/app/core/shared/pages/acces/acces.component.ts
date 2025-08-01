@@ -16,4 +16,4 @@ import { AppFloatingConfigurator } from '../../../../layout/component/app.floati
   templateUrl: './acces.component.html',
   styleUrl: './acces.component.scss',
 })
-export class AccesComponent {}
+export default class AccesComponent {}

@@ -1,0 +1,6 @@
+.contenedor {
+  @apply m-1 p-1;
+}
+:ng-deep .custom-confirm-dialog .p-confirm-dialog-message {
+  white-space: pre-line; /* 👈 esto permite mostrar saltos de línea */
+}

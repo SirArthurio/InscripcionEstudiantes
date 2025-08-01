@@ -1,0 +1,478 @@
+/* Container Base - Usando variables de PrimeNG */
+.no-data-container {
+  @apply relative flex flex-col items-center justify-center text-center p-8 rounded-2xl overflow-hidden;
+  background: linear-gradient(
+    135deg,
+    var(--surface-ground) 0%,
+    var(--surface-card) 100%
+  );
+  border: 1px solid var(--surface-border);
+  min-height: 400px;
+}
+
+.no-data-container.size-small {
+  @apply p-6;
+  min-height: 300px;
+}
+
+.no-data-container.size-large {
+  @apply p-12;
+  min-height: 500px;
+}
+
+/* Character Section */
+.character-section {
+  @apply mb-8 relative;
+}
+
+.character-container {
+  @apply relative;
+}
+
+.character-main {
+  @apply text-8xl mb-4 relative z-10;
+  animation: bounce-gentle 3s ease-in-out infinite;
+}
+
+.size-small .character-main {
+  @apply text-6xl;
+}
+
+.size-large .character-main {
+  @apply text-9xl;
+}
+
+.character-shadow {
+  @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-4 rounded-full blur-sm;
+  background-color: var(--surface-300);
+  opacity: 0.3;
+  animation: shadow-pulse 3s ease-in-out infinite;
+}
+
+/* Floating Elements */
+.floating-elements {
+  @apply absolute inset-0 pointer-events-none;
+}
+
+.floating-element {
+  @apply absolute text-2xl;
+  color: var(--primary-color);
+  opacity: 0.6;
+  animation: float-around 4s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.floating-element:nth-child(1) {
+  @apply top-0 left-0;
+}
+
+.floating-element:nth-child(2) {
+  @apply top-0 right-0;
+}
+
+.floating-element:nth-child(3) {
+  @apply bottom-0 left-0;
+}
+
+.floating-element:nth-child(4) {
+  @apply bottom-0 right-0;
+}
+
+/* Speech Bubble */
+.speech-bubble {
+  @apply absolute -top-16 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-2xl shadow-lg whitespace-nowrap;
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  animation: speech-appear 2s ease-out 1s both;
+}
+
+.speech-text {
+  @apply text-sm font-medium m-0;
+  color: var(--text-color);
+}
+
+.speech-tail {
+  @apply absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--surface-card);
+}
+
+/* Content Section */
+.content-section {
+  @apply space-y-6 relative z-10 max-w-2xl;
+}
+
+.text-content {
+  @apply space-y-4;
+}
+
+.no-data-title {
+  @apply text-2xl md:text-3xl font-bold leading-tight;
+  color: var(--primary-color);
+}
+
+.size-small .no-data-title {
+  @apply text-xl;
+}
+
+.size-large .no-data-title {
+  @apply text-4xl;
+}
+
+.no-data-message {
+  @apply leading-relaxed text-lg;
+  color: var(--text-color-secondary);
+}
+
+.size-small .no-data-message {
+  @apply text-base;
+}
+
+/* Action Button - Usando estilos de PrimeNG */
+.action-section {
+  @apply flex justify-center;
+}
+
+.action-button {
+  @apply relative px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 overflow-hidden;
+  background: var(--primary-color) !important;
+  color: var(--primary-color-text) !important;
+  border: none !important;
+}
+
+.action-button:hover {
+  background: var(--primary-color) !important;
+  filter: brightness(1.1);
+}
+
+.button-icon {
+  @apply mr-2 text-lg;
+}
+
+.button-text {
+  @apply relative z-10;
+}
+
+.button-shine {
+  @apply absolute inset-0 transform -skew-x-12 -translate-x-full;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shine 2s ease-in-out infinite;
+}
+
+/* Tips Section */
+.tips-section {
+  @apply rounded-2xl p-6;
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(10px);
+}
+
+.tips-title {
+  @apply flex items-center justify-center text-lg font-semibold mb-4;
+  color: var(--text-color);
+}
+
+.tips-icon {
+  @apply mr-2 text-xl;
+  color: var(--primary-color);
+}
+
+.tips-list {
+  @apply space-y-3 list-none p-0 m-0;
+}
+
+.tip-item {
+  @apply flex items-start text-left p-3 rounded-xl transition-all duration-200 cursor-pointer;
+  animation: slide-in-up 0.6s ease-out both;
+}
+
+.tip-item:hover {
+  background-color: var(--surface-hover);
+}
+
+.tip-bullet {
+  @apply flex-shrink-0 w-6 h-6 text-sm font-bold rounded-full flex items-center justify-center mr-3;
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+.tip-text {
+  @apply leading-relaxed;
+  color: var(--text-color);
+}
+
+/* Quote Section */
+.quote-section {
+  @apply mt-8;
+}
+
+.quote-container {
+  @apply rounded-2xl p-6;
+  background: linear-gradient(
+    135deg,
+    var(--surface-card) 0%,
+    var(--surface-ground) 100%
+  );
+  border: 1px solid var(--surface-border);
+}
+
+.quote-icon {
+  @apply text-3xl mb-3;
+  color: var(--primary-color);
+}
+
+.quote-text {
+  @apply italic text-lg leading-relaxed mb-3 m-0;
+  color: var(--text-color);
+}
+
+.quote-author {
+  @apply font-medium;
+  color: var(--text-color-secondary);
+}
+
+/* Decorative Elements */
+.decorative-elements {
+  @apply absolute inset-0 pointer-events-none overflow-hidden;
+}
+
+.deco-circle {
+  @apply absolute rounded-full;
+  opacity: 0.1;
+}
+
+.deco-1 {
+  @apply w-32 h-32 -top-16 -left-16;
+  background-color: var(--primary-color);
+  animation: rotate-slow 20s linear infinite;
+}
+
+.deco-2 {
+  @apply w-24 h-24 -bottom-12 -right-12;
+  background-color: var(--primary-color);
+  animation: rotate-slow 15s linear infinite reverse;
+}
+
+.deco-3 {
+  @apply w-16 h-16 top-1/4 -right-8;
+  background-color: var(--primary-color);
+  animation: pulse-gentle 4s ease-in-out infinite;
+}
+
+.deco-line {
+  @apply absolute h-px left-0 right-0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--surface-border),
+    transparent
+  );
+}
+
+.deco-line-1 {
+  @apply top-1/3;
+  animation: slide-horizontal 8s ease-in-out infinite;
+}
+
+.deco-line-2 {
+  @apply bottom-1/3;
+  animation: slide-horizontal 8s ease-in-out infinite 4s;
+}
+
+/* Animations */
+@keyframes bounce-gentle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shadow-pulse {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.1);
+    opacity: 0.2;
+  }
+}
+
+@keyframes float-around {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translate(10px, -10px) rotate(90deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-5px, -20px) rotate(180deg);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translate(-15px, -5px) rotate(270deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes speech-appear {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-12deg);
+  }
+}
+
+@keyframes slide-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotate-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-gentle {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes slide-horizontal {
+  0%,
+  100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .no-data-container {
+    @apply p-6;
+    min-height: 350px;
+  }
+
+  .character-main {
+    @apply text-6xl;
+  }
+
+  .no-data-title {
+    @apply text-xl;
+  }
+
+  .no-data-message {
+    @apply text-base;
+  }
+
+  .action-button {
+    @apply px-6 py-3 text-sm;
+  }
+
+  .tips-section {
+    @apply p-4;
+  }
+
+  .tip-item {
+    @apply flex-col items-start;
+  }
+
+  .tip-bullet {
+    @apply mb-2;
+  }
+}
+
+/* Mejoras específicas para integración con Sakai */
+.no-data-container {
+  box-shadow: var(--card-shadow);
+}
+
+.action-button:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.tip-item:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: 0.75rem;
+}
+
+/* Soporte para temas personalizados de Sakai */
+.no-data-container[data-theme="dark"] {
+  background: linear-gradient(
+    135deg,
+    var(--surface-ground) 0%,
+    var(--surface-section) 100%
+  );
+}
+
+/* Animación mejorada para el botón primary */
+.action-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.action-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.action-button:hover::before {
+  left: 100%;
+}

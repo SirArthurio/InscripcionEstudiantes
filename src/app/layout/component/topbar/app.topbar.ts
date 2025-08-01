@@ -8,6 +8,8 @@ import { LayoutService } from '../../service/layout.service';
 import { MenuModule } from 'primeng/menu';
 import { menuPerfilItems } from './consts/menuPerfilItems.const';
 import { MenubarModule } from 'primeng/menubar';
+import { currentStore } from 'src/app/pages/auth/store/current.store';
+import { loginStore } from 'src/app/pages/auth/store/login.store';
 
 @Component({
   selector: 'app-topbar',
@@ -27,6 +29,8 @@ export class AppTopbar {
   items!: MenuItem[];
   router = inject(Router);
   mostrarCalendario = false;
+  currentUserStore = inject(currentStore);
+  loginstore = inject(loginStore);
 
   constructor(public layoutService: LayoutService) {}
 
@@ -39,6 +43,9 @@ export class AppTopbar {
 
   cerrarSesion() {
     this.router.navigate(['/auth/login']);
+    this.currentUserStore.cleanLocalUserData();
+    this.currentUserStore.resetCurrent();
+    this.loginstore.resetLoginStore();
   }
   menuPerfilItems = menuPerfilItems(() => this.cerrarSesion());
 }

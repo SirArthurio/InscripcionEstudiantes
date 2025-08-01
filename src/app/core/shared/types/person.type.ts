@@ -1,8 +1,12 @@
+import { user } from './user.type';
+
 export type person = {
   name: string;
   lastname: string;
-  documentType: string;
+  birthPlace: string;
+  placeOfResidence: string;
+  phoneNumber: string;
   documentNumber: string;
-  phone: string;
-  user: string;
+  documentType: string;
+  genre: string;
 };

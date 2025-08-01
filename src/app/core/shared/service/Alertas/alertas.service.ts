@@ -40,11 +40,12 @@ export class AlertasService {
     });
   }
 
-  showSuccess(texto: string = 'Éxito') {
+  showSuccess(titulo?: string, texto?: string, life?: number) {
     this.messageService.add({
       severity: 'success',
-      summary: texto,
-      detail: 'Message sent',
+      summary: titulo ? titulo : 'Exito',
+      detail: texto ? texto : 'Accion Exitosa',
+      life: life,
     });
   }
 }

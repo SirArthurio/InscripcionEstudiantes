@@ -1,0 +1,154 @@
+.pagination-toolbar {
+  --background: transparent;
+  --border-width: 0;
+  --min-height: auto;
+  padding: 16px 8px;
+}
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.pages-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 4px;
+}
+
+.page-button {
+  --border-radius: 8px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  min-width: 36px;
+  height: 36px;
+  margin: 0;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+  flex-shrink: 0;
+}
+
+.page-button.active {
+  --box-shadow: 0 2px 8px rgba(var(--ion-color-primary-rgb), 0.25);
+  transform: scale(1.05);
+}
+
+.page-button:not(.active):hover {
+  transform: translateY(-1px);
+  --background: var(--ion-color-light);
+}
+
+.nav-button {
+  --border-radius: 50%;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  width: 36px;
+  height: 36px;
+  transition: all 0.2s ease-in-out;
+  flex-shrink: 0;
+}
+
+.nav-button:not([disabled]):hover {
+  transform: scale(1.1);
+  --background: var(--ion-color-primary-tint);
+}
+
+.nav-button[disabled] {
+  opacity: 0.4;
+}
+
+.nav-button ion-icon {
+  font-size: 16px;
+}
+
+.ellipsis-chip {
+  --background: transparent;
+  --color: var(--ion-color-medium);
+  height: 28px;
+  margin: 0;
+  pointer-events: none;
+}
+
+.ellipsis-chip ion-icon {
+  font-size: 16px;
+  margin: 0;
+}
+
+.pagination-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.pagination-info ion-text {
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+  .pagination-container {
+    gap: 4px;
+  }
+
+  .pages-wrapper {
+    gap: 2px;
+    max-width: calc(100vw - 120px);
+  }
+
+  .page-button {
+    min-width: 32px;
+    height: 32px;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    font-size: 13px;
+  }
+
+  .nav-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-button ion-icon {
+    font-size: 14px;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.page-button.active {
+  animation: fadeInScale 0.2s ease-out;
+}
+
+/* Scroll suave para páginas en móvil */
+.pages-wrapper {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.pages-wrapper::-webkit-scrollbar {
+  display: none;
+}

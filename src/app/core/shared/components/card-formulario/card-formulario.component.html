@@ -1,9 +1,12 @@
 <app-floating-configurator />
+<p-toast />
+<p-dialog />
 <div
   class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden"
 >
-  <div class="flex flex-col items-center justify-center">
+  <div class="border-transparent flex flex-col items-center justify-center">
     <div
+      class="shadow-md shadow-primary"
       style="
         border-radius: 56px;
         padding: 0.3rem;
@@ -30,11 +33,11 @@
           <div
             class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4"
           >
-            {{ datos()?.title || "no hay titulo" }}
+            {{ datos().title }}
           </div>
 
           <span class="text-muted-color font-medium">
-            {{ datos()?.description || "no hay descripcion" }}
+            {{ datos().description }}
           </span>
         </div>
 

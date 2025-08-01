@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
-import { CursoGenericoComponent } from './cursos/curso-generico/curso-generico.component';
-import { CalendarioComponent } from './calendario/calendario.component';
+import { CursoGenericoComponent } from './shared/cursos/curso-generico/curso-generico.component';
 
 export default [
   {
@@ -9,6 +8,6 @@ export default [
   },
   {
     path: 'calendario',
-    component: CalendarioComponent,
+    loadComponent: () => import('./shared/calendario/calendario.component'),
   },
 ] as Routes;

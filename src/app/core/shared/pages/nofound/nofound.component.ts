@@ -9,4 +9,4 @@ import { AppFloatingConfigurator } from '../../../../layout/component/app.floati
   templateUrl: './nofound.component.html',
   styleUrl: './nofound.component.scss',
 })
-export class NofoundComponent {}
+export default class NofoundComponent {}

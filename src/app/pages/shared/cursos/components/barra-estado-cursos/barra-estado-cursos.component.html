@@ -1,0 +1,40 @@
+<div class="relative card shadow-2 rounded-2xl p-6">
+  <form
+    [formGroup]="formBarra"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center"
+  >
+    <div class="columnas surface-section bg-surface-50 dark:bg-surface-950">
+      <p-knob
+        formControlName="completado"
+        [readonly]="true"
+        valueTemplate="{value}%"
+        [size]="100"
+        [max]="100"
+        [step]="1"
+        [strokeWidth]="10"
+      ></p-knob>
+      <label class="mt-3 text-sm font-semibold">Progreso Académico</label>
+    </div>
+
+    <div class="columnas surface-section bg-surface-50 dark:bg-surface-950">
+      <h2 class="text-2xl font-bold text-primary">{{ cursosActivos() }}</h2>
+      <label class="mt-1 text-sm font-semibold">Cursos Activos</label>
+    </div>
+
+    <div class="columnas surface-section bg-surface-50 dark:bg-surface-950">
+      <h2 class="text-2xl font-bold text-primary">{{ cursosCompletados() }}</h2>
+      <label class="mt-1 text-sm font-semibold">Cursos Completados</label>
+    </div>
+
+    <div class="columnas surface-section bg-surface-50 dark:bg-surface-950">
+      <h2 class="text-2xl font-bold text-primary">
+        {{ convocatoriasInscritas() }}
+      </h2>
+      <label class="mt-1 text-sm font-semibold">Convocatorias Inscritas</label>
+    </div>
+  </form>
+
+  <div class="mt-6">
+    <app-carta />
+  </div>
+</div>
