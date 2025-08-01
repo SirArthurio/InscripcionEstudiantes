@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErroesformService } from '@core/shared/service/ErroresForm/erroesform.service';
-import { loginStore } from '../store/login.store';
+import { loginStore } from '../store/auth.store';
 import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { Password } from 'primeng/password';
 import { CardFormularioComponent } from '@core/shared/components/card-formulario/card-formulario.component';

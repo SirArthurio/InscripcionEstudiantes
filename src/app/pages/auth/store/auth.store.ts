@@ -11,21 +11,21 @@ import { inject } from '@angular/core';
 import { firstValueFrom, throwError } from 'rxjs';
 import { loginResponse } from '../login/model/LoginResponse.type';
 import { currentUser } from '@core/shared/types/currentUser.type';
-import { LoginService } from '../service/login.service';
-export type loginStoreValue = {
+import { AuthService } from '../service/auth.service';
+export type authStoreValue = {
   id: string;
   token: string;
 };
 
-const loginStoreInitialValue: loginStoreValue = {
+const authStoreInitialValue: authStoreValue = {
   token: '',
   id: '',
 };
 const key = 'token';
 export const loginStore = signalStore(
   { providedIn: 'root' },
-  withState(loginStoreInitialValue),
-  withMethods((store, loginService = inject(LoginService)) => ({
+  withState(authStoreInitialValue),
+  withMethods((store, loginService = inject(AuthService)) => ({
     setToken(token: string) {
       patchState(store, { token });
     },
@@ -70,7 +70,7 @@ export const loginStore = signalStore(
       }
     },
     resetLoginStore() {
-      patchState(store, loginStoreInitialValue);
+      patchState(store, authStoreInitialValue);
     },
   })),
   withHooks((store) => ({

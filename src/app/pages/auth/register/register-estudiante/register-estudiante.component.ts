@@ -158,7 +158,7 @@ export default class RegisterEstudianteComponent implements OnInit {
   }
   confirmacion(message: string) {
     this.confirmationService.confirm({
-      message: `${message}`,
+      message: `Desesas Verificar tu correo? recuerda que este paso es obligatorio y lo puedes hacer mas tarde :D`,
       header: 'Confirmation',
       closable: true,
       closeOnEscape: true,
@@ -172,6 +172,6 @@ export default class RegisterEstudianteComponent implements OnInit {
     });
   }
   navegar() {
-    this.route.navigate(['/']);
+    this.route.navigate(['/auth/send-intitucional-email']);
   }
 }

@@ -25,9 +25,9 @@ export const routes: Routes = [
   },
 
   {
-    path: 'commom',
+    path: 'common',
     loadChildren: () => import('./core/shared/pages/shared.routes'),
   },
 
-  { path: '**', redirectTo: 'commom/nofound', pathMatch: 'full' },
+  { path: '**', redirectTo: 'common/nofound', pathMatch: 'full' },
 ];

@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  input,
-  Output,
-  output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,31 +7,35 @@ import {
 } from '@angular/forms';
 import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { ErroesformService } from '@core/shared/service/ErroresForm/erroesform.service';
+import { UnicesarValidator } from '@core/shared/Validators';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { loginStore } from '../store/login.store';
+import { loginStore } from '../store/auth.store';
+import { DialogModule } from 'primeng/dialog';
+import { CommonModule } from '@angular/common';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { CardFormularioComponent } from '@core/shared/components/card-formulario/card-formulario.component';
+import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { UnicesarValidator } from '@core/shared/Validators';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { Dialog } from 'primeng/dialog';
-import { CardFormularioComponent } from '@core/shared/components/card-formulario/card-formulario.component';
+import { AuthService } from '../service/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-email-confirmation',
+  selector: 'app-send-institucional-email',
   imports: [
-    ButtonModule,
+    DialogModule,
+    CommonModule,
     ReactiveFormsModule,
-    InputText,
-    ToastModule,
     ConfirmDialog,
-    Dialog,
+    ToastModule,
     CardFormularioComponent,
+    ButtonModule,
+    InputText,
   ],
-  templateUrl: './email-confirmation.component.html',
-  styleUrl: './email-confirmation.component.scss',
+  templateUrl: './send-institucional-email.component.html',
+  styleUrl: './send-institucional-email.component.scss',
 })
-export default class EmailConfirmationComponent {
+export default class SendInstitucionalEmailComponent {
   //service
   confirmationService = inject(ConfirmationService);
   alertService = inject(AlertasService);
@@ -47,7 +44,7 @@ export default class EmailConfirmationComponent {
   //formulario
   form = inject(FormBuilder);
   formEmail!: FormGroup;
-  loginStore = inject(loginStore);
+  authService = inject(AuthService);
 
   @Output() cerrar = new EventEmitter<void>();
 
@@ -68,7 +65,9 @@ export default class EmailConfirmationComponent {
     }
   }
   async enviarDatos(email: string) {
-    const response = await this.loginStore.forgotPassword(email);
+    const response = await firstValueFrom(
+      this.authService.SendInstitucionalEmail(email)
+    );
     this.alertService.showSuccess('Exito', `${response.message}`, 6000);
     this.formEmail.reset();
     this.cerrar.emit();

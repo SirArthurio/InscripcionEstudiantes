@@ -12,7 +12,7 @@ interface password {
 @Injectable({
   providedIn: 'root',
 })
-export class LoginService {
+export class AuthService {
   api = environment.back;
   prefix = 'auth';
   http = inject(HttpClient);
@@ -38,10 +38,12 @@ export class LoginService {
   }
   ForgotPassword(email: string): Observable<ContentResponse> {
     const headers = new HttpHeaders().set('user-email', email);
-    return this.http.post<ContentResponse>(
-      `${this.api}/${this.prefix}/forgot-password`,
-      email
-    );
+    return this.http
+      .post<ContentResponse>(
+        `${this.api}/${this.prefix}/forgot-password`,
+        email
+      )
+      .pipe(catchError((error) => throwError(() => error)));
   }
   ResetPassword(password: string, token?: string): Observable<ContentResponse> {
     let params = new HttpParams();
@@ -51,10 +53,34 @@ export class LoginService {
 
     const body: password = { password };
     console.log(body);
-    return this.http.patch<ContentResponse>(
-      `${this.api}/${this.prefix}/reset-password`,
-      body,
-      { params }
-    );
+    return this.http
+      .patch<ContentResponse>(
+        `${this.api}/${this.prefix}/reset-password`,
+        body,
+        { params }
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  VerifyInstitucionalEmail(token: string): Observable<ContentResponse> {
+    let params = new HttpParams();
+    if (token) {
+      params = params.set('verify-email-token', token);
+    }
+
+    return this.http
+      .patch<ContentResponse>(
+        `${this.api}/${this.prefix}/verify-institutional-email`,
+        null,
+        { params }
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  SendInstitucionalEmail(email: string): Observable<ContentResponse> {
+    return this.http
+      .post<ContentResponse>(
+        `${this.api}/${this.prefix}/send-institutional-email-verification`,
+        email
+      )
+      .pipe(catchError((error) => throwError(() => error)));
   }
 }

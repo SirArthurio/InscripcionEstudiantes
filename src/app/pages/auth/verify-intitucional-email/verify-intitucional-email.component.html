@@ -1,0 +1,128 @@
+@if(succes()){
+<div class="verification-success-container">
+  <!-- Confetti Animation -->
+  <div class="confetti-container" *ngIf="showConfetti">
+    <div
+      class="confetti"
+      *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+    ></div>
+  </div>
+
+  <!-- Success Animation -->
+  <div class="success-animation">
+    <div class="success-circle">
+      <div class="checkmark-container">
+        <svg class="checkmark" viewBox="0 0 52 52">
+          <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+          <path
+            class="checkmark-check"
+            fill="none"
+            d="m14.1 27.2l7.1 7.2 16.7-16.8"
+          />
+        </svg>
+      </div>
+
+      <!-- Floating Success Elements -->
+      <div class="floating-success-elements">
+        <div class="floating-element" style="--delay: 0s">🎉</div>
+        <div class="floating-element" style="--delay: 0.5s">✅</div>
+        <div class="floating-element" style="--delay: 1s">🎓</div>
+        <div class="floating-element" style="--delay: 1.5s">⭐</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Character Section -->
+  <div class="character-section">
+    <div class="character-container">
+      <div class="character-main">🎓</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-section">
+    <!-- Success Message -->
+    <div class="success-message">
+      <h1 class="success-title">¡Verificación Exitosa! 🎉</h1>
+      <p class="success-subtitle">
+        Tu correo institucional ha sido verificado correctamente
+      </p>
+    </div>
+
+    <!-- User Info -->
+    <div class="user-info-card">
+      <div class="user-info-content">
+        <div class="user-avatar">
+          <span class="avatar-text">{{
+            userName?.charAt(0)?.toUpperCase()
+          }}</span>
+        </div>
+        <div class="user-details">
+          <h3 class="user-name">¡Hola, {{ userName }}!</h3>
+          <p class="user-email" *ngIf="userEmail">
+            <span class="email-icon">📧</span>
+            {{ displayEmail }}
+          </p>
+          <div class="verification-badge">
+            <span class="badge-icon">✅</span>
+            <span class="badge-text">Cuenta Verificada</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Institution Welcome -->
+    <div class="institution-welcome">
+      <div class="welcome-content">
+        <div class="institution-logo">🏛️</div>
+        <div class="welcome-text">
+          <h4 class="welcome-title">Bienvenido a {{ institutionName }}</h4>
+          <p class="welcome-description">
+            Tu cuenta académica está lista. Ahora puedes acceder a todos los
+            recursos educativos, conectarte con profesores y compañeros, y
+            comenzar tu experiencia universitaria.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auto Redirect Notice -->
+    <div class="redirect-notice" *ngIf="autoRedirect && countdown > 0">
+      <div class="redirect-content">
+        <div class="redirect-icon">⏱️</div>
+        <p class="redirect-text">
+          Serás redirigido automáticamente en
+          <strong>{{ countdown }}</strong> segundos
+        </p>
+      </div>
+    </div>
+
+    <!-- Additional Actions -->
+    <!-- <div class="additional-actions">
+      <div class="actions-content">
+        <p class="actions-text">¿Necesitas ayuda para comenzar?</p>
+        <div class="actions-buttons">
+          <button class="help-button" (click)="onContinue.emit('help')">
+            <span class="button-icon">❓</span>
+            Centro de Ayuda
+          </button>
+          <button class="contact-button" (click)="onContinue.emit('contact')">
+            <span class="button-icon">💬</span>
+            Contactar Soporte
+          </button>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <!-- Decorative Elements -->
+  <div class="decorative-elements">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+    <div class="deco-circle deco-3"></div>
+    <div class="deco-wave"></div>
+  </div>
+</div>
+}@else{
+<app-error />
+}

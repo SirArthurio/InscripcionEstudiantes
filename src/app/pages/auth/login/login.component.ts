@@ -18,7 +18,7 @@ import { MessageModule } from 'primeng/message';
 import { CommonModule } from '@angular/common';
 import { CardFormularioComponent } from '../../../core/shared/components/card-formulario/card-formulario.component';
 import { datosLogin } from './const/datos-login.const';
-import { loginStore } from '../store/login.store';
+import { loginStore } from '../store/auth.store';
 import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { ErroesformService } from '@core/shared/service/ErroresForm/erroesform.service';
 import { currentStore } from '../store/current.store';

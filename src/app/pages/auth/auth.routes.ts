@@ -15,8 +15,17 @@ export default [
     loadComponent: () => import('./reset-password/reset-password.component'),
   },
   {
-    path: 'email-confirmation',
+    path: 'forgot-password',
+    loadComponent: () => import('./forgot-password/forgot-password.component'),
+  },
+  {
+    path: 'verify-institutional-email',
     loadComponent: () =>
-      import('./email-confirmation/email-confirmation.component'),
+      import('./verify-intitucional-email/verify-intitucional-email.component'),
+  },
+  {
+    path: 'send-institutional-email',
+    loadComponent: () =>
+      import('./send-institucional-email/send-institucional-email.component'),
   },
 ] as Routes;
