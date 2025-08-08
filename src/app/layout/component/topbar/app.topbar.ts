@@ -1,4 +1,9 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  effect,
+  inject,
+} from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -33,7 +38,9 @@ export class AppTopbar {
   loginstore = inject(loginStore);
 
   constructor(public layoutService: LayoutService) {}
-
+  get itsLogin() {
+    return this.currentUserStore.isLogin();
+  }
   toggleDarkMode() {
     this.layoutService.layoutConfig.update((state) => ({
       ...state,

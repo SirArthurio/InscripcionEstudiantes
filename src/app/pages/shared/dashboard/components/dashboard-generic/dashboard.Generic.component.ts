@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { AvatarModule } from 'primeng/avatar';
 import { headerDasboard } from '../../constants/text.headerDashboardEstudiante.const';
 import { convocatoria } from '../../../../Admin/convocatorias/crear-convocatoria/model/convocatoria.type';
@@ -6,6 +6,7 @@ import { HeaderDashboardComponent } from 'src/app/pages/shared/dashboard/compone
 import { CursosDisponiblesComponent } from 'src/app/pages/shared/cursos/cursos-disponibles/cursos-disponibles.component';
 import { ConvocatoriasActivasComponent } from '../../../convocatorias/convocatorias-activas/convocatorias-activas.component';
 import { headerDasboardType } from '../../dashboard/dashboard.type';
+import { currentStore } from 'src/app/pages/auth/store/current.store';
 
 interface dashboardData {
   convocatoria: convocatoria;
@@ -23,6 +24,7 @@ interface dashboardData {
   styleUrl: './dashboard.Generic.component.scss',
 })
 export class DashboardGenericComponent {
+  //store
   datos = input<dashboardData>();
   header = signal<headerDasboardType>(headerDasboard('profesor'));
 }

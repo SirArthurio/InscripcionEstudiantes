@@ -10,6 +10,9 @@ import {
   NoDataComponent,
   NoDataType,
 } from '@core/shared/components/no-data/no-data.component';
+import { Router } from '@angular/router';
+import { convocatoriasStore } from '../../../store/convocatorias.store';
+import { convocatoria } from '../../../crear-convocatoria/model/convocatoria.type';
 
 @Component({
   selector: 'convocatorias-card-generic',
@@ -18,13 +21,16 @@ import {
   styleUrl: './card-generic.component.scss',
 })
 export class CardGenericComponent {
+  //store
+  convocatoriaStore = inject(convocatoriasStore);
   //inputs
   type = input<NoDataType>('general');
   editarConvocatoria = input<boolean>(true);
-  convocatoria = input<convocatoriaDTO[] | []>(convocatoriasData);
+  convocatoria = input<convocatoriaDTO[]>(convocatoriasData);
   texto = input<cardConvocatoriaText>(textConvocatoriaGeneric);
   //services
   statusService = inject(StatusService);
+  router = inject(Router);
 
   statusColor(status: string): ButtonSeverity {
     return this.statusService.statusColor(status);
@@ -36,5 +42,8 @@ export class CardGenericComponent {
       return false;
     }
   }
-  editar(id: string) {}
+  editar(convocatoria: convocatoriaDTO) {
+    this.convocatoriaStore.setConvocatoria(convocatoria);
+    this.router.navigate(['/admin/convocatorias/crear-convocatorias']);
+  }
 }

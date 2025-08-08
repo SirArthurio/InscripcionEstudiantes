@@ -76,7 +76,7 @@
             <span>Messages</span>
           </button>
         </div>
-
+        @if(itsLogin){
         <p-menu #menu [popup]="true" [model]="menuPerfilItems"></p-menu>
         <div class="layout-topbar-action">
           <button
@@ -90,6 +90,15 @@
             <span>usuario</span>
           </button>
         </div>
+        }@else {
+        <div class="layout-topbar-action">
+          <button type="button" [routerLink]="['/auth/login']">
+            <i class="pi pi-sign-in"></i>
+
+            <span>Login</span>
+          </button>
+        </div>
+        }
       </div>
     </div>
   </div>

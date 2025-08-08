@@ -2,6 +2,7 @@ import { convocatoriaDTO } from '../../../../Admin/convocatorias/crear-convocato
 
 export const convocatoriasData: convocatoriaDTO[] = [
   {
+    availableSlots: 2,
     code: 'cv002',
     status: 'Abierta',
     title: 'Competencia de Lectura Crítica',
@@ -12,6 +13,8 @@ export const convocatoriasData: convocatoriaDTO[] = [
       'Convocatoria para estudiantes interesados en fortalecer habilidades de comprensión lectora, análisis de textos y pensamiento crítico, basada en los lineamientos del ICFES.',
   },
   {
+    availableSlots: 0,
+
     code: 'cv002',
     status: 'Cerrada',
     title: 'Curso de Razonamiento Cuantitativo',
@@ -23,6 +26,8 @@ export const convocatoriasData: convocatoriaDTO[] = [
       'Curso enfocado en desarrollar la competencia matemática y lógica en el contexto de problemas cotidianos y académicos. Nivel intermedio.',
   },
   {
+    availableSlots: 2,
+
     code: 'cv002',
     status: 'En revisión',
     title: 'Convocatoria: Inglés como Lengua Extranjera',
@@ -34,6 +39,8 @@ export const convocatoriasData: convocatoriaDTO[] = [
       'Se busca conformar un grupo de estudiantes para actividades intensivas en comprensión lectora y auditiva en inglés, con énfasis en estructuras gramaticales clave del examen Saber Pro.',
   },
   {
+    availableSlots: 4,
+
     code: 'cv002',
     status: 'Abierta',
     title: 'Curso de Competencias Ciudadanas',
@@ -45,6 +52,8 @@ export const convocatoriasData: convocatoriaDTO[] = [
       'Convocatoria abierta para estudiantes universitarios interesados en ética, participación ciudadana y resolución pacífica de conflictos. Alineado con las competencias genéricas evaluadas por el ICFES.',
   },
   {
+    availableSlots: 0,
+
     code: 'cv002',
     status: 'Cancelada',
     title: 'Curso PreSaber para Ingeniería',

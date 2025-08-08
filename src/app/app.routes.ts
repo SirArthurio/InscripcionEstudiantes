@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './layout/component/app.layout';
 import { Dashboard } from './pages/shared/dashboard/dashboard';
+import { authGuardGuard } from '@core/guards/auth-guard.guard';
+import { UserTypes } from '@core/shared/enums/user-types.enum';
 
 export const routes: Routes = [
   {
@@ -11,9 +13,13 @@ export const routes: Routes = [
       { path: 'pages', loadChildren: () => import('./pages/pages.routes') },
       {
         path: 'admin',
+        data: { roles: [UserTypes.SUPERADMIN] },
+        canActivate: [authGuardGuard],
         loadChildren: () => import('./pages/Admin/admin.routes'),
       },
       {
+        data: { roles: [UserTypes.STUDENT] },
+        canActivate: [authGuardGuard],
         path: 'students',
         loadChildren: () => import('./pages/Students/students.routes'),
       },

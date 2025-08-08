@@ -16,6 +16,8 @@ import { subTitle } from './const/subTitle.const';
   styleUrl: './card-formulario-validacion.component.scss',
 })
 export class CardFormularioValidacionComponent implements OnInit {
+  //inputs
+  isEditar = input(false);
   items: MenuItem[] | undefined;
   data = input<CardFormularioValidacion>();
   subTitle = subTitle;

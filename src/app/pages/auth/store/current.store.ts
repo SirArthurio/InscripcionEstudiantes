@@ -15,6 +15,7 @@ import { CurrentUserService } from '../service/current-user.service';
 
 export type currentValueStore = currentUser & {
   role: string;
+  isLogin: boolean;
 };
 
 const currentInitialValue: currentValueStore = {
@@ -22,6 +23,7 @@ const currentInitialValue: currentValueStore = {
   user: null,
   student: null,
   superadmin: null,
+  isLogin: false,
 };
 const keyUser = environment.keyUser;
 export const currentStore = signalStore(
@@ -34,6 +36,9 @@ export const currentStore = signalStore(
     },
     setRole(role: string) {
       patchState(store, { role });
+    },
+    setIsLogin(isLogin: boolean) {
+      patchState(store, { isLogin });
     },
     cleanLocalUserData() {
       localStorage.removeItem(store.user()?.role as keyof UserRole);
@@ -54,6 +59,7 @@ export const currentStore = signalStore(
       if (!user) return;
 
       const name = user.role;
+      this.setIsLogin(true);
       const userData = store[name as keyof UserRole]();
       if (userData) {
         const value = userData;
@@ -95,6 +101,7 @@ export const currentStore = signalStore(
         const currentUserData = localStorage.getItem(userType);
         if (currentUserData) {
           store.setUserData(userType, JSON.parse(currentUserData));
+          store.setIsLogin(true);
         }
       }
     },

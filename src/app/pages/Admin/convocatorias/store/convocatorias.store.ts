@@ -14,7 +14,7 @@ import { ConvocatoriasService } from '../service/convocatorias.service';
 
 export type convocatoriasStoreValue = {
   convocatorias: convocatoriaDTO[];
-  convocatoria: convocatoria | null;
+  convocatoria: convocatoriaDTO | null;
 };
 const convocatoriasInitialValueStore: convocatoriasStoreValue = {
   convocatoria: null,
@@ -25,7 +25,7 @@ export const convocatoriasStore = signalStore(
   { providedIn: 'root' },
   withState(convocatoriasInitialValueStore),
   withMethods((store, convocatoriaService = inject(ConvocatoriasService)) => ({
-    setConvocatoria(convocatoria: convocatoria) {
+    setConvocatoria(convocatoria: convocatoriaDTO) {
       patchState(store, { convocatoria });
     },
     setConvocatorias(convocatorias: convocatoriaDTO[]) {
@@ -36,12 +36,13 @@ export const convocatoriasStore = signalStore(
       patchState(store, { convocatoria: null });
     },
 
-    async getConvocatorias(): Promise<
-      ContentResponsePaginated<convocatoriaDTO[]>
-    > {
+    async getConvocatorias(
+      page: number,
+      status: string
+    ): Promise<ContentResponsePaginated<convocatoriaDTO[]>> {
       try {
         const response = await firstValueFrom(
-          convocatoriaService.GetConvocatorias()
+          convocatoriaService.GetConvocatorias(page, status)
         );
         if (!response) throw Error;
         return response;

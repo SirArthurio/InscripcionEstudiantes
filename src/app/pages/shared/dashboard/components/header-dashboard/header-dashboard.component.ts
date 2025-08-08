@@ -1,5 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
+import { UserTypes } from '@core/shared/enums/user-types.enum';
+import { UserRole } from '@core/shared/types/currentUser.type';
 import { AvatarModule } from 'primeng/avatar';
+import { currentStore } from 'src/app/pages/auth/store/current.store';
 
 interface header {
   title: string;
@@ -8,8 +11,9 @@ interface header {
 }
 interface content {
   name: string;
-  code: string;
-  carrer: string;
+  lastName: string;
+  role?: string;
+  carrer?: string;
 }
 @Component({
   selector: 'app-header-dashboard',
@@ -19,9 +23,24 @@ interface content {
 })
 export class HeaderDashboardComponent {
   header = input<header | null>(null);
-  user = input<content | null>({
-    name: 'pepe',
-    code: '2020',
-    carrer: 'ing sistemas',
+  currentUserStore = inject(currentStore);
+
+  user = signal<content>({
+    name: '',
+    role: '',
+    carrer: '',
+    lastName: '',
   });
+
+  getUser = effect(() => {
+    const user =
+      this.currentUserStore[this.currentUserStore.role() as keyof UserRole]();
+    if (user) {
+      this.user.set(user);
+    }
+  });
+  get itsLogin() {
+    return this.currentUserStore.isLogin();
+  }
+  //prueba
 }

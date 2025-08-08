@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DashboardGenericComponent } from './components/dashboard-generic/dashboard.Generic.component';
+import { currentStore } from '../../auth/store/current.store';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,4 +11,9 @@ import { DashboardGenericComponent } from './components/dashboard-generic/dashbo
     </div>
   `,
 })
-export class Dashboard {}
+export class Dashboard {
+  currentUserStore = inject(currentStore);
+  get getUser() {
+    return this.currentUserStore.user();
+  }
+}

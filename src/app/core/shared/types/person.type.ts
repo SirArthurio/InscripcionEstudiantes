@@ -2,7 +2,7 @@ import { user } from './user.type';
 
 export type person = {
   name: string;
-  lastname: string;
+  lastName: string;
   birthPlace: string;
   placeOfResidence: string;
   phoneNumber: string;

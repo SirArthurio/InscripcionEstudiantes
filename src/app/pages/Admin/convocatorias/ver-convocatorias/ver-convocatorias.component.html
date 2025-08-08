@@ -1,4 +1,7 @@
 <app-pagination [totalPages]="totalPaginas()" />
+@if(this.getStudents.isLoading()){
+<app-cargando />
+}
 <convocatorias-card-generic
   [type]="'courses'"
   [texto]="text"

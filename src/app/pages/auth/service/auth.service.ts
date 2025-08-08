@@ -9,6 +9,9 @@ import { RegistroUsuario } from '../register/model/Register.type';
 interface password {
   password: string;
 }
+interface institutionalEmail {
+  institutionalEmail: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -75,7 +78,9 @@ export class AuthService {
       )
       .pipe(catchError((error) => throwError(() => error)));
   }
-  SendInstitucionalEmail(email: string): Observable<ContentResponse> {
+  SendInstitucionalEmail(
+    email: institutionalEmail
+  ): Observable<ContentResponse> {
     return this.http
       .post<ContentResponse>(
         `${this.api}/${this.prefix}/send-institutional-email-verification`,

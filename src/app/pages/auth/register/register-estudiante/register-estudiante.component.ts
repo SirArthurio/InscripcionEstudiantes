@@ -158,13 +158,13 @@ export default class RegisterEstudianteComponent implements OnInit {
   }
   confirmacion(message: string) {
     this.confirmationService.confirm({
-      message: `Desesas Verificar tu correo? recuerda que este paso es obligatorio y lo puedes hacer mas tarde :D`,
+      message: `Se envion un enlace de verifacion a tu correo! recuerda que este paso es obligatorio y lo puedes hacer mas tarde :D`,
       header: 'Confirmation',
       closable: true,
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',
       acceptButtonProps: {
-        label: 'Save',
+        label: 'Si',
       },
       accept: () => {
         this.navegar();
@@ -172,6 +172,6 @@ export default class RegisterEstudianteComponent implements OnInit {
     });
   }
   navegar() {
-    this.route.navigate(['/auth/send-intitucional-email']);
+    this.route.navigate(['/auth/login']);
   }
 }

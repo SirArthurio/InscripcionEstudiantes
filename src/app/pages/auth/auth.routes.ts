@@ -19,7 +19,7 @@ export default [
     loadComponent: () => import('./forgot-password/forgot-password.component'),
   },
   {
-    path: 'verify-institutional-email',
+    path: 'verify-email',
     loadComponent: () =>
       import('./verify-intitucional-email/verify-intitucional-email.component'),
   },

@@ -54,4 +54,9 @@
       styleClass="w-full"
     ></p-button>
   </div>
+  <app-send-institucional-email
+    (cerrar)="this.visible.set(false)"
+    [show]="this.visible()"
+    [emailReceive]="this.email()"
+  />
 </app-card-formulario>

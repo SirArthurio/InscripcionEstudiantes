@@ -10,7 +10,7 @@
   <hr />
   @if(misCursos()){ @for (item of misCursos(); track $index) {
   <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
-    <div class="text-xl font-semibold">{{ item.title }}</div>
+    <div class="text-xl font-semibold">{{ item.title | titlecase }}</div>
     <div class="flex flex-row justify-between items-center w-full m-2">
       <div class="text-sm font-light">
         {{ item.code }} - {{ item.credits }} {{ texto.credits }}

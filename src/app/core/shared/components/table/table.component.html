@@ -1,0 +1,74 @@
+<div class="card">
+  <!-- Paginación -->
+  <app-pagination [totalPages]="totalPages()" />
+  @if(!isLoading()){
+  <p-table
+    #dt1
+    [value]="data()"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <!-- Caption con filtros -->
+    <ng-template #caption>
+      <div class="flex">
+        <p-button label="Clear" [outlined]="true" icon="pi pi-filter-slash" />
+        <p-iconfield iconPosition="left" class="ml-auto">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input pInputText type="text" [placeholder]="texto().title" />
+        </p-iconfield>
+      </div>
+    </ng-template>
+
+    <!-- Header -->
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- Columnas dinámicas (excluyendo 'id') -->
+        @for (item of columnas(); track $index) { @if (item !== 'id') {
+        <th style="width: 20%">{{ item }}</th>
+        } }
+        <!-- Columna de acciones -->
+        <th style="width: 15%" class="text-center">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <!-- Body -->
+    <ng-template pTemplate="body" let-customer>
+      <tr>
+        @for (item of columnas(); track $index) { @if (item !== 'id') {
+        <td>{{ customer[item] }}</td>
+        } }
+
+        <td class="text-center">
+          <div class="flex justify-content-center gap-2">
+            <!-- Botón Editar -->
+            <p-button
+              icon="pi pi-pencil"
+              [rounded]="true"
+              [outlined]="true"
+              severity="info"
+              size="small"
+              (onClick)="edit(customer.id)"
+              pTooltip="Editar"
+              tooltipPosition="top"
+            />
+
+            <p-button
+              icon="pi pi-eye"
+              [rounded]="true"
+              [outlined]="true"
+              severity="help"
+              size="small"
+              pTooltip="Ver detalles"
+              tooltipPosition="top"
+            />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  }@else {
+  <app-cargando />
+  }
+</div>

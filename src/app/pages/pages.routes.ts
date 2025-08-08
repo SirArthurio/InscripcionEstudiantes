@@ -10,4 +10,23 @@ export default [
     path: 'calendario',
     loadComponent: () => import('./shared/calendario/calendario.component'),
   },
+  {
+    path: 'cargando',
+    loadComponent: () =>
+      import('../core/shared/components/cargando/cargando.component'),
+  },
+  {
+    path: 'estudiantes',
+    children: [
+      {
+        path: 'lista-estudiantes',
+        loadComponent: () =>
+          import('./shared/students/ver-estudiantes/ver-estudiantes.component'),
+      },
+      {
+        path: 'estudiante/:id',
+        loadComponent: () => import('./Students/student/student.component'),
+      },
+    ],
+  },
 ] as Routes;

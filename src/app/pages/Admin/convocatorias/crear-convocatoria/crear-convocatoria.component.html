@@ -1,7 +1,8 @@
 <app-card-formulario-validacion
   [validacionData]="validacionData()"
-  [data]="datos"
+  [data]="datos()"
   [progress]="progress()"
+  [isEditar]="isEditar()"
   (nuevaAccion)="nuevaConvocatoria()"
 >
   <form
@@ -113,10 +114,12 @@
     <p-confirmdialog />
 
     <div class="grid grid-cols-2">
-      @if (progress()===0) {<p-button
+      @if (progress()===0) {
+      <!--  -->
+      <p-button
         class="w-full mb-4"
-        (click)="confirm1($event)"
-        label="Crear convocatoria"
+        (click)="tipoDeAccion()"
+        [label]="datos().buttonText"
         [outlined]="true"
       />}@else if(progress()===1){ }
     </div>

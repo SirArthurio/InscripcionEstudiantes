@@ -7,6 +7,7 @@
     ></i>
     <div class="ml-2 text-2xl font-bold">{{ texto().title }}</div>
   </header>
+
   <hr />
   @if(convocatoria().length>0){ @for (item of convocatoria(); track $index) {
   <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
@@ -29,7 +30,7 @@
       class="m-2 p-2"
       label="Editar"
       [severity]="'primary'"
-      (click)="editar(item.id!)"
+      (click)="editar(item)"
     />
     }
     <p-button

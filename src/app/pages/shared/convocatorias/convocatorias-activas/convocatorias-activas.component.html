@@ -8,7 +8,7 @@
     <div class="ml-2 text-2xl font-bold">{{ texto.title }}</div>
   </header>
   <hr />
-  @if(convocatoria()){ @for (item of convocatoria(); track $index) {
+  @if(filtradas().length>0){ @for (item of filtradas(); track $index) {
   <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
     <div class="text-xl font-semibold">{{ item.title }}</div>
     <div class="flex flex-row justify-between items-center w-full m-2">
@@ -25,9 +25,11 @@
     </div>
     <p-button
       class="m-2 p-2"
-      label="Acceder"
+      label="Ver"
       [severity]="statusColor(item.status)"
     />
   </div>
-  } }
+  } }@else {
+  <app-no-data />
+  }
 </div>

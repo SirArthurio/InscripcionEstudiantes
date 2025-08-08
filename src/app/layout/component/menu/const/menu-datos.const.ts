@@ -3,26 +3,26 @@ import { itemsMenu } from '../model/type/menuItems.type';
 export const menu: itemsMenu[] = [
   {
     label: 'Menu Principal',
-    roles: ['profesor', 'estudiante'],
+    roles: ['profesor', 'student', 'superadmin'],
     items: [
       {
         label: 'Dashboard',
         icon: 'pi pi-fw pi-home',
         routerLink: ['/'],
-        roles: ['profesor', 'estudiante'],
+        roles: ['profesor', 'student', 'superadmin'],
       },
 
       {
         label: 'Mis cursos',
         icon: 'pi pi-book',
         routerLink: ['/pages/mis-cursos'],
-        roles: ['profesor', 'estudiante'],
+        roles: ['profesor', 'student'],
       },
       {
         label: 'Solo Estudiantes',
         icon: 'pi pi-user',
         routerLink: ['/pages/solo-estudiantes'],
-        roles: ['estudiante'],
+        roles: ['student'],
       },
     ],
   },
@@ -44,6 +44,18 @@ export const menu: itemsMenu[] = [
             icon: 'pi pi-cog',
             label: 'Ver Convocatorias',
             routerLink: ['/admin/convocatorias/ver-convocatorias'],
+            roles: ['superadmin', 'profesor'],
+          },
+        ],
+      },
+      {
+        label: 'Estudiantes',
+        icon: 'pi pi-users',
+        items: [
+          {
+            icon: 'pi pi-users',
+            label: 'Ver Estudiantes',
+            routerLink: ['/pages/estudiantes/lista-estudiantes'],
             roles: ['superadmin', 'profesor'],
           },
         ],

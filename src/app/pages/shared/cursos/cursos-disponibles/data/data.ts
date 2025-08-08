@@ -2,7 +2,7 @@ import { cursoDisponible } from '../../models/cursoDisponible.type';
 
 export const cursosDisponiblesMock: cursoDisponible[] = [
   {
-    title: 'Programación Orientada a Objetos',
+    title: 'Competencias ciudadanas',
     code: 'CS202',
     credits: 4,
     status: 'Disponible',
@@ -17,7 +17,7 @@ export const cursosDisponiblesMock: cursoDisponible[] = [
     availableSeats: 10,
   },
   {
-    title: 'Estructuras de Datos',
+    title: 'COMUNICACIÓN ESCRITA ',
     code: 'CS204',
     credits: 3,
     status: 'Cupo lleno',
@@ -32,7 +32,7 @@ export const cursosDisponiblesMock: cursoDisponible[] = [
     availableSeats: 0,
   },
   {
-    title: 'Bases de Datos I',
+    title: 'INGLÉS',
     code: 'CS301',
     credits: 3,
     status: 'Disponible',
@@ -47,7 +47,7 @@ export const cursosDisponiblesMock: cursoDisponible[] = [
     availableSeats: 5,
   },
   {
-    title: 'Ingeniería de Software',
+    title: 'Lectura Critica',
     code: 'CS401',
     credits: 4,
     status: 'Disponible',
@@ -62,7 +62,7 @@ export const cursosDisponiblesMock: cursoDisponible[] = [
     availableSeats: 3,
   },
   {
-    title: 'Sistemas Operativos',
+    title: 'RAZONAMIENTO CUANTITATIVO',
     code: 'CS303',
     credits: 3,
     status: 'Cupo lleno',

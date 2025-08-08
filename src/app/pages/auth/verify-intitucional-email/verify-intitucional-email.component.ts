@@ -53,6 +53,7 @@ export default class VerifyInstitucionalComponent implements OnInit {
 
   async enviarDatos() {
     try {
+      console.log('entro y token: ', this.token());
       const response = await firstValueFrom(
         this.loginService.VerifyInstitucionalEmail(this.token())
       );
@@ -70,7 +71,7 @@ export default class VerifyInstitucionalComponent implements OnInit {
   }
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((query) => {
-      const verify = query.get('verify-email-token');
+      const verify = query.get('email_verification_token');
       this.token.set(verify || '');
     });
     console.log(this.token());

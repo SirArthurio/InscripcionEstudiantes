@@ -16,7 +16,7 @@ export class RegisterStudentService {
 
   RegisterStudent(student: student): Observable<ContentResponse<null>> {
     return this.http
-      .post<ContentResponse<null>>(`${this.url}create`, student)
+      .post<ContentResponse<null>>(`${this.url}register`, student)
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

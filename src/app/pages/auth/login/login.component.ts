@@ -1,4 +1,4 @@
-import { Component, ComponentRef, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,7 +9,6 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { AppFloatingConfigurator } from '../../../layout/component/app.floatingconfigurator';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -25,6 +24,8 @@ import { currentStore } from '../store/current.store';
 import { UserRole } from '@core/shared/types/currentUser.type';
 import { Dialog } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
+import SendInstitucionalEmailComponent from '../send-institucional-email/send-institucional-email.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -42,6 +43,7 @@ import { ToastModule } from 'primeng/toast';
     CardFormularioComponent,
     Dialog,
     ToastModule,
+    SendInstitucionalEmailComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -57,7 +59,9 @@ export class LoginComponent implements OnInit {
   //form
   formLogin!: FormGroup;
   form = inject(FormBuilder);
-  visible = false;
+  //variables
+  email = signal<string>('');
+  visible = signal(false);
   datos = datosLogin;
   LoginForm() {
     this.formLogin = this.form.group({
@@ -98,6 +102,10 @@ export class LoginComponent implements OnInit {
       throw error;
     }
   }
+  validateActivo() {
+    this.visible.set(true);
+    this.email.set(this.formLogin.get('username')?.value);
+  }
 
   navegar() {
     this.alertService.showSuccess('Exito', 'Login Exitoso');
@@ -111,12 +119,17 @@ export class LoginComponent implements OnInit {
         this.loginStore.setTokenLocal();
         this.obtenerDatosUsuario();
       }
-    } catch (error: any) {
-      if (error?.status === 401) {
-        this.alertService.showError('Verifica tus credenciales');
-      } else {
-        this.alertService.showError(`${error?.message}`);
+    } catch (error: HttpErrorResponse | any) {
+      if (
+        error?.error?.message ==
+        'Tu correo electrónico aún no ha sido verificado.Para acceder a tu cuenta, primero debes verificar tu dirección de correo.'
+      ) {
+        this.validateActivo();
+      } else if (error?.status == 401) {
+        this.alertService.showError(`verifica tus credenciales`);
         console.log(error);
+      } else {
+        this.alertService.showError(`${error?.error?.message}`);
       }
     }
   }

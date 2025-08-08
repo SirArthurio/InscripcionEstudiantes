@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -27,9 +27,22 @@ export class ConvocatoriasService {
       .get<ContentResponse<convocatoriaDTO>>(`${this.url}`)
       .pipe(catchError((error) => throwError(() => error)));
   }
-  GetConvocatorias(): Observable<ContentResponsePaginated<convocatoriaDTO[]>> {
+  GetConvocatorias(
+    page: number,
+    status: string
+  ): Observable<ContentResponsePaginated<convocatoriaDTO[]>> {
+    console.log('peticion');
+    let params = new HttpParams();
+    if (page && page > 0) {
+      params = params.append('page', page.toString());
+    }
+    if (status && status !== 'todos' && status.trim() !== '') {
+      params = params.append('status', status);
+    }
     return this.http
-      .get<ContentResponsePaginated<convocatoriaDTO[]>>(`${this.url}get-all`)
+      .get<ContentResponsePaginated<convocatoriaDTO[]>>(`${this.url}get-all`, {
+        params,
+      })
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

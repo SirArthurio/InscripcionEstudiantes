@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { dataCrearConvocatoria } from './const/data-crearConvocatoria.const';
 import {
   FormBuilder,
@@ -25,6 +32,8 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { CartaComponent } from '../../../../core/shared/components/carta/carta.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { convocatoriasStore } from '../store/convocatorias.store';
+import { CardFormularioValidacion } from '@core/shared/components/card-formulario-validacion/model/cardFormValidacion.type';
+import { dataVerConvocatoria } from './const/data-verConvocatoria.const';
 @Component({
   selector: 'app-crear-convocatoria',
   imports: [
@@ -43,7 +52,7 @@ import { convocatoriasStore } from '../store/convocatorias.store';
   templateUrl: './crear-convocatoria.component.html',
   styleUrl: './crear-convocatoria.component.scss',
 })
-export default class CrearConvocatoriaComponent implements OnInit {
+export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
   //service
   alertasService = inject(AlertasService);
   erroresFormService = inject(ErroesformService);
@@ -61,14 +70,30 @@ export default class CrearConvocatoriaComponent implements OnInit {
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
   convocatoriaStore = inject(convocatoriasStore);
-
-  datos = dataCrearConvocatoria;
+  //variables
+  isEditar = signal(false);
+  datos = signal<CardFormularioValidacion>(dataCrearConvocatoria);
   modalidades = modalidad;
   minDate: Date = new Date();
 
   ngOnInit(): void {
     this.formularioConvocatoria();
   }
+  ngOnDestroy(): void {
+    this.convocatoriaStore.resetConvocatoria();
+  }
+
+  getConvocatoria = effect(() => {
+    const response = this.convocatoriaStore.convocatoria();
+    if (response) {
+      this.formConvocatoria.patchValue(response);
+      this.isEditar.set(true);
+      this.datos.set(dataVerConvocatoria);
+    } else {
+      this.isEditar.set(false);
+      this.datos.set(dataCrearConvocatoria);
+    }
+  });
 
   siguiente() {
     if (this.progress() < 1) {
@@ -148,9 +173,17 @@ export default class CrearConvocatoriaComponent implements OnInit {
     }
   }
 
-  confirm1(event: Event) {
+  tipoDeAccion() {
+    if (this.isEditar()) {
+      this.isEditar();
+      console.log('editar');
+    } else {
+      this.confirm1();
+    }
+  }
+
+  confirm1() {
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
       message: 'Estas seguro de continuar? Verifica los datos!',
       header: 'Confirmation',
       closable: true,

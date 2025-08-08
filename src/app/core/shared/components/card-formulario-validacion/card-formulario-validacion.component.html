@@ -1,12 +1,15 @@
 <div class="card shadow-lg shadow-primary">
   <p-toast />
-
   <h2 class="text-center">{{ data()?.title || "no hay datos" }}</h2>
-  <p-steps [model]="items" [readonly]="false" [activeIndex]="progress()" />
-  <h4 class="font-light text-center">
-    {{ subTitulo() }}
-  </h4>
-  @if(progress()===0){
+
+  @if(!isEditar()){
+  <div>
+    <p-steps [model]="items" [readonly]="false" [activeIndex]="progress()" />
+    <h4 class="font-light text-center">
+      {{ subTitulo() }}
+    </h4>
+  </div>
+  } @if(progress()===0){
   <ng-content #formulario></ng-content>
 
   } @if(progress()===1){

@@ -15,6 +15,10 @@ import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { httpInterceptor } from '@core/interceptor/http.interceptor';
+import {
+  provideTanStackQuery,
+  QueryClient,
+} from '@tanstack/angular-query-experimental';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -34,5 +38,6 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } },
     }),
+    provideTanStackQuery(new QueryClient()),
   ],
 };

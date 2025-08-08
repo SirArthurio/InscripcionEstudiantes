@@ -3,10 +3,15 @@ import { HeaderDashboardComponent } from '../../dashboard/components/header-dash
 import { headerDasboard } from '../../dashboard/constants/text.headerDashboardEstudiante.const';
 import { headerDasboardType } from '../../dashboard/dashboard/dashboard.type';
 import { BarraEstadoCursosComponent } from 'src/app/pages/shared/cursos/components/barra-estado-cursos/barra-estado-cursos.component';
+import { CursosDisponiblesComponent } from '../cursos-disponibles/cursos-disponibles.component';
 
 @Component({
   selector: 'app-curso-generico',
-  imports: [HeaderDashboardComponent, BarraEstadoCursosComponent],
+  imports: [
+    HeaderDashboardComponent,
+    BarraEstadoCursosComponent,
+    CursosDisponiblesComponent,
+  ],
   standalone: true,
   templateUrl: './curso-generico.component.html',
   styleUrl: './curso-generico.component.scss',
