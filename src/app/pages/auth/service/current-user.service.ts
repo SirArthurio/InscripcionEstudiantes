@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ContentResponse } from '@core/shared/types';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
 import { currentUser } from '@core/shared/types/currentUser.type';
 
