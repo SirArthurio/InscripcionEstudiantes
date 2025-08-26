@@ -5,8 +5,8 @@ export type person = {
   lastName: string;
   birthPlace: string;
   placeOfResidence: string;
-  phoneNumber: string;
+  phone: string;
   documentNumber: string;
   documentType: string;
-  genre: string;
+  gender: string;
 };

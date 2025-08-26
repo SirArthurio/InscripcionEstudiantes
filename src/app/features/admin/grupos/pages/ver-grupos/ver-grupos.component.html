@@ -1,0 +1,8 @@
+<app-table
+  [data]="{
+    datos: this.grupos(),
+    url: 'admin/grupos/crear-grupos'
+  }"
+  [totalPages]="this.totalPages()"
+  [isLoading]="this.obtenerGrupos.isLoading()"
+/>

@@ -1,0 +1,9 @@
+<app-table
+  [data]="{
+    datos: this.students(),
+    url: '/pages/estudiantes/estudiante',
+    ignorar: ['user', 'id']
+  }"
+  [totalPages]="this.totalPages()"
+  [isLoading]="this.getStudents.isLoading()"
+/>

@@ -5,7 +5,7 @@ import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from '../app.menuitem';
 import { itemsMenu } from './model/type/menuItems.type';
 import { menu } from './const/menu-datos.const';
-import { currentStore } from 'src/app/pages/auth/store/current.store';
+import { currentStore } from 'src/app/features/auth/store/current.store';
 
 @Component({
   selector: 'app-menu',

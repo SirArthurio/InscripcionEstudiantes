@@ -1,0 +1,85 @@
+<app-card-formulario-validacion
+  [validacionData]="validacionData()"
+  [data]="datos()"
+  [progress]="progress()"
+  [isEditar]="isEditar()"
+  (nuevaAccion)="nuevoPrograma()"
+>
+  <p-confirmdialog />
+
+  <form
+    #formulario
+    class="relative grid grid-cols-1 md:grid-cols-2 justify-items-center border-transparent rounded-xl p-2"
+    [formGroup]="formProgramas"
+  >
+    <div class="contenedor">
+      <label
+        for="code"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Codigo</label
+      >
+      <input
+        pInputText
+        id="code"
+        type="text"
+        placeholder="Codigo"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="code"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="name"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Nombre</label
+      >
+      <input
+        pInputText
+        id="name"
+        type="text"
+        placeholder="Nombre"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="name"
+        appValidationClass
+      />
+    </div>
+
+    <div class="contenedor">
+      <label
+        for="description"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Descripcion</label
+      >
+      <input
+        pInputText
+        id="description"
+        type="text"
+        placeholder="description"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="description"
+        appValidationClass
+      />
+    </div>
+
+    <div class="grid grid-cols-2">
+      @if (progress()===0) {
+      <!--  -->
+      <p-button
+        class="w-full mb-4"
+        (click)="tipoDeAccion()"
+        [label]="datos().buttonText"
+        [outlined]="true"
+      />}@else if(progress()===1){ }
+    </div>
+
+    <app-carta
+      [duration]="6"
+      [delay]="2"
+      [borderWidth]="2"
+      borderRadius="xl"
+      [reverse]="true"
+    >
+    </app-carta>
+  </form>
+</app-card-formulario-validacion>

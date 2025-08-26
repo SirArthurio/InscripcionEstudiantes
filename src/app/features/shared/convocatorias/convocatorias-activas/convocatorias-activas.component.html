@@ -1,0 +1,35 @@
+<div class="card">
+  <header class="flex flex-row items-center">
+    <i
+      class="pi pi-calendar"
+      style="font-size: 4rem"
+      style="color: var(--primary-color)"
+    ></i>
+    <div class="ml-2 text-2xl font-bold">{{ texto.title }}</div>
+  </header>
+  <hr />
+  @if(filtradas().length>0){ @for (item of filtradas(); track $index) {
+  <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
+    <div class="text-xl font-semibold">{{ item.name }}</div>
+    <div class="flex flex-row justify-between items-center w-full m-2">
+      <div class="text-sm font-light">
+        {{ item.classStartDate }} - {{ item.classEndDate }}
+      </div>
+      <p-tag [severity]="statusColor(item.status)">
+        {{ item.status }}
+      </p-tag>
+    </div>
+
+    <div class="text-sm m-2">
+      {{ item.description }}
+    </div>
+    <p-button
+      class="m-2 p-2"
+      label="Ver"
+      [severity]="statusColor(item.status)"
+    />
+  </div>
+  } }@else {
+  <app-no-data />
+  }
+</div>

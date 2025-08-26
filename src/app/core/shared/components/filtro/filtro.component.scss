@@ -1,0 +1,262 @@
+/* Container Base */
+.filtros-container {
+  @apply rounded-2xl p-6 shadow-sm;
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+}
+
+/* Header */
+.filtros-header {
+  @apply mb-6;
+}
+
+.header-content {
+  @apply flex flex-col md:flex-row md:items-center md:justify-between gap-4;
+}
+
+.filtros-titulo {
+  @apply text-xl font-semibold flex items-center gap-2 m-0;
+  color: var(--text-color);
+}
+
+.filtros-titulo i {
+  color: var(--primary-color);
+}
+
+.header-actions {
+  @apply flex items-center gap-3;
+}
+
+.filtros-contador {
+  @apply text-sm font-medium px-3 py-1 rounded-full;
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+/* Content */
+.filtros-content {
+  @apply space-y-6;
+}
+
+.grupo-filtros {
+  @apply space-y-4;
+  animation: grupo-appear 0.6s ease-out both;
+}
+
+.grupo-header {
+  @apply flex items-center justify-between;
+}
+
+.grupo-titulo {
+  @apply text-base font-semibold m-0;
+  color: var(--text-color);
+}
+
+.grupo-contador {
+  @apply text-sm px-2 py-1 rounded;
+  background-color: var(--surface-100);
+  color: var(--text-color-secondary);
+}
+
+/* Botones Container - Diseños */
+.botones-container {
+  @apply flex flex-wrap gap-2;
+}
+
+.botones-horizontal {
+  @apply flex flex-wrap gap-2;
+}
+
+.botones-vertical {
+  @apply flex flex-col gap-2;
+}
+
+.botones-grid {
+  @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2;
+}
+
+/* Botones de Filtro */
+.filtro-boton {
+  @apply transition-all duration-200;
+  animation: boton-appear 0.4s ease-out both;
+}
+
+.filtro-boton:hover {
+  transform: translateY(-1px);
+}
+
+.filtro-boton.activo {
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.boton-todos {
+  @apply font-semibold;
+}
+
+/* Diseños específicos */
+.diseño-horizontal .filtros-content {
+  @apply space-y-4;
+}
+
+.diseño-horizontal .grupo-filtros {
+  @apply pb-4 border-b;
+  border-color: var(--surface-border);
+}
+
+.diseño-horizontal .grupo-filtros:last-child {
+  @apply border-b-0 pb-0;
+}
+
+.diseño-vertical .filtros-content {
+  @apply space-y-6;
+}
+
+.diseño-vertical .botones-container {
+  @apply flex-col items-start;
+}
+
+.diseño-vertical .filtro-boton {
+  @apply w-full justify-start;
+}
+
+.diseño-grid .grupo-filtros {
+  @apply p-4 rounded-xl;
+  background-color: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+}
+
+.diseño-grid .filtros-content {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+}
+
+/* Estado vacío */
+.empty-state {
+  @apply text-center py-12;
+}
+
+.empty-icon {
+  @apply text-4xl mb-4;
+  color: var(--text-color-secondary);
+}
+
+.empty-title {
+  @apply text-lg font-semibold mb-2;
+  color: var(--text-color);
+}
+
+.empty-description {
+  @apply text-sm;
+  color: var(--text-color-secondary);
+}
+
+/* Animaciones */
+@keyframes grupo-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes boton-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filtros-container {
+    @apply p-4;
+  }
+
+  .filtros-titulo {
+    @apply text-lg;
+  }
+
+  .header-content {
+    @apply flex-col items-start;
+  }
+
+  .header-actions {
+    @apply w-full justify-between;
+  }
+
+  .botones-grid {
+    @apply grid-cols-1;
+  }
+
+  .diseño-grid .filtros-content {
+    @apply grid-cols-1;
+  }
+}
+
+/* Estados de hover y focus */
+.filtro-boton:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Mejoras visuales */
+.filtro-boton.activo::before {
+  content: "";
+  @apply absolute inset-0 rounded pointer-events-none;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: shine 2s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Variaciones de color para diferentes severities */
+.filtro-boton[severity="success"].activo {
+  box-shadow: 0 0 0 2px rgba(var(--green-500-rgb), 0.2);
+}
+
+.filtro-boton[severity="info"].activo {
+  box-shadow: 0 0 0 2px rgba(var(--blue-500-rgb), 0.2);
+}
+
+.filtro-boton[severity="warning"].activo {
+  box-shadow: 0 0 0 2px rgba(var(--yellow-500-rgb), 0.2);
+}
+
+.filtro-boton[severity="danger"].activo {
+  box-shadow: 0 0 0 2px rgba(var(--red-500-rgb), 0.2);
+}
+
+/* Contador en botones */
+.filtro-boton .p-button-label {
+  @apply flex items-center gap-1;
+}
+
+/* Efectos adicionales */
+.grupo-filtros:hover {
+  background-color: var(--surface-hover);
+  border-radius: 0.75rem;
+  transition: background-color 0.2s ease;
+}
+
+.diseño-grid .grupo-filtros:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
+}

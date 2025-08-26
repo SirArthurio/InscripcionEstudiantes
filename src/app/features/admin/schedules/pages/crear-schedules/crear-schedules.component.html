@@ -1,0 +1,115 @@
+<app-card-formulario-validacion
+  [validacionData]="validacionData()"
+  [data]="datos()"
+  [progress]="progress()"
+  [isEditar]="isEditar()"
+  (nuevaAccion)="nuevoHorario()"
+>
+  <p-confirmdialog />
+
+  <form
+    #formulario
+    [formGroup]="formSchedule"
+    class="relative m-2 p-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
+  >
+    <div formArrayName="schedules">
+      @for (horarios of schedules.controls; track $index) {
+      <div [formGroupName]="$index">
+        <div class="contenedor">
+          <label
+            for="startTime"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Hora inicio</label
+          >
+          <p-datepicker
+            id="date"
+            type="date"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="startTime"
+            [timeOnly]="true"
+            [showIcon]="true"
+            [iconDisplay]="'input'"
+            appValidationClass
+          />
+        </div>
+        <div class="contenedor">
+          <label
+            for="endTime"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Hora Fin</label
+          >
+          <p-datepicker
+            id="date"
+            type="date"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="endTime"
+            [timeOnly]="true"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            appValidationClass
+          />
+        </div>
+        <div class="contenedor">
+          <label
+            for="day"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Dia</label
+          >
+          <p-select
+            [options]="dias"
+            optionValue="day"
+            optionLabel="day"
+            placeholder="Selecciona un dia"
+            id="date"
+            type="date"
+            styleClass="w-full md:w-[30rem] mb-8"
+            formControlName="day"
+            appValidationClass
+          />
+        </div>
+      </div>
+
+      <!-- Botón eliminar horario (opcional) -->
+      @if (schedules.length > 1) {
+      <button
+        type="button"
+        class="p-button p-button-danger p-button-sm"
+        (click)="eliminarHorario($index)"
+      >
+        Eliminar Horario
+      </button>
+      }
+      <!--  -->
+
+      }
+      <!-- Botón agregar nuevo horario -->
+      <div class="col-span-1 md:col-span-2 mt-4 p-2 m-2">
+        <button
+          type="button"
+          class="p-button p-button-secondary"
+          (click)="agregarHorario()"
+        >
+          + Agregar Horario
+        </button>
+      </div>
+    </div>
+    <app-carta
+      [duration]="6"
+      [delay]="2"
+      [borderWidth]="2"
+      borderRadius="xl"
+      [reverse]="true"
+    />
+
+    <div class="grid grid-cols-2 p-2 m-2">
+      @if (progress()===0) {
+      <!--  -->
+      <p-button
+        class="w-full mb-4"
+        (click)="tipoDeAccion()"
+        [label]="datos().buttonText"
+        [outlined]="true"
+      />}@else if(progress()===1){ }
+    </div>
+  </form>
+</app-card-formulario-validacion>

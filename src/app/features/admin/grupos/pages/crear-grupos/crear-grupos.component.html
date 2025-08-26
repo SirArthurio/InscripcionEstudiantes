@@ -1,0 +1,166 @@
+<app-card-formulario-validacion
+  [validacionData]="validacionData()"
+  [data]="datos()"
+  [progress]="progress()"
+  [isEditar]="isEditar()"
+  (nuevaAccion)="nuevoGrupo()"
+>
+  <p-confirmdialog />
+  <div class="grid grid-cols-2">
+    <section class="contenedor">
+      <form
+        #formulario
+        class="relative grid grid-cols-1 justify-items-center border-transparent rounded-xl p-2"
+        [formGroup]="formGrupos"
+      >
+        <div class="contenedor">
+          <label
+            for="code"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Codigo</label
+          >
+          <input
+            pInputText
+            id="code"
+            type="text"
+            placeholder="Codigo"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="code"
+            appValidationClass
+          />
+        </div>
+        <div class="contenedor">
+          <label
+            for="modality"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Modalidad</label
+          >
+          <p-select
+            [options]="modalidades"
+            optionValue="name"
+            optionLabel="name"
+            id="modality"
+            type="text"
+            placeholder="Modalidad"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="modality"
+            appValidationClass
+          />
+        </div>
+        <div class="contenedor">
+          <label
+            for="professorId"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Docente</label
+          >
+          <p-select
+            [options]="profesores()"
+            optionValue="id"
+            optionLabel="firstName"
+            id="professorId"
+            type="text"
+            placeholder="Profesor"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="professorId"
+            appValidationClass
+          />
+        </div>
+
+        <div class="contenedor">
+          <label
+            for="observations"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Observaciones</label
+          >
+          <input
+            pInputText
+            id="observations"
+            type="text"
+            placeholder="observations"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="observations"
+            appValidationClass
+          />
+        </div>
+        <div class="contenedor">
+          <label
+            for="courseId"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Curso</label
+          >
+          <input
+            pInputText
+            [readonly]="true"
+            id="courseId"
+            type="text"
+            placeholder="Curso"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="courseId"
+            appValidationClass
+          />
+        </div>
+        <div class="contenedor">
+          <label
+            for="callId"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Convocatoria</label
+          >
+          <input
+            pInputText
+            [readOnly]="true"
+            id="callId"
+            type="text"
+            placeholder="Convocatoria"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="callId"
+            appValidationClass
+          />
+        </div>
+
+        <div class="flex flex-col">
+          @if (progress()===0) {
+          <!--  -->
+          <label
+            for="courseId"
+            class="block flex-col text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Acciones Disonibles</label
+          >
+          <div class="grid grid-cols-2">
+            @if(this.isEditar()){
+            <p-button
+              class="w-full mb-4 m-1 p-1"
+              (click)="agregarHorario()"
+              label="Agregar Horario"
+              [outlined]="true"
+            />
+            }
+            <p-button
+              class="w-full mb-4 m-1 p-1"
+              (click)="tipoDeAccion()"
+              [label]="datos().buttonText"
+              [outlined]="true"
+            />
+            <!--  -->
+          </div>
+
+          }@else if(progress()===1){ }
+        </div>
+
+        <app-carta
+          [duration]="6"
+          [delay]="2"
+          [borderWidth]="2"
+          borderRadius="xl"
+          [reverse]="true"
+        >
+        </app-carta>
+      </form>
+    </section>
+    <section class="contenedor">
+      <app-escoger-curso
+        (onAgregarCursoAGrupo)="respuestaCursoAGrupo($event)"
+        [idConvocatoria]="this.idConvocatoria()"
+      />
+    </section>
+  </div>
+</app-card-formulario-validacion>

@@ -13,7 +13,7 @@ import Aura from '@primeng/themes/aura';
 import { PrimeNG } from 'primeng/config';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { LayoutService } from '../service/layout.service';
-import { currentStore } from 'src/app/pages/auth/store/current.store';
+import { currentStore } from 'src/app/features/auth/store/current.store';
 
 const presets = {
   Aura,

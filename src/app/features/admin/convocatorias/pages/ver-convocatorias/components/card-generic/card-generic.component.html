@@ -1,0 +1,91 @@
+<div class="card">
+  <p-toast />
+  <p-confirmdialog />
+  <header class="flex flex-row items-center">
+    <i
+      class="pi pi-calendar"
+      style="font-size: 4rem"
+      style="color: var(--primary-color)"
+    ></i>
+    <div class="ml-2 text-2xl font-bold">{{ texto().title }}</div>
+  </header>
+
+  <hr />
+  @if(convocatoria().length>0){ @for (item of convocatoria(); track $index) {
+  <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
+    <div class="text-xl font-semibold">{{ item.name }}</div>
+    <div class="flex flex-row justify-between items-center w-full m-2">
+      <div>
+        <div class="text-sm font-light">
+          Clases: {{ item.classStartDate }} - {{ item.classEndDate }}
+        </div>
+        <div class="text-sm font-light">
+          Convocatoria: {{ item.enrollmentStartDate }} -
+          {{ item.enrollmentEndDate }}
+        </div>
+      </div>
+
+      <p-tag [severity]="statusColor(item.status)">
+        {{ item.status }}
+      </p-tag>
+    </div>
+
+    <div class="text-sm m-2">
+      {{ item.description }}
+    </div>
+
+    @if(editarConvocatoria()){
+    <p-button
+      class="m-2 p-2"
+      label="Editar"
+      [severity]="'primary'"
+      (click)="editar(item)"
+    />
+    }
+    <p-button
+      class="m-2 p-2"
+      label="Grupos Convocatoria"
+      [severity]="statusColor(item.status)"
+      [disabled]="habilitar(item.status)"
+      (click)="gruposConvocatoria(item.id!)"
+    />
+    <p-button
+      class="m-2 p-2"
+      label="Crear Grupo"
+      (click)="crearGrupo(item.id!)"
+      [severity]="statusColor(item.status)"
+      [disabled]="habilitar(item.status)"
+    />
+    <p-button
+      class="m-2 p-2"
+      label="Cancelar Convocatoria"
+      (click)="confirmacion($event, 'cancelar', item.id!)"
+      [severity]="statusColor(item.status)"
+      [disabled]="habilitar(item.status)"
+    />
+    <p-button
+      class="m-2 p-2"
+      label="Publicar Convocatoria"
+      (click)="confirmacion($event, 'publicar', item.id!)"
+      [severity]="statusColor(item.status)"
+      [disabled]="habilitar(item.status)"
+    />
+    <p-button
+      class="m-2 p-2"
+      label="Cerrar Convocatoria"
+      (click)="confirmacion($event, 'cerrar', item.id!)"
+      [severity]="statusColor(item.status)"
+      [disabled]="habilitar(item.status)"
+    />
+    <p-button
+      class="m-2 p-2"
+      label="Asignar Horario "
+      (click)="asignarHorario(item.id!)"
+      [severity]="statusColor(item.status)"
+      [disabled]="habilitar(item.status)"
+    />
+  </div>
+  } }@else {
+  <app-no-data [type]="type()" />
+  }
+</div>

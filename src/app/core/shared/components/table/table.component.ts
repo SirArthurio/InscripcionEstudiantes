@@ -16,6 +16,11 @@ import { Router, RouterLink } from '@angular/router';
 import { InputText } from 'primeng/inputtext';
 import { tableConst } from './const/table.const';
 import CargandoComponent from '../cargando/cargando.component';
+interface tableData {
+  datos: any[];
+  url: string;
+  ignorar?: string[];
+}
 @Component({
   selector: 'app-table',
   imports: [
@@ -33,7 +38,7 @@ import CargandoComponent from '../cargando/cargando.component';
 })
 export class TableComponent {
   //inputs
-  data = input.required<any>();
+  data = input.required<tableData>();
   totalPages = input<number>(1);
   rutaEdit = input<string>('');
   texto = input(tableConst);
@@ -43,17 +48,20 @@ export class TableComponent {
   columnas = signal<string[]>([]);
 
   getColumns = effect(() => {
-    if (Array.isArray(this.data()) && this.data().length > 0) {
-      const { id, user, ...copia } = this.data()[0];
-      this.columnas.set(Object.keys(copia));
-    } else {
-      const { id, user, ...copia } = this.data();
-
-      this.columnas.set(Object.keys(copia));
+    if (this.data().datos && this.data().datos.length > 0) {
+      const columnas = Object.keys(this.data().datos[0]);
+      const columnasVisibles = columnas.filter(
+        (e) => !this.data().ignorar?.includes(e)
+      );
+      this.columnas.set(columnasVisibles);
     }
   });
   edit(id: string) {
-    this.router.navigate(['/pages/estudiantes/estudiante', id]);
+    this.router.navigate([`${this.data().url}`], {
+      queryParams: {
+        id: id,
+      },
+    });
   }
   filterGlobal(value?: string) {}
 }

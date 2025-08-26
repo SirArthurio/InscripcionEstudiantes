@@ -1,0 +1,8 @@
+<app-table
+  [data]="{
+    datos: this.facultades(),
+    url: '/admin/facultades/crear-facultad'
+  }"
+  [totalPages]="this.totalPages()"
+  [isLoading]="this.obtenerFacultades.isLoading()"
+/>

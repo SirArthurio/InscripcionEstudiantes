@@ -1,0 +1,239 @@
+<app-card-formulario-validacion
+  [validacionData]="validacionData()"
+  [data]="datos()"
+  [progress]="progress()"
+  [isEditar]="isEditar()"
+  (nuevaAccion)="nuevoProfessor()"
+>
+  <form
+    #formulario
+    class="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 items-center justify-center m-2 p-2 text-center"
+    [formGroup]="formRegister"
+  >
+    <h2 class="md:col-span-3 sm:col-span-2">Datos Personales</h2>
+    <div class="contenedor">
+      <label
+        for="text"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Nombre</label
+      >
+      <input
+        pInputText
+        id="text"
+        type="text"
+        placeholder="Nombre"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="firstName"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="lastName"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Apellido</label
+      >
+      <input
+        pInputText
+        id="lastName"
+        type="text"
+        placeholder="Apellido "
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="lastName"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="birthDate"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Fecha Cumpleaños</label
+      >
+      <input
+        pInputText
+        id="date"
+        type="date"
+        [min]="edadadService.VerificacionMenor80Edad()"
+        [max]="edadadService.VerificacionMayor16Edad()"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="birthDate"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="gender"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Genero</label
+      >
+      <p-select
+        [options]="generos"
+        optionValue="code"
+        optionLabel="genre"
+        placeholder="Selecciona un genero"
+        id="date"
+        type="date"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="gender"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="documentType"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Tipo documento</label
+      >
+      <p-select
+        formControlName="documentType"
+        [options]="documentsTypes()"
+        optionValue="code"
+        class="w-full md:w-[30rem] mb-8"
+        optionLabel="documentType"
+        placeholder="selecciona un tipo de documento"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="documentNumber"
+        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+        >Numero documento</label
+      >
+      <input
+        pInputText
+        id="documentNumber"
+        type="text"
+        SoloNumeros
+        placeholder="numero documento "
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="documentNumber"
+        appValidationClass
+        [minlength]="6"
+        [maxlength]="10"
+      />
+    </div>
+    <h2 class="md:col-span-3 sm:col-span-2">Datos de Contacto</h2>
+    <div class="contenedor">
+      <label
+        for="phone"
+        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+        >Numero de celular</label
+      >
+      <input
+        pInputText
+        SoloNumeros
+        id="phone"
+        type="text"
+        placeholder="Teléfono"
+        formControlName="phone"
+        [minlength]="10"
+        [maxlength]="10"
+        class="w-full md:w-[30rem] mb-8"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="birthPlace"
+        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+        >Lugar de Nacimiento</label
+      >
+      <input
+        pInputText
+        type="text"
+        placeholder="Lugar de Nacimiento"
+        formControlName="birthPlace"
+        class="w-full md:w-[30rem] mb-8"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="placeOfResidence"
+        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+        >Lugar de Recidencia</label
+      >
+      <input
+        pInputText
+        type="text"
+        placeholder="Calle 20# 21-29 primero de mayo"
+        formControlName="placeOfResidence"
+        class="w-full md:w-[30rem] mb-8"
+        appValidationClass
+      />
+    </div>
+    <h2 class="md:col-span-3 sm:col-span-2">Datos Academicos</h2>
+    <div class="contenedor">
+      <label
+        for="specialty"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Especialidad</label
+      >
+      <input
+        pInputText
+        id="specialty"
+        type="text"
+        placeholder="Especialidad "
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="specialty"
+        appValidationClass
+      />
+    </div>
+
+    <div class="contenedor" formGroupName="user">
+      <label
+        for="institutionalEmail"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Email</label
+      >
+      <input
+        pInputText
+        id="institutionalEmail"
+        type="text"
+        placeholder="Email Institucional "
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="institutionalEmail"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor" formGroupName="user">
+      <label
+        for="password"
+        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+        >Password</label
+      >
+      <p-password
+        id="password"
+        formControlName="password"
+        placeholder="Password"
+        [toggleMask]="true"
+        styleClass="w-full md:w-[30rem] mb-8"
+        [fluid]="true"
+        [feedback]="false"
+        appValidationClass
+      ></p-password>
+    </div>
+    <p-confirmdialog />
+
+    <div class="grid grid-cols-2">
+      @if (progress()===0) {
+      <!--  -->
+      <p-button
+        class="w-full mb-4"
+        (click)="tipoDeAccion()"
+        [label]="datos().buttonText"
+        [outlined]="true"
+      />}@else if(progress()===1){ }
+    </div>
+
+    <app-carta
+      [duration]="6"
+      [delay]="2"
+      [borderWidth]="2"
+      borderRadius="xl"
+      [reverse]="true"
+    >
+    </app-carta>
+  </form>
+</app-card-formulario-validacion>

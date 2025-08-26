@@ -1,0 +1,194 @@
+<app-card-formulario-validacion
+  [validacionData]="validacionData()"
+  [data]="datos()"
+  [progress]="progress()"
+  [isEditar]="isEditar()"
+  (nuevaAccion)="nuevaConvocatoria()"
+>
+  <p-confirmdialog />
+
+  <form
+    #formulario
+    class="relative grid grid-cols-1 md:grid-cols-2 justify-items-center border-transparent rounded-xl p-2"
+    [formGroup]="formFacultad"
+  >
+    <div class="contenedor">
+      <label
+        for="code"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Codigo</label
+      >
+      <input
+        pInputText
+        id="code"
+        type="text"
+        placeholder="Codigo"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="code"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="name"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Nombre</label
+      >
+      <input
+        pInputText
+        id="name"
+        type="text"
+        placeholder="Nombre"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="name"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="description"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Descripcion</label
+      >
+      <input
+        pInputText
+        id="description"
+        type="text"
+        placeholder="description"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="description"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="phoneNumber"
+        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+        >Numero de celular</label
+      >
+      <input
+        pInputText
+        SoloNumeros
+        id="phoneNumber"
+        type="text"
+        placeholder="Teléfono"
+        formControlName="phoneNumber"
+        [minlength]="10"
+        [maxlength]="10"
+        class="w-full md:w-[30rem] mb-8"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="email"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Email</label
+      >
+      <input
+        pInputText
+        id="email"
+        type="text"
+        placeholder="Email Institucional "
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="email"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor">
+      <label
+        for="address"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Direccion</label
+      >
+      <input
+        pInputText
+        id="address"
+        type="text"
+        placeholder="Direccion"
+        class="w-full md:w-[30rem] mb-8"
+        formControlName="address"
+        appValidationClass
+      />
+    </div>
+    <div class="contenedor" formArrayName="extensions">
+      <div>
+        <label
+          for="extensions"
+          class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+          >Extension</label
+        >
+        <input
+          pInputText
+          placeholder="Extension"
+          type="text"
+          class="w-full md:w-[30rem] mb-8"
+          [formControl]="newExtension"
+          appValidationClass
+        />
+        <p-button
+          class="w-full mb-4"
+          (click)="agregarExtension()"
+          label="Agregar Extension"
+          [outlined]="true"
+        />
+      </div>
+
+      @if (extension.controls.length>0 ) {
+
+      <!--  -->
+      @for (item of extension.controls; track item;let i = $index) {
+      <div class="contenedor">
+        <input
+          pInputText
+          type="text"
+          class="w-full md:w-[30rem] mb-8"
+          [formControlName]="i"
+          appValidationClass
+        />
+        <p-button
+          class="w-full mb-4"
+          (click)="eliminarExtension(i)"
+          label="Eliminar Extension"
+          [outlined]="true"
+        />
+      </div>
+
+      }
+      <!--  -->
+      }
+    </div>
+
+    <div class="contenedor">
+      <label
+        for=""
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Acciones</label
+      >
+      @if (isEditar()) {
+      <p-button
+        class="w-full mb-4 m-2 p-2"
+        (click)="crearPrograma()"
+        label="Crear Programa"
+        [outlined]="true"
+      />
+      } @if (progress()===0) {
+      <!--  -->
+      <p-button
+        class="w-full mb-4 m-2 p-2"
+        (click)="tipoDeAccion()"
+        [label]="datos().buttonText"
+        [outlined]="true"
+      />}@else if(progress()===1){ }
+    </div>
+
+    <app-carta
+      [duration]="6"
+      [delay]="2"
+      [borderWidth]="2"
+      borderRadius="xl"
+      [reverse]="true"
+    >
+    </app-carta>
+  </form>
+</app-card-formulario-validacion>

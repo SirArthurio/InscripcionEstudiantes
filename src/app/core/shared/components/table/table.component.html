@@ -2,9 +2,11 @@
   <!-- Paginación -->
   <app-pagination [totalPages]="totalPages()" />
   @if(!isLoading()){
+  <!--  -->
+  @if(data().datos.length>0){
   <p-table
     #dt1
-    [value]="data()"
+    [value]="data().datos"
     [rows]="10"
     [tableStyle]="{ 'min-width': '50rem' }"
   >
@@ -25,9 +27,13 @@
     <ng-template pTemplate="header">
       <tr>
         <!-- Columnas dinámicas (excluyendo 'id') -->
-        @for (item of columnas(); track $index) { @if (item !== 'id') {
+        @for (item of columnas(); track $index) {
+        <!--  -->
+        @if (item !== 'id') {
         <th style="width: 20%">{{ item }}</th>
-        } }
+        }
+        <!--  -->
+        }
         <!-- Columna de acciones -->
         <th style="width: 15%" class="text-center">Acciones</th>
       </tr>
@@ -69,6 +75,8 @@
     </ng-template>
   </p-table>
   }@else {
+  <h2>NO hay datos :C</h2>
+  } }@else {
   <app-cargando />
   }
 </div>

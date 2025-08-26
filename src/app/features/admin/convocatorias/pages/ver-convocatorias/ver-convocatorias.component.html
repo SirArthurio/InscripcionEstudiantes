@@ -1,0 +1,18 @@
+<app-filtro
+  titulo="Filtrar Convocatorias"
+  [gruposFiltros]="filtro"
+  diseño="horizontal"
+  [mostrarContadores]="true"
+/>
+@if(this.getConvocatorias.data()?.page?.length){
+<app-pagination [totalPages]="totalPaginas()" />
+}
+<!--  -->
+@if(this.getConvocatorias.isLoading()){
+<app-cargando />
+}
+<convocatorias-card-generic
+  [type]="'courses'"
+  [texto]="text"
+  [convocatoria]="this.getConvocatorias.data()?.page || []"
+></convocatorias-card-generic>

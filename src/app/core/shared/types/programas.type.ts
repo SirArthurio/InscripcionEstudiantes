@@ -1,5 +1,3 @@
-export type programs = {
-  id: string;
-  name: string;
-  code: string;
-};
+import { baseCode } from './base-code-model.type';
+
+export type programs = baseCode & {};
