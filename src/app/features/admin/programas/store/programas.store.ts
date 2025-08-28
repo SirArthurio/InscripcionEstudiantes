@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ContentResponse, ContentResponsePaginated } from '@core/shared/types';
 import { programs } from '@core/shared/types/programas.type';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { ProgramasService } from '../servicios/programas.service';
+import { ProgramasService } from '../service/programas.service';
 import { firstValueFrom } from 'rxjs';
 
 export type programasStoreValue = {

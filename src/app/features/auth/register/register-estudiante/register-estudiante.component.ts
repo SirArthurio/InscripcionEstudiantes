@@ -21,7 +21,6 @@ import {
 } from 'primeng/autocomplete';
 import { documentTypes } from 'src/app/utils/const/documentTypes.const';
 import { genre } from 'src/app/utils/const/genre.const';
-import { programas } from 'src/app/utils/const/programs.const';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -37,6 +36,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SoloNumerosDirective } from '@core/directives/solo-numeros.directive';
 import { ValidationClassDirective } from '@core/directives/app-validation-class.directive';
+import { programasStore } from 'src/app/features/admin/programas/store/programas.store';
+import { Register } from '@tanstack/angular-query-experimental';
 interface documentType {
   id: number;
   documentType: string;
@@ -74,13 +75,27 @@ export default class RegisterEstudianteComponent implements OnInit {
   route = inject(Router);
 
   //signals
-  programas = signal<programs[] | []>(programas);
+  programas = signal<programs[]>([]);
   documentsTypes = signal<documentType[] | []>(documentTypes);
   programFilteredValue = signal<programs[] | []>([]);
+
+  //store
+  programaStore = inject(programasStore);
 
   checked: boolean = false;
   generos = genre;
   data = registerEstudianteConstData;
+  ngOnInit() {
+    this.RegisterForm();
+    this.obtenerProgramas();
+  }
+  async obtenerProgramas() {
+    try {
+      const response = await this.programaStore.getProgramas();
+      if (!response) throw Error;
+      this.programas.set(response.data.page);
+    } catch (error) {}
+  }
 
   filterProgram(event: AutoCompleteCompleteEvent) {
     const filtered: programs[] = [];
@@ -103,7 +118,7 @@ export default class RegisterEstudianteComponent implements OnInit {
         password: ['', Validators.required],
       }),
 
-      name: ['', Validators.required],
+      firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       birthDate: ['', Validators.required],
       program: ['', [Validators.required]],
@@ -118,15 +133,21 @@ export default class RegisterEstudianteComponent implements OnInit {
         [Validators.required, documentNumberValidator(6, 10)],
       ],
       documentType: ['', Validators.required],
-      genre: ['', Validators.required],
-      phoneNumber: ['', [Validators.required, longitudExactaValidator(10)]],
+      gender: ['', Validators.required],
+      phone: ['', [Validators.required, longitudExactaValidator(10)]],
       admissionDate: ['', [Validators.required]],
     });
+  }
+  limpiarDatos(): student {
+    const { program, ...datos } = this.formRegister.value;
+    return datos;
   }
 
   enviarFormulario() {
     if (this.formRegister.valid) {
-      this.enviarDatos(this.formRegister.value);
+      console.log('datos', this.formRegister.value);
+      const id = this.formRegister.get('program')?.value;
+      this.enviarDatos(this.limpiarDatos(), id);
     } else {
       this.manejoErroresForm();
     }
@@ -138,10 +159,10 @@ export default class RegisterEstudianteComponent implements OnInit {
     );
     console.log('error', this.formRegister);
   }
-  async enviarDatos(student: student) {
+  async enviarDatos(student: student, idPrograma: string) {
     try {
       const response = await firstValueFrom(
-        this.registerStudentService.RegisterStudent(student)
+        this.registerStudentService.RegisterStudent(student, idPrograma)
       );
       if (response) {
         this.confirmacion(response.message || '');
@@ -153,9 +174,6 @@ export default class RegisterEstudianteComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.RegisterForm();
-  }
   confirmacion(message: string) {
     this.confirmationService.confirm({
       message: `Se envion un enlace de verifacion a tu correo! recuerda que este paso es obligatorio y lo puedes hacer mas tarde :D`,
@@ -164,8 +182,9 @@ export default class RegisterEstudianteComponent implements OnInit {
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',
       acceptButtonProps: {
-        label: 'Si',
+        label: 'Aceptar',
       },
+      rejectVisible: false,
       accept: () => {
         this.navegar();
       },

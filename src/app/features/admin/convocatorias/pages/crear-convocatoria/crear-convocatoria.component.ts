@@ -33,6 +33,8 @@ import { convocatoriasStore } from '../../store/convocatorias.store';
 import { CardFormularioValidacion } from '@core/shared/components/card-formulario-validacion/model/cardFormValidacion.type';
 import { dataVerConvocatoria } from '../../const/data-verConvocatoria.const';
 import { convocatoriaDTO } from '../../model/convocatoriaDTO.type';
+import { editConvocatoria } from '../ver-convocatorias/components/card-generic/model/edit.convocatoria.type';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-crear-convocatoria',
   imports: [
@@ -54,10 +56,12 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
   alertasService = inject(AlertasService);
   erroresFormService = inject(ErroesformService);
   dateFormatterService = inject(DateFormatterService);
+  navegar = inject(Router);
 
   //signals
   validacionData = signal<datosResumen[] | []>([]);
   progress = signal<number>(0);
+  datosOriginales = signal<convocatoriaDTO | null>(null);
 
   //formulario
   form = inject(FormBuilder);
@@ -67,11 +71,15 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
   convocatoriaStore = inject(convocatoriasStore);
+  router = inject(Router);
+
   //variables
   isEditar = signal(false);
   datos = signal<CardFormularioValidacion>(dataCrearConvocatoria);
   modalidades = modalidad;
   minDate: Date = new Date();
+  convocatoriaId = signal<string>('');
+  convocatoria = signal<convocatoriaDTO | null>(null);
 
   ngOnInit(): void {
     this.formularioConvocatoria();
@@ -84,15 +92,36 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
     const response = this.convocatoriaStore.convocatoria();
     if (response) {
       this.setDatos(response);
+      this.convocatoriaId.set(response.id!);
       this.isEditar.set(true);
+      this.convocatoria.set(response);
       this.datos.set(dataVerConvocatoria);
     } else {
       this.isEditar.set(false);
       this.datos.set(dataCrearConvocatoria);
     }
   });
+
   setDatos(response: convocatoriaDTO) {
+    this.datosOriginales.set(response);
     this.formConvocatoria.patchValue(response);
+
+    const rangeDateClassSet: (Date | null)[] = [
+      new Date(response.classStartDate),
+      response.classEndDate ? new Date(response.classEndDate) : null,
+    ];
+
+    const rangeDatesEnrollmentSet: (Date | null)[] = [
+      new Date(response.enrollmentStartDate),
+      response.enrollmentEndDate ? new Date(response.enrollmentEndDate) : null,
+    ];
+
+    this.formConvocatoria.get('rangeDatesClass')?.setValue(rangeDateClassSet);
+    this.formConvocatoria
+      .get('rangeDatesEnrollment')
+      ?.setValue(rangeDatesEnrollmentSet);
+
+    this.formConvocatoria.get('rangeDatesEnrollment')?.disable();
   }
 
   siguiente() {
@@ -135,7 +164,7 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
     this.progress.set(0);
   }
 
-  resumenDatos(convocatoria: convocatoria) {
+  resumenDatos(convocatoria: convocatoriaDTO) {
     this.validacionData.set(datosConvocatoriaVerificacion(convocatoria));
     this.alertasService.showSuccess(
       'Registrado!',
@@ -153,6 +182,7 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
         throw Error;
       }
       this.resumenDatos(response.data);
+      this.convocatoria.set(response.data);
     } catch (error: HttpErrorResponse | any) {
       this.alertasService.showError(error.error.message);
       throw error;
@@ -172,6 +202,34 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
     );
   }
 
+  datosEditatos(): editConvocatoria {
+    return {
+      classStartDate: this.formConvocatoria.value.classStartDate,
+      classEndDate: this.formConvocatoria.value.classEndDate,
+      code: this.formConvocatoria.value.code,
+      name: this.formConvocatoria.value.name,
+      description: this.formConvocatoria.value.description,
+    };
+  }
+
+  formularioEditado(): editConvocatoria {
+    const original = (this.datosOriginales() ??
+      {}) as Partial<editConvocatoria>;
+    const actual = this.datosEditatos();
+
+    const resultado: any = {};
+
+    (Object.keys(actual) as (keyof editConvocatoria)[]).forEach((key) => {
+      if (actual[key] !== original[key]) {
+        resultado[key] = actual[key];
+      } else {
+        resultado[key] = null;
+      }
+    });
+
+    return resultado as editConvocatoria;
+  }
+
   onSubmit() {
     this.convertirRangoAFechas();
     if (this.formConvocatoria.invalid) {
@@ -180,11 +238,36 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
       this.enviarDatos(this.convercionDatos());
     }
   }
+  private async editarConvocatoria() {
+    try {
+      console.log(this.formularioEditado());
+      const response =
+        await this.convocatoriaStore.updateInformationConvocatoria(
+          this.convocatoriaId(),
+          this.formularioEditado()
+        );
+      if (!response) throw Error;
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rejected',
+        detail: `se Edito Con exito! :D`,
+        life: 3000,
+      });
+      this.navegar.navigate(['/admin/convocatorias/ver-convocatorias']);
+    } catch (error: any) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rejected',
+        detail: `se presento un error :C ${error.error.message}`,
+        life: 3000,
+      });
+      throw error;
+    }
+  }
 
   tipoDeAccion() {
     if (this.isEditar()) {
-      this.isEditar();
-      console.log('editar');
+      this.editarConvocatoria();
     } else {
       this.onSubmit();
     }
@@ -217,5 +300,30 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
         });
       },
     });
+  }
+  continuarProgreso() {
+    this.nuevaConvocatoria();
+    const convocatoria = this.convocatoria();
+    if (convocatoria) {
+      this.convocatoriaStore.setConvocatoria(convocatoria);
+    }
+  }
+  crearGrupo() {
+    const convocatoria = this.convocatoria();
+    if (convocatoria) {
+      this.router.navigate(['/admin/grupos/crear-grupos'], {
+        queryParams: { convocatoria: convocatoria.id },
+      });
+    }
+  }
+  verGrupos() {
+    const convocatoria = this.convocatoria();
+    if (convocatoria) {
+      this.router.navigate(['/admin/grupos/ver-grupos'], {
+        queryParams: {
+          convocatoria: convocatoria.id,
+        },
+      });
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -50,7 +50,7 @@ import { dataVerGrupo } from '../../const/data-ver-grupo.const';
   templateUrl: './crear-grupos.component.html',
   styleUrl: './crear-grupos.component.scss',
 })
-export default class CrearGruposComponent {
+export default class CrearGruposComponent implements OnInit {
   //service
   alertasService = inject(AlertasService);
   erroresFormService = inject(ErroesformService);
@@ -104,7 +104,7 @@ export default class CrearGruposComponent {
       this.idGrupo.set(id);
       this.isEditar.set(true);
       this.datos.set(dataVerGrupo);
-      console.log('id grupo', this.grupo());
+      console.log('id grupo', this.idGrupo());
     }
   }
 

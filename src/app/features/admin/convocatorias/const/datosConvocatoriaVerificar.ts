@@ -1,6 +1,8 @@
-import { convocatoria } from '../model/convocatoria.type';
+import { convocatoriaDTO } from '../model/convocatoriaDTO.type';
 
-export const datosConvocatoriaVerificacion = (convocatoria: convocatoria) => [
+export const datosConvocatoriaVerificacion = (
+  convocatoria: convocatoriaDTO
+) => [
   {
     name: 'Nombre',
     content: convocatoria.name,

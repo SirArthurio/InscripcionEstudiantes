@@ -4,6 +4,7 @@ import { inject } from '@angular/core';
 import { GrupoService } from '../service/grupo.service';
 import { firstValueFrom } from 'rxjs';
 import { ContentResponse, ContentResponsePaginated } from '@core/shared/types';
+import { grupoDto } from '../model/grupoDto.type';
 
 export type grupoStoreValue = {
   grupos: grupo[];
@@ -31,12 +32,14 @@ export const GrupoStore = signalStore(
     resetGrupo() {
       patchState(store, { grupo: grupoStoreInitialValue.grupo });
     },
-    getGrupos(
+    getGruposPorConvocatoria(
       page: number,
-      status: string
-    ): Promise<ContentResponsePaginated<grupo[]>> {
+      idConvocatoria: string
+    ): Promise<ContentResponse<grupoDto[]>> {
       try {
-        const response = firstValueFrom(grupoService.GetGrupos(page, status));
+        const response = firstValueFrom(
+          grupoService.GetGruposPorConvocatoria(page, idConvocatoria)
+        );
         if (!response) throw Error;
         return response;
       } catch (error) {

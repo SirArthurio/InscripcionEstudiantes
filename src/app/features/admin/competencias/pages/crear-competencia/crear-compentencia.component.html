@@ -71,8 +71,21 @@
       <p-button
         class="w-full mb-4 m-2 p-2"
         (click)="crearCurso()"
-        label="Crear Programa"
+        label="Crear Curso"
         [outlined]="true"
+      />
+      <p-button
+        class="w-full mb-4 m-2 p-2"
+        (click)="verCursosCompetencia()"
+        label="Ver Cursos"
+        [outlined]="true"
+      />
+      <p-button
+        class="w-full mb-4"
+        (click)="archivarOActivar()"
+        [label]="this.textAccionArchivarActivar() ? 'Activar' : 'Archivar'"
+        [outlined]="true"
+      />
       />
       } @if (progress()===0) {
       <!--  -->

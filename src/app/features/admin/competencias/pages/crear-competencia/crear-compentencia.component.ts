@@ -25,6 +25,9 @@ import { dataCrearCompetencia } from '../../const/data-crearCompetencia.const';
 import { dataVerCompetencia } from '../../const/data-verCompetencia.const';
 import { competencias } from '../../model/competencias.type';
 import { ActivatedRoute, Router } from '@angular/router';
+import { competenciaDto } from '../../model/competenciaDto.type';
+import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
+import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum copy';
 
 @Component({
   selector: 'app-crear-facultad',
@@ -67,6 +70,8 @@ export default class CrearCompentenciaComponent {
   datos = signal<CardFormularioValidacion>(dataCrearCompetencia);
   minDate: Date = new Date();
   idCompetencia = signal<string>('');
+  competencia = signal<competenciaDto | null>(null);
+  textAccionArchivarActivar = signal(false);
 
   ngOnInit(): void {
     this.formularioCompetencia();
@@ -77,8 +82,15 @@ export default class CrearCompentenciaComponent {
     this.nuevaCompetencia();
     this.idCompetencia.set('');
     this.formCompetencias.reset();
+    this.competencia.set(null);
   }
-
+  activarOArchivar = effect(() => {
+    if (this.competencia()?.status == statusCompetencia.activo) {
+      this.textAccionArchivarActivar.set(false);
+    } else {
+      this.textAccionArchivarActivar.set(true);
+    }
+  });
   getCompetencias = effect(async () => {
     if (this.idCompetencia()) {
       const response = await this.competenciaStore.getCompetencia(
@@ -88,6 +100,7 @@ export default class CrearCompentenciaComponent {
         this.formCompetencias.patchValue(response.data);
         this.isEditar.set(true);
         this.datos.set(dataVerCompetencia);
+        this.competencia.set(response.data);
       } else {
         this.isEditar.set(false);
         this.datos.set(dataCrearCompetencia);
@@ -200,6 +213,119 @@ export default class CrearCompentenciaComponent {
           life: 3000,
         });
       },
+    });
+  }
+  verCursosCompetencia() {
+    this.navigate.navigate(['/admin/cursos/ver-cursos'], {
+      queryParams: {
+        competencyId: this.idCompetencia(),
+      },
+    });
+  }
+  archivarOActivar() {
+    if (this.competencia()?.status != statusCursos.activo) {
+      this.confirmarActivar();
+      console.log('editar');
+    } else {
+      this.confirmarArchivar();
+    }
+  }
+  confirmarActivar() {
+    this.confirmationService.confirm({
+      message: 'Estas seguro de Activar?',
+      header: 'Confirmation',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Activar',
+      },
+      accept: () => {
+        this.activar();
+      },
+      reject: () => {
+        this.cancelarMensaje();
+      },
+    });
+  }
+  private async activar() {
+    try {
+      const response = await this.competenciaStore.activarCompetencia(
+        this.idCompetencia()
+      );
+      if (!response) throw Error;
+      this.messageService.add({
+        severity: 'succes',
+        summary: 'Exito!',
+        detail: 'Se Activo con Exito',
+        life: 3000,
+      });
+    } catch (error: any) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rejected',
+        detail: `ha ocurrido un error ${error.error.message}`,
+        life: 3000,
+      });
+      throw error;
+    }
+  }
+  private async archivar() {
+    try {
+      const response = await this.competenciaStore.archivarCompetencia(
+        this.idCompetencia()
+      );
+      if (!response) throw Error;
+      this.messageService.add({
+        severity: 'succes',
+        summary: 'Exito!',
+        detail: 'Se Archivo con Exito',
+        life: 3000,
+      });
+    } catch (error: any) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rejected',
+        detail: `ha ocurrido un error ${error.error.message}`,
+        life: 3000,
+      });
+      throw error;
+    }
+  }
+  confirmarArchivar() {
+    this.confirmationService.confirm({
+      message: 'Estas seguro de Archivar?',
+      header: 'Confirmation',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Archivar',
+      },
+      accept: () => {
+        this.archivar();
+      },
+      reject: () => {
+        this.cancelarMensaje();
+      },
+    });
+  }
+  cancelarMensaje() {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Rejected',
+      detail: 'Eso estuvo cerca :D',
+      life: 3000,
     });
   }
 }

@@ -42,6 +42,16 @@
       (click)="editar(item)"
     />
     }
+    <!--  -->
+    @if(item.status!=statusConvocatoria.publicada){<p-button
+      class="m-2 p-2"
+      label="Publicar Convocatoria"
+      (click)="confirmacion($event, 'publicar', item.id!)"
+      [severity]="statusColor(item.status)"
+      [disabled]="habilitar(item.status)"
+    />
+    }
+    <!--  -->
     <p-button
       class="m-2 p-2"
       label="Grupos Convocatoria"
@@ -63,13 +73,7 @@
       [severity]="statusColor(item.status)"
       [disabled]="habilitar(item.status)"
     />
-    <p-button
-      class="m-2 p-2"
-      label="Publicar Convocatoria"
-      (click)="confirmacion($event, 'publicar', item.id!)"
-      [severity]="statusColor(item.status)"
-      [disabled]="habilitar(item.status)"
-    />
+
     <p-button
       class="m-2 p-2"
       label="Cerrar Convocatoria"

@@ -1,3 +1,4 @@
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
 import { GrupoFiltros } from '@core/shared/types';
 
 export const filtroTextConvocatoria: GrupoFiltros[] = [
@@ -8,28 +9,28 @@ export const filtroTextConvocatoria: GrupoFiltros[] = [
       {
         key: 'tech',
         label: 'Cancelado',
-        value: 'cancelada',
+        value: statusConvocatorias.cancelada,
         icon: 'pi pi-desktop',
         color: 'info',
       },
       {
         key: 'design',
         label: 'Cerrado',
-        value: 'cerrada',
+        value: statusConvocatorias.cerrada,
         icon: 'pi pi-palette',
         color: 'success',
       },
       {
         key: 'business',
         label: 'Borrador',
-        value: 'borrador',
+        value: statusConvocatorias.borrador,
         icon: 'pi pi-briefcase',
         color: 'warning',
       },
       {
         key: 'marketing',
         label: 'Publicado',
-        value: 'publicada',
+        value: statusConvocatorias.publicada,
         icon: 'pi pi-megaphone',
         color: 'help',
       },

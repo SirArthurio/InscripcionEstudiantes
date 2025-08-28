@@ -5,6 +5,7 @@
   [isEditar]="isEditar()"
   (nuevaAccion)="nuevoCurso()"
 >
+  <p-toast />
   <p-confirmdialog />
 
   <form
@@ -103,12 +104,40 @@
     <div class="grid grid-cols-2">
       @if (progress()===0) {
       <!--  -->
+      <label
+        for="weeklyHours"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2 col-span-2"
+        >Acciones</label
+      >
       <p-button
         class="w-full mb-4"
         (click)="tipoDeAccion()"
         [label]="datos().buttonText"
         [outlined]="true"
-      />}@else if(progress()===1){ }
+      />
+
+      <p-button
+        class="w-full mb-4"
+        (click)="archivarOActivar()"
+        [label]="this.textAccionArchivarActivar() ? 'Activar' : 'Archivar'"
+        [outlined]="true"
+      />
+
+      <!--  -->
+      }@else if(progress()===1){
+      <p-button
+        class="w-full mb-4"
+        (click)="nuevoCurso()"
+        [label]="datos().buttonText"
+        [outlined]="true"
+      />
+      <p-button
+        class="w-full mb-4"
+        (click)="salir()"
+        label="salir"
+        [outlined]="true"
+      />
+      }
     </div>
 
     <app-carta

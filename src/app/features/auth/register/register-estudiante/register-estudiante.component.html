@@ -7,17 +7,17 @@
     <h2 class="md:col-span-2">Datos Personales</h2>
     <div class="contenedor">
       <label
-        for="text"
+        for="firstName"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
         >Nombre</label
       >
       <input
         pInputText
-        id="text"
-        type="text"
+        id="firstName"
+        type="firstName"
         placeholder="Nombre"
         class="w-full md:w-[30rem] mb-8"
-        formControlName="name"
+        formControlName="firstName"
         appValidationClass
       />
     </div>
@@ -56,7 +56,7 @@
     </div>
     <div class="contenedor">
       <label
-        for="genre"
+        for="gender"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
         >Genero</label
       >
@@ -68,7 +68,7 @@
         id="date"
         type="date"
         class="w-full md:w-[30rem] mb-8"
-        formControlName="genre"
+        formControlName="gender"
         appValidationClass
       />
     </div>
@@ -110,17 +110,17 @@
     <h2 class="col-span-2">Datos de Contacto</h2>
     <div class="contenedor">
       <label
-        for="phoneNumber"
+        for="phone"
         class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
         >Numero de celular</label
       >
       <input
         pInputText
         SoloNumeros
-        id="phoneNumber"
+        id="phone"
         type="text"
         placeholder="Teléfono"
-        formControlName="phoneNumber"
+        formControlName="phone"
         [minlength]="10"
         [maxlength]="10"
         class="w-full md:w-[30rem] mb-8"
@@ -168,7 +168,7 @@
         formControlName="program"
         [suggestions]="programFilteredValue()"
         placeholder="Selecciona o busca tu programa"
-        optionValue="code"
+        optionValue="id"
         optionLabel="name"
         dropdown
         display="chip"

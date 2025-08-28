@@ -1,7 +1,7 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { TableComponent } from '@core/shared/components/table/table.component';
 import { programs } from '@core/shared/types/programas.type';
-import { ProgramasService } from './servicios/programas.service';
+import { ProgramasService } from './service/programas.service';
 import { programasStore } from './store/programas.store';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { PaginationService } from '@core/shared/components/pagination/pagination.service';

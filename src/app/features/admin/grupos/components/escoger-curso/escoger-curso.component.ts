@@ -25,6 +25,8 @@ import { ButtonModule } from 'primeng/button';
 import { convocatoriasStore } from '../../../convocatorias/store/convocatorias.store';
 import { convocatoriaDTO } from '../../../convocatorias/model/convocatoriaDTO.type';
 import { CartaComponent } from '@core/shared/components/carta/carta.component';
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
+import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
 
 @Component({
   selector: 'app-escoger-curso',
@@ -58,7 +60,9 @@ export class EscogerCursoComponent implements OnInit {
   //inputs
   idConvocatoria = input<string>('');
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('idConvocatoriaBusqueda', this.idConvocatoria());
+  }
   obtenerPaginaActual = effect(() => {
     this.currentPage.set(this.paginationService.currentPage());
   });
@@ -67,9 +71,13 @@ export class EscogerCursoComponent implements OnInit {
     queryKey: ['curso', this.idConvocatoria()],
     queryFn: async () => {
       try {
-        const response = await this.cursoStore.getCursos();
+        const response = await this.cursoStore.getCursos(
+          1,
+          statusCursos.activo
+        );
         this.cursos.set(response.data.page);
         console.log(this.cursos());
+        return response;
       } catch (error) {
         throw error;
       }

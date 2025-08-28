@@ -1,9 +1,12 @@
 <div class="card">
   <!-- Paginación -->
   <app-pagination [totalPages]="totalPages()" />
+  <app-filtro [gruposFiltros]="gruposFiltros()" [titulo]="titulo()" />
+
   @if(!isLoading()){
   <!--  -->
   @if(data().datos.length>0){
+
   <p-table
     #dt1
     [value]="data().datos"
@@ -11,7 +14,7 @@
     [tableStyle]="{ 'min-width': '50rem' }"
   >
     <!-- Caption con filtros -->
-    <ng-template #caption>
+    <!-- <ng-template #caption>
       <div class="flex">
         <p-button label="Clear" [outlined]="true" icon="pi pi-filter-slash" />
         <p-iconfield iconPosition="left" class="ml-auto">
@@ -21,7 +24,7 @@
           <input pInputText type="text" [placeholder]="texto().title" />
         </p-iconfield>
       </div>
-    </ng-template>
+    </ng-template> -->
 
     <!-- Header -->
     <ng-template pTemplate="header">
@@ -76,7 +79,7 @@
   </p-table>
   }@else {
   <h2>NO hay datos :C</h2>
-  } }@else {
+  } } @else {
   <app-cargando />
   }
 </div>

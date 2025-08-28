@@ -14,9 +14,12 @@ export class RegisterStudentService {
   url = `${this.api}/${this.prefix}/`;
   http = inject(HttpClient);
 
-  RegisterStudent(student: student): Observable<ContentResponse<null>> {
+  RegisterStudent(
+    student: student,
+    idPrograma: string
+  ): Observable<ContentResponse<null>> {
     return this.http
-      .post<ContentResponse<null>>(`${this.url}register`, student)
+      .post<ContentResponse<null>>(`${this.url}register/${idPrograma}`, student)
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

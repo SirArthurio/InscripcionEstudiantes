@@ -16,6 +16,8 @@ import { Router, RouterLink } from '@angular/router';
 import { InputText } from 'primeng/inputtext';
 import { tableConst } from './const/table.const';
 import CargandoComponent from '../cargando/cargando.component';
+import { FiltroComponent } from '../filtro/filtro.component';
+import { GrupoFiltros } from '@core/shared/types';
 interface tableData {
   datos: any[];
   url: string;
@@ -30,8 +32,8 @@ interface tableData {
     ButtonModule,
     IconFieldModule,
     InputIconModule,
-    InputText,
     CargandoComponent,
+    FiltroComponent,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
@@ -43,6 +45,12 @@ export class TableComponent {
   rutaEdit = input<string>('');
   texto = input(tableConst);
   isLoading = input(false);
+  //inputs filtro
+  titulo = input('Filtros');
+  gruposFiltros = input<GrupoFiltros[]>([]);
+  mostrarLimpiar = input(true);
+  mostrarContadores = input(true);
+  design: 'horizontal' | 'vertical' | 'grid' = 'horizontal';
   //variables
   router = inject(Router);
   columnas = signal<string[]>([]);

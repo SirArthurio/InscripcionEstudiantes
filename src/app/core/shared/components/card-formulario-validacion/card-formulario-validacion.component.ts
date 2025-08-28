@@ -1,4 +1,11 @@
-import { Component, input, OnInit, output, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
@@ -18,13 +25,20 @@ import { subTitle } from './const/subTitle.const';
 export class CardFormularioValidacionComponent implements OnInit {
   //inputs
   isEditar = input(false);
-  items: MenuItem[] | undefined;
-  data = input<CardFormularioValidacion>();
-  subTitle = subTitle;
   validacionData = input<datosResumen[]>();
-  constructor(public messageService: MessageService) {}
+  data = input<CardFormularioValidacion>();
   progress = input<number>(0);
+  continuarProceso = input<boolean>(false);
+
+  //outpus
   nuevaAccion = output<void>();
+  continuar = output<void>();
+
+  //injecciones
+  messageService = inject(MessageService);
+  //variables
+  items: MenuItem[] | undefined;
+  subTitle = subTitle;
 
   subTitulo(): string {
     const elemento = this.subTitle.find(
@@ -57,5 +71,8 @@ export class CardFormularioValidacionComponent implements OnInit {
   }
   nuevoFormulario() {
     this.nuevaAccion.emit();
+  }
+  continuarProgresoPadre() {
+    this.continuar.emit();
   }
 }

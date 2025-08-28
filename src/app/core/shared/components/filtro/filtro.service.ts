@@ -8,16 +8,15 @@ import { map } from 'rxjs';
 })
 export class FiltroService {
   private activatedRoute = inject(ActivatedRoute);
-  private router = inject(Router);
 
   currentFiltro = toSignal(
     this.activatedRoute.queryParamMap.pipe(
       map((params) => {
         const statusParam = params.get('status');
-        if (!statusParam) return 'publicada';
+        if (!statusParam) return '';
         return statusParam;
       })
     ),
-    { initialValue: 'publicada' }
+    { initialValue: '' }
   );
 }

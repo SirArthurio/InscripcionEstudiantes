@@ -1,5 +1,9 @@
 <app-table
-  [data]="{ datos: this.cursos(), url: 'asads' }"
+  [data]="{
+    datos: this.obtenerCursos.data()?.data?.page || [],
+    url: '/admin/cursos/crear-cursos'
+  }"
   [totalPages]="this.totalPages()"
-  [isLoading]="this.obtenerProgramas.isLoading()"
+  [isLoading]="this.obtenerCursos.isLoading()"
+  [gruposFiltros]="filtroCurso"
 />

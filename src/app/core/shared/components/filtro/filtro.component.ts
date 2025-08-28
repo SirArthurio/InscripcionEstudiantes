@@ -2,14 +2,19 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
+  effect,
   EventEmitter,
   inject,
   input,
   Output,
   signal,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule, ButtonSeverity } from 'primeng/button';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputText } from 'primeng/inputtext';
 interface FiltroBoton {
   key: string;
   label: string;
@@ -36,7 +41,14 @@ interface GrupoFiltros {
 
 @Component({
   selector: 'app-filtro',
-  imports: [CommonModule, ButtonModule],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    InputText,
+    IconFieldModule,
+    InputIconModule,
+    FormsModule,
+  ],
   templateUrl: './filtro.component.html',
   styleUrl: './filtro.component.scss',
 })
@@ -46,7 +58,7 @@ export class FiltroComponent {
   mostrarLimpiar = input(true);
   mostrarContadores = input(true);
   design: 'horizontal' | 'vertical' | 'grid' = 'horizontal';
-
+  busqueda: string = '';
   @Output() onFiltroChange = new EventEmitter<{
     parametro: string;
     valores: string[];
@@ -65,9 +77,10 @@ export class FiltroComponent {
       0
     );
   });
-
+  buscar() {
+    console.log('cambio', this.busqueda);
+  }
   ngOnInit() {
-    // Leer query params iniciales
     this.route.queryParams.subscribe((params) => {
       const filtrosIniciales: Record<string, string[]> = {};
 
@@ -91,7 +104,6 @@ export class FiltroComponent {
     const valoresActuales = filtrosActuales[grupo.parametro] || [];
 
     if (grupo.multiple) {
-      // Modo múltiple: agregar/quitar del array
       const index = valoresActuales.indexOf(boton.value);
       if (index > -1) {
         valoresActuales.splice(index, 1);
@@ -99,7 +111,6 @@ export class FiltroComponent {
         valoresActuales.push(boton.value);
       }
     } else {
-      // Modo único: reemplazar valor
       if (valoresActuales.includes(boton.value)) {
         filtrosActuales[grupo.parametro] = [];
       } else {

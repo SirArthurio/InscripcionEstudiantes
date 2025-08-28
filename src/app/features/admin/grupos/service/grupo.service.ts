@@ -4,6 +4,7 @@ import { environment } from '@environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ContentResponsePaginated, ContentResponse } from '@core/shared/types';
 import { Observable, catchError, throwError } from 'rxjs';
+import { grupoDto } from '../model/grupoDto.type';
 
 @Injectable({
   providedIn: 'root',
@@ -12,21 +13,22 @@ export class GrupoService {
   http = inject(HttpClient);
   api = environment.back;
 
-  GetGrupos(
+  GetGruposPorConvocatoria(
     page: number,
-    status: string
-  ): Observable<ContentResponsePaginated<grupo[]>> {
+    idConvocatoria: string
+  ): Observable<ContentResponse<grupoDto[]>> {
     let params = new HttpParams();
-    if (status) {
-      params = params.append('status', status);
-    }
+
     if (page) {
       params = params.append('page', page);
     }
     return this.http
-      .get<ContentResponsePaginated<grupo[]>>(`${this.api}/groups/get-all`, {
-        params,
-      })
+      .get<ContentResponse<grupoDto[]>>(
+        `${this.api}/groups/get-by-call/${idConvocatoria}`,
+        {
+          params,
+        }
+      )
       .pipe(catchError((error) => throwError(() => error)));
   }
 

@@ -15,6 +15,8 @@ import { convocatoriasStore } from '../../../../store/convocatorias.store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
 
 @Component({
   selector: 'convocatorias-card-generic',
@@ -41,10 +43,11 @@ export class ConvocatoriaCardGenericComponent {
   router = inject(Router);
   messageService = inject(MessageService);
   confirmationService = inject(ConfirmationService);
-
+  statusConvocatoria = statusConvocatorias;
   statusColor(status: string): ButtonSeverity {
     return this.statusService.statusColor(status);
   }
+
   habilitar(status: string): boolean {
     if (status == 'Abierto' || status == 'Disponible') {
       return true;

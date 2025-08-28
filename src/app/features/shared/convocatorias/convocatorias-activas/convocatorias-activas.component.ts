@@ -15,6 +15,7 @@ import { convocatoriasStore } from 'src/app/features/admin/convocatorias/store/c
 import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NoDataComponent } from '@core/shared/components/no-data/no-data.component';
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
 
 @Component({
   selector: 'app-convocatorias-activas',
@@ -48,6 +49,7 @@ export class ConvocatoriasActivasComponent implements OnInit {
         'publicada'
       );
       if (!response) throw Error;
+      console.log('data', response);
       this.convocatoria.set(response.data.page);
     } catch (error: HttpErrorResponse | any) {
       this.alertService.showErrors(error?.error?.message);
@@ -62,7 +64,10 @@ export class ConvocatoriasActivasComponent implements OnInit {
   convocatoriasActivas(
     convocatoras: convocatoriaDTO[] = []
   ): convocatoriaDTO[] {
-    const abiertas = convocatoras.filter((c) => c.availableSlots > 0);
+    console.log('antes de filtrar', convocatoras);
+    const abiertas = convocatoras.filter(
+      (c) => c.status == statusConvocatorias.publicada
+    );
     console.log('abiertas', abiertas);
     return abiertas;
   }

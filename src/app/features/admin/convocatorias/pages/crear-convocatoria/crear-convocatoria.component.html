@@ -3,8 +3,12 @@
   [data]="datos()"
   [progress]="progress()"
   [isEditar]="isEditar()"
+  [continuarProceso]="true"
   (nuevaAccion)="nuevaConvocatoria()"
+  (continuar)="continuarProgreso()"
 >
+  <p-confirmdialog />
+
   <form
     #formulario
     class="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center border-transparent rounded-xl p-2"
@@ -98,17 +102,37 @@
       ></p-datepicker>
     </div>
 
-    <p-confirmdialog />
-
-    <div class="grid grid-cols-2">
+    <div class="contenedor grid grid-cols-2 justify-items-center">
+      <label
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2 col-span-2"
+        >Acciones
+      </label>
       @if (progress()===0) {
       <!--  -->
+      @if (isEditar()) {
       <p-button
-        class="w-full mb-4"
+        class="w-full mb-4 p-2"
+        (click)="crearGrupo()"
+        label="Crear Grupo"
+        [outlined]="true"
+      />
+      <p-button
+        class="w-full mb-4 p-2"
+        (click)="verGrupos()"
+        label="Ver Grupos"
+        [outlined]="true"
+      />
+      }
+      <!--  -->
+      <p-button
+        class="w-full mb-4 p-2"
         (click)="tipoDeAccion()"
         [label]="datos().buttonText"
         [outlined]="true"
-      />}@else if(progress()===1){ }
+      />
+
+      <!--  -->
+      }@else if(progress()===1){ }
     </div>
 
     <app-carta

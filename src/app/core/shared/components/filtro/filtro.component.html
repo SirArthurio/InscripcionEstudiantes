@@ -45,7 +45,7 @@
       <!-- Botones del grupo -->
       <div class="botones-container" [class]="'botones-' + design">
         <!-- Botón "Todos" -->
-        <p-button
+        <!-- <p-button
           *ngIf="grupo.mostrarTodos !== false"
           label="Todos"
           icon="pi pi-list"
@@ -59,7 +59,7 @@
           class="filtro-boton boton-todos"
           (onClick)="seleccionarTodos(grupo)"
         >
-        </p-button>
+        </p-button> -->
 
         <!-- Botones de filtro -->
         <p-button
@@ -80,6 +80,18 @@
           (onClick)="toggleFiltro(grupo, boton)"
         >
         </p-button>
+        <div class="flex justify-items-end">
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-search" />
+            <input
+              type="text"
+              pInputText
+              placeholder="Buscar por Id o Documento"
+              [(ngModel)]="busqueda"
+              (keyup.enter)="buscar()"
+            />
+          </p-iconfield>
+        </div>
       </div>
     </div>
   </div>

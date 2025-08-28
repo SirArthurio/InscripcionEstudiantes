@@ -10,9 +10,9 @@
 <!--  -->
 @if(this.getConvocatorias.isLoading()){
 <app-cargando />
-}
-<convocatorias-card-generic
+}@else {<convocatorias-card-generic
   [type]="'courses'"
   [texto]="text"
   [convocatoria]="this.getConvocatorias.data()?.page || []"
-></convocatorias-card-generic>
+></convocatorias-card-generic
+>}

@@ -26,6 +26,15 @@
 
     }
     <div class="col-span-2 m-2 flex flex-row items-center justify-center gap-4">
+      @if(this.continuarProceso()){
+      <p-button
+        (click)="continuarProgresoPadre()"
+        class="w-60"
+        styleClass="w-full"
+        [label]="data()?.buttonText"
+        [outlined]="true"
+      />
+      }
       <p-button
         (click)="nuevoFormulario()"
         class="w-60"
