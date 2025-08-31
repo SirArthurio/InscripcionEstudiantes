@@ -57,14 +57,18 @@ export class ConvocatoriaCardGenericComponent {
   }
   editar(convocatoria: convocatoriaDTO) {
     this.convocatoriaStore.setConvocatoria(convocatoria);
-    this.router.navigate(['/admin/convocatorias/crear-convocatorias']);
+    this.router.navigate(['/admin/convocatorias/crear-convocatorias'], {
+      queryParams: {
+        convocatoriaId: convocatoria.id,
+      },
+    });
   }
-  crearGrupo(id: string) {
+  crearCompetencia(id: string) {
     this.router.navigate(['/admin/grupos/crear-grupos'], {
       queryParams: { convocatoria: id },
     });
   }
-  gruposConvocatoria(id: string) {
+  competenciaConvocatoria(id: string) {
     this.router.navigate(['/admin/grupos/ver-grupos'], {
       queryParams: {
         convocatoria: id,
@@ -91,7 +95,6 @@ export class ConvocatoriaCardGenericComponent {
       throw error;
     }
   }
-  asignarHorario(id: string) {}
   cancelarConvocatoria(id: string) {}
   cerrarConvocatoria(id: string) {}
   accionActualizarTipo(nombre: string, id: string) {

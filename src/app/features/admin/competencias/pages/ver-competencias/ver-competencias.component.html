@@ -1,6 +1,6 @@
 <app-table
   [data]="{
-    datos: this.competencias(),
+    datos: this.obtenerCompetencias.data()?.data?.page || [],
     url: 'admin/competencias/crear-competencias'
   }"
   [totalPages]="this.totalPages()"

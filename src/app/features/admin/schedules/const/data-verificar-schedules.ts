@@ -3,7 +3,7 @@ import { professor } from '@core/shared/types';
 export const datosProfessorVerificacion = (schedule: professor) => [
   {
     name: 'Nombre',
-    content: schedule.name,
+    content: schedule.firstName,
   },
   {
     name: 'Apellido',

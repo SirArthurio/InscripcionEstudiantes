@@ -5,6 +5,7 @@
   [isEditar]="isEditar()"
   (nuevaAccion)="nuevoGrupo()"
 >
+  <p-toast />
   <p-confirmdialog />
   <div class="grid grid-cols-2">
     <section class="contenedor">
@@ -54,7 +55,7 @@
             >Docente</label
           >
           <p-select
-            [options]="profesores()"
+            [options]="this.obtenerProfessor.data()?.data?.page"
             optionValue="id"
             optionLabel="firstName"
             id="professorId"
@@ -83,6 +84,23 @@
           />
         </div>
         <div class="contenedor">
+          <label
+            for="capacity"
+            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+            >Capacidad</label
+          >
+          <p-inputNumber
+            SoloNumeros
+            id="capacity"
+            type="text"
+            [min]="1"
+            placeholder="Capacidad Del grupo"
+            class="w-full md:w-[30rem] mb-8"
+            formControlName="capacity"
+            appValidationClass
+          />
+        </div>
+        <!-- <div class="contenedor">
           <label
             for="courseId"
             class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
@@ -115,7 +133,7 @@
             formControlName="callId"
             appValidationClass
           />
-        </div>
+        </div> -->
 
         <div class="flex flex-col">
           @if (progress()===0) {
@@ -126,28 +144,29 @@
             >Acciones Disonibles</label
           >
           <div class="grid grid-cols-2">
-            @if(this.isEditar()){
             <p-button
               class="w-full mb-4 m-1 p-1"
               (click)="agregarHorario()"
               label="Agregar Horario"
               [outlined]="true"
             />
+            @if(this.isEditar()){
+
             <p-button
               class="w-full mb-4 m-1 p-1"
-              (click)="agregarHorario()"
+              (click)="confirmAbrir()"
               label="Abrir Grupo"
               [outlined]="true"
             />
             <p-button
               class="w-full mb-4 m-1 p-1"
-              (click)="agregarHorario()"
+              (click)="confirmCancelar()"
               label="Cancelar Grupo"
               [outlined]="true"
             />
             <p-button
               class="w-full mb-4 m-1 p-1"
-              (click)="agregarHorario()"
+              (click)="confirmCerrar()"
               label="Cerrar Grupo"
               [outlined]="true"
             />
@@ -183,4 +202,10 @@
       />
     </section>
   </div>
+  <app-schedules
+    [visible]="visible()"
+    (visibleChange)="this.cerrarCalendario()"
+    [editSchedules]="this.schedules()"
+    (confirmedSchedules)="this.schedulesHijo($event)"
+  />
 </app-card-formulario-validacion>

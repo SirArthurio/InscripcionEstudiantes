@@ -3,7 +3,7 @@ import { professor } from '@core/shared/types';
 export const datosProfessorVerificacion = (professor: professor) => [
   {
     name: 'Nombre',
-    content: professor.name,
+    content: professor.firstName,
   },
   {
     name: 'Apellido',

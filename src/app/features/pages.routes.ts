@@ -25,7 +25,8 @@ export default [
       },
       {
         path: 'estudiante/:id',
-        loadComponent: () => import('./Students/student/student.component'),
+        loadComponent: () =>
+          import('./students/pages/student/student.component'),
       },
     ],
   },

@@ -76,7 +76,7 @@ export const cursosStore = signalStore(
       getCursos(
         page: number,
         status: string
-      ): Promise<ContentResponsePaginated<curso[]>> {
+      ): Promise<ContentResponsePaginated<cursoDto[]>> {
         try {
           const response = firstValueFrom(cursoService.GetCursos(page, status));
           if (!response) throw Error;
@@ -89,7 +89,7 @@ export const cursosStore = signalStore(
         page: number,
         status: string,
         idCompetencia: string
-      ): Promise<ContentResponsePaginated<curso[]>> {
+      ): Promise<ContentResponsePaginated<cursoDto[]>> {
         try {
           const response = firstValueFrom(
             cursoService.GetCursosCompetencias(idCompetencia, page, status)

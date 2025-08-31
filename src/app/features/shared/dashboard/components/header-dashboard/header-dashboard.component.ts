@@ -10,7 +10,7 @@ interface header {
   periodo: string;
 }
 interface content {
-  name: string;
+  firstName: string;
   lastName: string;
   role?: string;
   carrer?: string;
@@ -26,7 +26,7 @@ export class HeaderDashboardComponent {
   currentUserStore = inject(currentStore);
 
   user = signal<content>({
-    name: '',
+    firstName: '',
     role: '',
     carrer: '',
     lastName: '',

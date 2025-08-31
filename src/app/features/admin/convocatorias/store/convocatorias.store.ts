@@ -58,6 +58,19 @@ export const convocatoriasStore = signalStore(
           throw error;
         }
       },
+      async getConvocatoria(
+        convocatoriaId: string
+      ): Promise<ContentResponse<convocatoriaDTO>> {
+        try {
+          const response = await firstValueFrom(
+            convocatoriaService.GetConvocatoria(convocatoriaId)
+          );
+          if (!response) throw Error;
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
       async publishConvocatoria(
         id: string
       ): Promise<ContentResponse<convocatoriaDTO>> {

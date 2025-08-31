@@ -1,0 +1,312 @@
+/* Container Base */
+.tabla-competencias-container {
+  @apply space-y-6;
+}
+
+/* Header */
+.tabla-header {
+  @apply text-center mb-8;
+}
+
+.tabla-titulo {
+  @apply text-2xl font-bold flex items-center justify-center gap-3 mb-3;
+  color: var(--text-color);
+}
+
+.tabla-titulo i {
+  color: var(--primary-color);
+}
+
+.tabla-descripcion {
+  @apply text-base;
+  color: var(--text-color-secondary);
+}
+
+/* Tabla personalizada */
+:host ::ng-deep .p-datatable {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-header {
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background: var(--surface-section);
+  color: var(--text-color);
+  font-weight: 600;
+  padding: 1rem;
+  border-bottom: 2px solid var(--surface-border);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background: var(--surface-hover);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-expanded {
+  background: var(--surface-ground);
+}
+
+/* Botón expandir */
+.expand-button {
+  transition: transform 0.2s ease;
+}
+
+:host ::ng-deep .expand-button .p-button-icon {
+  transition: transform 0.2s ease;
+}
+
+/* Código de competencia */
+.competencia-codigo {
+  @apply px-2 py-1 rounded text-xs font-mono font-semibold;
+  background-color: var(--surface-100);
+  color: var(--text-color);
+}
+
+/* Información de competencia */
+.competencia-info {
+  @apply space-y-1;
+}
+
+.competencia-nombre {
+  @apply text-base font-semibold m-0;
+  color: var(--text-color);
+}
+
+.competencia-descripcion-corta {
+  @apply text-sm m-0 leading-relaxed;
+  color: var(--text-color-secondary);
+}
+
+/* Estado */
+.estado-container {
+  @apply space-y-2 grid grid-cols-1;
+}
+
+.fecha-subida {
+  @apply flex items-center justify-center;
+}
+
+/* Upload container */
+.upload-container {
+  @apply space-y-3;
+}
+
+.archivo-subido {
+  @apply p-3 rounded-lg border;
+  background-color: var(--surface-ground);
+  border-color: var(--surface-border);
+}
+
+.archivo-info {
+  @apply flex items-center;
+}
+
+.archivo-detalles {
+  @apply flex flex-col;
+}
+
+.archivo-nombre {
+  @apply text-sm font-medium;
+  color: var(--text-color);
+}
+
+.archivo-fecha {
+  @apply text-xs;
+}
+
+.progreso-subida {
+  @apply p-3 rounded-lg;
+  background-color: var(--blue-50);
+  border: 1px solid var(--blue-200);
+}
+
+/* Upload component personalizado */
+:host ::ng-deep .upload-component .p-fileupload-basic {
+  width: 100%;
+}
+
+:host ::ng-deep .upload-component .p-button {
+  width: 100%;
+  justify-content: center;
+}
+
+:host ::ng-deep .reemplazar-archivo .p-fileupload-basic {
+  width: 100%;
+}
+
+:host ::ng-deep .reemplazar-archivo .p-button {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Acciones */
+.acciones-container {
+  @apply flex items-center justify-center gap-1;
+}
+
+/* Fila expandida */
+.expansion-row td {
+  padding: 0 !important;
+}
+
+.expansion-content {
+  @apply p-6 space-y-4;
+  background: linear-gradient(
+    135deg,
+    var(--surface-ground) 0%,
+    var(--surface-card) 100%
+  );
+  border-top: 1px solid var(--surface-border);
+}
+
+.descripcion-completa h5 {
+  @apply text-base font-semibold flex items-center;
+  color: var(--text-color);
+}
+
+.comentarios-rechazo h5 {
+  @apply text-base font-semibold flex items-center;
+}
+
+.comentario-card {
+  @apply p-4 rounded-lg;
+  background-color: var(--red-50);
+  border: 1px solid var(--red-200);
+  color: var(--red-800);
+}
+
+.info-adicional {
+  @apply pt-4 border-t;
+  border-color: var(--surface-border);
+}
+
+.info-item {
+  @apply flex flex-col gap-1;
+}
+
+.info-label {
+  @apply text-sm font-medium;
+  color: var(--text-color-secondary);
+}
+
+.info-value {
+  @apply text-sm;
+  color: var(--text-color);
+}
+
+/* Estado vacío */
+.empty-state {
+  @apply py-8;
+}
+
+/* Tags personalizados */
+:host ::ng-deep .p-tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+}
+
+:host ::ng-deep .p-tag.p-tag-success {
+  background-color: var(--green-500);
+  color: white;
+}
+
+:host ::ng-deep .p-tag.p-tag-info {
+  background-color: var(--blue-500);
+  color: white;
+}
+
+:host ::ng-deep .p-tag.p-tag-warning {
+  background-color: var(--yellow-500);
+  color: var(--yellow-900);
+}
+
+:host ::ng-deep .p-tag.p-tag-danger {
+  background-color: var(--red-500);
+  color: white;
+}
+
+/* Progress bar personalizado */
+:host ::ng-deep .p-progressbar {
+  border-radius: 6px;
+  background-color: var(--surface-300);
+}
+
+:host ::ng-deep .p-progressbar .p-progressbar-value {
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-600));
+  border-radius: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabla-titulo {
+    @apply text-xl;
+  }
+
+  :host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+  :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .archivo-info {
+    @apply flex-col items-start gap-2;
+  }
+
+  .acciones-container {
+    @apply flex-col gap-2;
+  }
+
+  .expansion-content {
+    @apply p-4;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.expansion-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.progreso-subida {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Hover effects */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover .competencia-codigo {
+  background-color: var(--primary-100);
+  color: var(--primary-700);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover .archivo-subido {
+  background-color: var(--surface-card);
+  border-color: var(--primary-200);
+}
+
+/* Focus states */
+:host ::ng-deep .p-button:focus {
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+:host ::ng-deep .p-fileupload .p-button:focus {
+  box-shadow: 0 0 0 2px var(--primary-color);
+}

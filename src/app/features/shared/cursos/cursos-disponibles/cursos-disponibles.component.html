@@ -8,13 +8,14 @@
     <div class="ml-2 text-2xl font-bold">{{ texto.title }}</div>
   </header>
   <hr />
-  @if(misCursos()){ @for (item of misCursos(); track $index) {
+  @if((this.obtenerGrupos.data()?.data?.length || 0) > 0){
+
+  <!--  -->
+  @for (item of this.obtenerGrupos.data()?.data; track $index) {
   <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
-    <div class="text-xl font-semibold">{{ item.title | titlecase }}</div>
+    <div class="text-xl font-semibold">{{ item.observations | titlecase }}</div>
     <div class="flex flex-row justify-between items-center w-full m-2">
-      <div class="text-sm font-light">
-        {{ item.code }} - {{ item.credits }} {{ texto.credits }}
-      </div>
+      <div class="text-sm font-light">{{ item.code }} {{ texto.credits }}</div>
 
       <p-button
         class="pr-2"
@@ -25,7 +26,7 @@
     </div>
 
     <div class="text-sm m-2">
-      {{ item.about }}
+      {{ item.modality }}
     </div>
 
     <div class="text-sm font-light flex flex-wrap">
@@ -35,26 +36,26 @@
           style="font-size: 4rem"
           style="color: var(--primary-color)"
         ></i>
-        {{ item.teacher }}
+        {{ item.professor }}
       </section>
 
-      <section class="p-2">
+      <!-- <section class="p-2">
         <i
           class="pi pi-calendar-clock"
           style="font-size: 4rem"
           style="color: var(--primary-color)"
         ></i>
         {{ item.date }}
-      </section>
+      </section> -->
 
-      <section class="p-2">
+      <!-- <section class="p-2">
         <i
           class="pi pi-id-card"
           style="font-size: 4rem"
           style="color: var(--primary-color)"
         ></i
         >{{ item.room }}
-      </section>
+      </section> -->
     </div>
 
     <div class="text-sm font-light">
@@ -65,5 +66,8 @@
       }}</p-tag>
     </div>
   </div>
-  } }
+  }
+  <!--  -->
+  } @else if (this.obtenerGrupos.isLoading()) { cargando... } @else { no hay
+  datos :c }
 </div>

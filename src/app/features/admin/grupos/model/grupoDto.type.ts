@@ -9,8 +9,8 @@ export type grupoDto = Omit<baseCode, 'name' | 'description'> & {
   professor: professor;
   call: convocatoriaDTO;
   course: cursoDto;
-  capacity: number;
-  availableSeats: number;
+  capacity: number | null;
+  availableSeats: number | null;
   status: string;
   schedules: schedule[];
 };

@@ -16,7 +16,7 @@
     <div class="section-header">
       <h2 class="section-title">
         <i class="pi pi-list"></i>
-        Cursos de la convocatoria
+        Cursos disponibles
       </h2>
       <div class="section-meta">
         <span class="p-badge m-2 p-2 rounded-md"
@@ -25,14 +25,15 @@
       </div>
     </div>
 
-    @if(cursos().length>0){
+    @if((this.obtenerCurso.data()?.data?.page?.length ?? 0) > 0){
     <div class="cursos-grid">
-      @for (curso of cursos(); track $index; let i = $index) {
+      @for (curso of this.obtenerCurso.data()?.data?.page; track $index; let i =
+      $index) {
       <div class="curso-card p-card" [style.animation-delay]="i * 0.1 + 's'">
         <!-- Header del curso -->
         <div class="curso-header">
           <div class="curso-code" *ngIf="curso.code">
-            {{ curso.code }}
+            Competencia: {{ curso.competency.name }}
           </div>
         </div>
 

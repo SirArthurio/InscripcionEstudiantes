@@ -24,7 +24,8 @@ interface dashboardData {
   styleUrl: './dashboard.Generic.component.scss',
 })
 export class DashboardGenericComponent {
-  //store
+  //inputs
   datos = input<dashboardData>();
   header = signal<headerDasboardType>(headerDasboard('profesor'));
+  urlConvocatoria = input<string>('');
 }

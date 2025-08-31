@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { TableComponent } from '@core/shared/components/table/table.component';
 import { student } from '@core/shared/types/users/estudiante.type';
-import { StudentStore } from 'src/app/features/Students/store/students.store';
+import { StudentStore } from 'src/app/features/students/store/students.store';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';

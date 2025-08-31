@@ -5,6 +5,7 @@
   [isEditar]="isEditar()"
   (nuevaAccion)="nuevaCompetencia()"
 >
+  <p-toast />
   <p-confirmdialog />
 
   <form
@@ -86,7 +87,7 @@
         [label]="this.textAccionArchivarActivar() ? 'Activar' : 'Archivar'"
         [outlined]="true"
       />
-      />
+
       } @if (progress()===0) {
       <!--  -->
       <p-button

@@ -18,10 +18,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/admin/admin.routes'),
       },
       {
+        path: 'students',
         data: { roles: [UserTypes.STUDENT] },
         canActivate: [authGuardGuard],
-        path: 'students',
-        loadChildren: () => import('./features/Students/students.routes'),
+        loadChildren: () => import('./features/students/students.routes'),
       },
     ],
   },

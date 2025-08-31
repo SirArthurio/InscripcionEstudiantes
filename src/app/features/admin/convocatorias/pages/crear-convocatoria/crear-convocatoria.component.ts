@@ -31,10 +31,12 @@ import { CartaComponent } from '../../../../../core/shared/components/carta/cart
 import { HttpErrorResponse } from '@angular/common/http';
 import { convocatoriasStore } from '../../store/convocatorias.store';
 import { CardFormularioValidacion } from '@core/shared/components/card-formulario-validacion/model/cardFormValidacion.type';
-import { dataVerConvocatoria } from '../../const/data-verConvocatoria.const';
 import { convocatoriaDTO } from '../../model/convocatoriaDTO.type';
 import { editConvocatoria } from '../ver-convocatorias/components/card-generic/model/edit.convocatoria.type';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { ContentResponse } from '@core/shared/types';
+import { dataVerConvocatoria } from '../../const/data-verConvocatoria.const';
 @Component({
   selector: 'app-crear-convocatoria',
   imports: [
@@ -71,7 +73,7 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
   convocatoriaStore = inject(convocatoriasStore);
-  router = inject(Router);
+  router = inject(ActivatedRoute);
 
   //variables
   isEditar = signal(false);
@@ -83,46 +85,62 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formularioConvocatoria();
+    this.obtenerConvocatoriaId();
   }
   ngOnDestroy(): void {
     this.convocatoriaStore.resetConvocatoria();
   }
+  private obtenerConvocatoriaId() {
+    const id = this.router.snapshot.queryParamMap.get('convocatoriaId');
+    if (id) {
+      this.convocatoriaId.set(id);
+    }
+  }
 
-  getConvocatoria = effect(() => {
-    const response = this.convocatoriaStore.convocatoria();
+  getConvocatoria = injectQuery(() => ({
+    queryKey: ['convocatoria', this.convocatoriaId()],
+    queryFn: async () => {
+      try {
+        const response = await this.convocatoriaStore.getConvocatoria(
+          this.convocatoriaId()
+        );
+        if (!response) throw Error;
+        this.isEditar.set(true);
+        console.log('datos', response);
+        this.datos.set(dataVerConvocatoria);
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    },
+  }));
+
+  setDatos = effect(() => {
+    const response = this.getConvocatoria.data()?.data;
     if (response) {
-      this.setDatos(response);
-      this.convocatoriaId.set(response.id!);
-      this.isEditar.set(true);
-      this.convocatoria.set(response);
-      this.datos.set(dataVerConvocatoria);
-    } else {
-      this.isEditar.set(false);
-      this.datos.set(dataCrearConvocatoria);
+      this.datosOriginales.set(response);
+      this.formConvocatoria.patchValue(response);
+
+      const rangeDateClassSet: (Date | null)[] = [
+        new Date(response.classStartDate),
+        response.classEndDate ? new Date(response.classEndDate) : null,
+      ];
+
+      const rangeDatesEnrollmentSet: (Date | null)[] = [
+        new Date(response.enrollmentStartDate),
+        response.enrollmentEndDate
+          ? new Date(response.enrollmentEndDate)
+          : null,
+      ];
+
+      this.formConvocatoria.get('rangeDatesClass')?.setValue(rangeDateClassSet);
+      this.formConvocatoria
+        .get('rangeDatesEnrollment')
+        ?.setValue(rangeDatesEnrollmentSet);
+
+      this.formConvocatoria.get('rangeDatesEnrollment')?.disable();
     }
   });
-
-  setDatos(response: convocatoriaDTO) {
-    this.datosOriginales.set(response);
-    this.formConvocatoria.patchValue(response);
-
-    const rangeDateClassSet: (Date | null)[] = [
-      new Date(response.classStartDate),
-      response.classEndDate ? new Date(response.classEndDate) : null,
-    ];
-
-    const rangeDatesEnrollmentSet: (Date | null)[] = [
-      new Date(response.enrollmentStartDate),
-      response.enrollmentEndDate ? new Date(response.enrollmentEndDate) : null,
-    ];
-
-    this.formConvocatoria.get('rangeDatesClass')?.setValue(rangeDateClassSet);
-    this.formConvocatoria
-      .get('rangeDatesEnrollment')
-      ?.setValue(rangeDatesEnrollmentSet);
-
-    this.formConvocatoria.get('rangeDatesEnrollment')?.disable();
-  }
 
   siguiente() {
     if (this.progress() < 1) {
@@ -303,27 +321,62 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
   }
   continuarProgreso() {
     this.nuevaConvocatoria();
-    const convocatoria = this.convocatoria();
+    const convocatoria = this.getConvocatoria.data()?.data;
     if (convocatoria) {
       this.convocatoriaStore.setConvocatoria(convocatoria);
     }
   }
   crearGrupo() {
-    const convocatoria = this.convocatoria();
+    const convocatoria = this.getConvocatoria.data()?.data;
     if (convocatoria) {
-      this.router.navigate(['/admin/grupos/crear-grupos'], {
+      this.navegar.navigate(['/admin/grupos/crear-grupos'], {
         queryParams: { convocatoria: convocatoria.id },
       });
     }
   }
   verGrupos() {
-    const convocatoria = this.convocatoria();
+    const convocatoria = this.getConvocatoria.data()?.data;
     if (convocatoria) {
-      this.router.navigate(['/admin/grupos/ver-grupos'], {
+      this.navegar.navigate(['/admin/grupos/ver-grupos'], {
         queryParams: {
           convocatoria: convocatoria.id,
         },
       });
+    }
+  }
+  accionActualizarTipo(nombre: string, id: string) {
+    switch (nombre) {
+      case 'publicar':
+        this.publicarConvocatoria(id);
+        break;
+      case 'cancelar':
+        this.cancelarConvocatoria(id);
+        break;
+      case 'cerrar':
+        this.cerrarConvocatoria(id);
+        break;
+    }
+  }
+  cancelarConvocatoria(id: string) {}
+  cerrarConvocatoria(id: string) {}
+  async publicarConvocatoria(id: string) {
+    try {
+      const response = await this.convocatoriaStore.publishConvocatoria(id);
+      if (!response) throw Error;
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Confirmar',
+        detail: 'Se Publico con Exito :D',
+      });
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rejected',
+        detail: 'Algo ha salido mal, por favor intenta mas tarde :C',
+        life: 3000,
+      });
+
+      throw error;
     }
   }
 }

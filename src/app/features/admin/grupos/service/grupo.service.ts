@@ -32,15 +32,30 @@ export class GrupoService {
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  GetGrupo(id: string): Observable<ContentResponse<grupo>> {
+  GetGrupo(id: string): Observable<ContentResponse<grupoDto>> {
     return this.http
-      .get<ContentResponse<grupo>>(`${this.api}/groups/get/${id}`)
+      .get<ContentResponse<grupoDto>>(`${this.api}/groups/get-by-id/${id}`)
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  CreateGrupo(grupo: grupo): Observable<ContentResponse<grupo>> {
+  CreateGrupo(grupo: grupo): Observable<ContentResponse<grupoDto>> {
     return this.http
-      .post<ContentResponse<grupo>>(`${this.api}/groups/create/`, grupo)
+      .post<ContentResponse<grupoDto>>(`${this.api}/groups/create/`, grupo)
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  AbrirGrupo(id: string): Observable<ContentResponse<grupoDto>> {
+    return this.http
+      .patch<ContentResponse<grupoDto>>(`${this.api}/groups/open/${id}`, {})
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  CancelarGrupo(id: string): Observable<ContentResponse<grupoDto>> {
+    return this.http
+      .patch<ContentResponse<grupoDto>>(`${this.api}/groups/cancel/${id}`, {})
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  CerrarGrupo(id: string): Observable<ContentResponse<grupoDto>> {
+    return this.http
+      .patch<ContentResponse<grupoDto>>(`${this.api}/groups/close/${id}`, {})
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

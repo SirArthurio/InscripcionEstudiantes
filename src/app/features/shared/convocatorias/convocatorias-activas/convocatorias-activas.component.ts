@@ -16,6 +16,7 @@ import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NoDataComponent } from '@core/shared/components/no-data/no-data.component';
 import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-convocatorias-activas',
@@ -24,12 +25,17 @@ import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-typ
   styleUrl: './convocatorias-activas.component.scss',
 })
 export class ConvocatoriasActivasComponent implements OnInit {
+  //inputs
+  url = input<string>('');
   //store
   convocatoriaStore = inject(convocatoriasStore);
+  //injecciones
+  router = inject(Router);
   //service
   statusService = inject(StatusService);
   alertService = inject(AlertasService);
   convocatoria = signal<convocatoriaDTO[]>([]);
+  //varibales
   texto = textConvocatoriasActivas;
   filtradas = signal<convocatoriaDTO[]>([]);
 
@@ -70,5 +76,12 @@ export class ConvocatoriasActivasComponent implements OnInit {
     );
     console.log('abiertas', abiertas);
     return abiertas;
+  }
+  verConvocatoria(id: string) {
+    this.router.navigate([`${this.url()}`], {
+      queryParams: {
+        convocatoriaId: id,
+      },
+    });
   }
 }

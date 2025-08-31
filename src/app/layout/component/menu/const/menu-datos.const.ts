@@ -27,6 +27,26 @@ export const menu: itemsMenu[] = [
     ],
   },
   {
+    label: 'Estudiante',
+    roles: ['student'],
+    items: [
+      {
+        label: 'Certificado',
+        icon: 'pi pi-file',
+        routerLink: ['/'],
+        roles: ['student'],
+        items: [
+          {
+            icon: 'pi pi-file-arrow-up',
+            label: 'Subir Certificado',
+            routerLink: ['/students/certificados/subir-certificados'],
+            roles: ['student'],
+          },
+        ],
+      },
+    ],
+  },
+  {
     label: 'Gestion',
     roles: ['superadmin', 'profesor'],
     items: [

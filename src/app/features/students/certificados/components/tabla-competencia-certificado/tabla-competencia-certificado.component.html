@@ -1,0 +1,304 @@
+<div class="tabla-competencias-container">
+  <!-- Header -->
+  <div class="tabla-header">
+    <h2 class="tabla-titulo">
+      <i class="pi pi-certificate"></i>
+      Competencias y Certificados
+    </h2>
+    <p class="tabla-descripcion">
+      Sube tus certificados para validar las competencias requeridas
+    </p>
+  </div>
+
+  <!-- Tabla Principal -->
+  <p-table
+    [value]="competencias()"
+    [paginator]="false"
+    [rows]="10"
+    [showCurrentPageReport]="false"
+    styleClass="p-datatable-gridlines p-datatable-striped"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    responsiveLayout="scroll"
+  >
+    <!-- Header de la tabla -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem"></th>
+        <th pSortableColumn="codigo" style="width: 8rem">
+          <div class="flex align-items-center gap-2">
+            <span>Código</span>
+            <p-sortIcon field="codigo"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="nombre" style="width: 25rem">
+          <div class="flex align-items-center gap-2">
+            <span>Competencia</span>
+            <p-sortIcon field="nombre"></p-sortIcon>
+          </div>
+        </th>
+        <th style="width: 12rem" class="text-center">Estado</th>
+        <th style="width: 20rem" class="text-center">Subir Certificado</th>
+        <th style="width: 8rem" class="text-center">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <!-- Cuerpo de la tabla -->
+    <ng-template
+      pTemplate="body"
+      let-competencia
+      let-expanded="expanded"
+      let-ri="rowIndex"
+    >
+      <tr [class.row-expanded]="expanded">
+        <!-- Botón expandir -->
+        <td>
+          <p-button
+            type="button"
+            pRipple
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            [text]="true"
+            [rounded]="true"
+            size="small"
+            severity="secondary"
+            (click)="toggleExpansion(competencia.id)"
+            class="expand-button"
+          >
+          </p-button>
+        </td>
+
+        <!-- Código -->
+        <td>
+          <span class="competencia-codigo" *ngIf="competencia.codigo">
+            {{ competencia.codigo }}
+          </span>
+        </td>
+
+        <!-- Nombre de la competencia -->
+        <td>
+          <div class="competencia-info">
+            <h4 class="competencia-nombre">{{ competencia.nombre }}</h4>
+            <p class="competencia-descripcion-corta">
+              {{
+                competencia.descripcion.length > 60
+                  ? (competencia.descripcion | slice : 0 : 60) + "..."
+                  : competencia.descripcion
+              }}
+            </p>
+          </div>
+        </td>
+
+        <!-- Estado -->
+        <td class="text-center">
+          <div class="estado-container">
+            <p-tag
+              [value]="obtenerTextoEstado(competencia.estado)"
+              [severity]="obtenerSeverityEstado(competencia.estado)"
+              [icon]="obtenerIconoEstado(competencia.estado)"
+            >
+            </p-tag>
+
+            <!-- Fecha de subida -->
+            <div class="fecha-subida" *ngIf="competencia.fechaSubida">
+              <small class="text-color-secondary">
+                <i class="pi pi-calendar mr-1"></i>
+                {{ formatearFecha(competencia.fechaSubida) }}
+              </small>
+            </div>
+          </div>
+        </td>
+
+        <!-- Subir certificado -->
+        <td class="text-center">
+          <div class="upload-container">
+            <!-- Archivo ya subido -->
+            <div
+              class="archivo-subido"
+              *ngIf="
+                competencia.certificadoSubido && !estaSubiendo(competencia.id)
+              "
+            >
+              <div class="archivo-info">
+                <i class="pi pi-file-pdf text-red-500 text-xl mr-2"></i>
+                <div class="archivo-detalles">
+                  <span class="archivo-nombre">{{
+                    competencia.nombreArchivo
+                  }}</span>
+                  <small class="archivo-fecha text-color-secondary">
+                    Subido el {{ formatearFecha(competencia.fechaSubida!) }}
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progreso de subida -->
+            <div class="progreso-subida" *ngIf="estaSubiendo(competencia.id)">
+              <div class="flex align-items-center gap-2 mb-2">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span class="text-sm">Subiendo...</span>
+              </div>
+              <p-progressBar
+                [value]="obtenerProgresoSubida(competencia.id)"
+                [style]="{ height: '6px' }"
+              >
+              </p-progressBar>
+            </div>
+
+            <!-- Upload component -->
+            <div
+              class="upload-component"
+              *ngIf="
+                !competencia.certificadoSubido && !estaSubiendo(competencia.id)
+              "
+            >
+              <p-fileUpload
+                mode="basic"
+                [accept]="tiposPermitidos()"
+                [maxFileSize]="sizeMax()"
+                [auto]="true"
+                chooseLabel="Seleccionar archivo"
+                chooseIcon="pi pi-upload"
+                [customUpload]="true"
+                (uploadHandler)="onUpload($event, competencia)"
+                severity="info"
+                [style]="{ width: '100%' }"
+              >
+              </p-fileUpload>
+            </div>
+
+            <!-- Reemplazar archivo -->
+            <div
+              class="reemplazar-archivo"
+              *ngIf="
+                competencia.certificadoSubido && !estaSubiendo(competencia.id)
+              "
+            >
+              <p-fileUpload
+                mode="basic"
+                [accept]="tiposPermitidos()"
+                [maxFileSize]="sizeMax()"
+                [auto]="true"
+                chooseLabel="Reemplazar"
+                chooseIcon="pi pi-refresh"
+                [customUpload]="true"
+                (uploadHandler)="onUpload($event, competencia)"
+                severity="warning"
+                size="small"
+                [style]="{ width: '100%' }"
+              >
+              </p-fileUpload>
+            </div>
+          </div>
+        </td>
+
+        <!-- Acciones -->
+        <td class="text-center">
+          <div class="acciones-container">
+            <!-- Descargar -->
+            <p-button
+              *ngIf="competencia.certificadoSubido"
+              icon="pi pi-download"
+              severity="info"
+              [text]="true"
+              [rounded]="true"
+              size="small"
+              pTooltip="Descargar certificado"
+              tooltipPosition="top"
+              (click)="descargarCertificado(competencia)"
+            >
+            </p-button>
+
+            <!-- Eliminar -->
+            <p-button
+              *ngIf="competencia.certificadoSubido"
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              [rounded]="true"
+              size="small"
+              pTooltip="Eliminar certificado"
+              tooltipPosition="top"
+              (click)="eliminarCertificado(competencia)"
+            >
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- Fila expandida -->
+    <ng-template pTemplate="rowexpansion" let-competencia>
+      <tr class="expansion-row">
+        <td colspan="6">
+          <div class="expansion-content">
+            <!-- Descripción completa -->
+            <div class="descripcion-completa mb-4">
+              <h5 class="mb-2">
+                <i class="pi pi-info-circle mr-2"></i>
+                Descripción detallada
+              </h5>
+              <p class="text-color-secondary leading-relaxed">
+                {{ competencia.descripcion }}
+              </p>
+            </div>
+
+            <!-- Comentarios de rechazo -->
+            <div
+              class="comentarios-rechazo"
+              *ngIf="
+                competencia.estado === 'rechazado' && competencia.comentarios
+              "
+            >
+              <h5 class="mb-2 text-red-500">
+                <i class="pi pi-exclamation-triangle mr-2"></i>
+                Motivo del rechazo
+              </h5>
+              <div class="comentario-card">
+                <p class="m-0">{{ competencia.comentarios }}</p>
+              </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="info-adicional" *ngIf="competencia.certificadoSubido">
+              <div class="grid">
+                <div class="col-12 md:col-6">
+                  <div class="info-item">
+                    <span class="info-label">Archivo:</span>
+                    <span class="info-value">{{
+                      competencia.nombreArchivo
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-12 md:col-6">
+                  <div class="info-item">
+                    <span class="info-label">Fecha de subida:</span>
+                    <span class="info-value">{{
+                      formatearFecha(competencia.fechaSubida!)
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- Estado vacío -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6" class="text-center py-8">
+          <div class="empty-state">
+            <i class="pi pi-certificate text-4xl text-color-secondary mb-3"></i>
+            <h4 class="text-color mb-2">No hay competencias registradas</h4>
+            <p class="text-color-secondary">
+              No se han definido competencias para este perfil
+            </p>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Toast para notificaciones -->
+  <p-toast position="top-right"></p-toast>
+</div>

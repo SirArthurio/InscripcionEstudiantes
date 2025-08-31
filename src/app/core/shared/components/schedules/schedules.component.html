@@ -1,0 +1,142 @@
+<!-- Dialog Principal del Calendario -->
+<p-dialog
+  header="Calendario de clases"
+  [visible]="visible()"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '75vw', height: '80vh' }"
+  [draggable]="false"
+  [resizable]="false"
+  (visibleChange)="onVisibleChange($event)"
+  (onShow)="onDialogShow()"
+  appendTo="body"
+>
+  <div class="h-full w-full flex flex-col gap-3">
+    <!-- Header con información y controles -->
+    <div class="flex items-center justify-between">
+      <div>
+        @if (hoursSelected().length > 0) {
+        <p-tag severity="success" [rounded]="true">
+          {{ hoursSelected().length }}
+        </p-tag>
+        <span> Horario(s) seleccionado(s)</span>
+        } @else {
+        <label class="font-bold mb-2 block">
+          Seleccione el horario de clases arrastrando desde la hora inicial
+          hasta la hora final
+        </label>
+        }
+      </div>
+
+      <div class="flex gap-2">
+        <button
+          type="button"
+          pButton
+          label="Debug"
+          class="p-button-help p-button-sm"
+          (click)="debugState()"
+        ></button>
+
+        <button
+          type="button"
+          pButton
+          label="Limpiar"
+          class="p-button-secondary p-button-sm"
+          (click)="cancelar()"
+        ></button>
+
+        <button
+          type="button"
+          pButton
+          label="Guardar"
+          [disabled]="hoursSelected().length === 0"
+          (click)="openConfirmation()"
+        ></button>
+      </div>
+    </div>
+
+    <!-- Lista de horarios seleccionados -->
+    @if (hoursSelected().length > 0) {
+    <div class="schedules-list">
+      <h4>Horarios seleccionados:</h4>
+      <ul class="text-sm space-y-1">
+        @for (schedule of hoursSelected(); track $index; ) {
+        <li class="flex items-center gap-2">
+          <p-tag [value]="schedule.day" severity="info"></p-tag>
+          <span>{{ schedule.startTime }} - {{ schedule.endTime }}</span>
+          <button
+            pButton
+            icon="pi pi-times"
+            class="p-button-text p-button-sm p-button-danger"
+            (click)="removeScheduleByIndex($index)"
+            title="Eliminar horario"
+          ></button>
+        </li>
+        }
+      </ul>
+    </div>
+    }
+
+    <!-- Modo edición indicator -->
+    @if (isEditMode()) {
+    <div class="bg-blue-100 p-2 rounded border-l-4 border-blue-500">
+      <p class="text-sm text-blue-700">
+        <i class="pi pi-info-circle mr-2"></i>
+        Modo edición: Haz clic en los horarios del calendario para eliminarlos
+      </p>
+    </div>
+    }
+
+    <!-- Calendario -->
+    <div class="flex-1 min-h-0 calendar-wrapper">
+      <full-calendar #calendarComponent [options]="calendarOptions">
+      </full-calendar>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- Dialog de Confirmación -->
+<p-dialog
+  header="Confirmar horarios"
+  [visible]="confirmVisible()"
+  [modal]="true"
+  [style]="{ width: '40vw', minWidth: '400px' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="confirmVisible.set(false)"
+>
+  <div class="p-3">
+    @if (hoursSelected().length > 0) {
+    <h3 class="text-lg mb-3">Se guardarán los siguientes horarios de clase:</h3>
+    <div class="schedules-confirmation">
+      @for (schedule of hoursSelected(); track $index) {
+      <div class="flex items-center gap-3 mb-2 p-2 bg-gray-50 rounded">
+        <p-tag [value]="schedule.day" severity="info"></p-tag>
+        <span class="font-medium"
+          >{{ schedule.startTime }} - {{ schedule.endTime }}</span
+        >
+      </div>
+      }
+    </div>
+    } @else {
+    <p class="text-center text-gray-500">No hay horarios seleccionados.</p>
+    }
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <button
+        pButton
+        label="Cancelar"
+        class="p-button-secondary"
+        (click)="confirmVisible.set(false)"
+      ></button>
+      <button
+        pButton
+        label="Confirmar y Guardar"
+        [disabled]="hoursSelected().length === 0"
+        (click)="saveHorarios()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

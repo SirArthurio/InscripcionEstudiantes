@@ -8,6 +8,7 @@ import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
 import { FiltroService } from '@core/shared/components/filtro/filtro.service';
 import { filtroTextCurso } from '../../const/filtro-text-curso.const';
+import { cursoDto } from '../../models/cursoDto.type';
 
 @Component({
   selector: 'app-ver-cursos',
@@ -23,7 +24,7 @@ export default class VerCursosComponent implements OnInit {
   //store
   cursoStore = inject(cursosStore);
   //variables
-  cursos = signal<curso[]>([]);
+  cursos = signal<cursoDto[]>([]);
   currentPage = signal(1);
   totalPages = signal(1);
   competenciaId = signal('');

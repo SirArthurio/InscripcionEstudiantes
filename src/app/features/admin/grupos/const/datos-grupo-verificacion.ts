@@ -1,29 +1,19 @@
 import { programs } from '@core/shared/types/programas.type';
 import { grupo } from '../model/grupo.type';
+import { grupoDto } from '../model/grupoDto.type';
 
-export const datosGrupoVerificacion = (programa: grupo) => [
+export const datosGrupoVerificacion = (grupo: grupoDto) => [
   {
     name: 'Codigo',
-    content: programa.code,
+    content: grupo.code,
   },
-  {
-    name: 'Id Convocatoria',
-    content: programa.callId,
-  },
-  {
-    name: 'Id Curso',
-    content: programa.courseId,
-  },
+
   {
     name: 'Modalidad',
-    content: programa.modality,
+    content: grupo.modality,
   },
   {
     name: 'Observaciones',
-    content: programa.observations,
-  },
-  {
-    name: 'Id Profesor',
-    content: programa.professorId,
+    content: grupo.observations,
   },
 ];

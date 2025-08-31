@@ -1,6 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -28,11 +36,18 @@ import { datosGrupoVerificacion } from '../../const/datos-grupo-verificacion';
 import { grupo } from '../../model/grupo.type';
 import { curso } from '../../../cursos/models/curso.type';
 import { modalidad } from '../../../convocatorias/const/modalidad.const';
-import { professor } from '@core/shared/types';
+import { daySchedule, professor } from '@core/shared/types';
 import { professorStore } from 'src/app/features/professor/store/professor.store';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { dataCrearGrupo } from '../../const/data-crear-grupo.const';
 import { dataVerGrupo } from '../../const/data-ver-grupo.const';
+import { Toast } from 'primeng/toast';
+import { grupoDto } from '../../model/grupoDto.type';
+import { SchedulesComponent } from '@core/shared/components/schedules/schedules.component';
+import { cursoDto } from '../../../cursos/models/cursoDto.type';
+import { SoloNumerosDirective } from '@core/directives/solo-numeros.directive';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { schedule } from '../../../schedules/model/schedule.type';
 
 @Component({
   selector: 'app-crear-grupos',
@@ -46,11 +61,18 @@ import { dataVerGrupo } from '../../const/data-ver-grupo.const';
     Select,
     EscogerCursoComponent,
     InputText,
+    Toast,
+    SchedulesComponent,
+    SoloNumerosDirective,
+    InputNumberModule,
   ],
   templateUrl: './crear-grupos.component.html',
   styleUrl: './crear-grupos.component.scss',
 })
 export default class CrearGruposComponent implements OnInit {
+  //childs
+  @ViewChild(SchedulesComponent) SchedulesComponent!: SchedulesComponent;
+
   //service
   alertasService = inject(AlertasService);
   erroresFormService = inject(ErroesformService);
@@ -61,6 +83,7 @@ export default class CrearGruposComponent implements OnInit {
   progress = signal<number>(0);
   modalidades = modalidad;
   profesores = signal<professor[]>([]);
+  schedules = signal<daySchedule[]>([]);
   //formulario
   form = inject(FormBuilder);
   formGrupos!: FormGroup;
@@ -76,14 +99,16 @@ export default class CrearGruposComponent implements OnInit {
   isEditar = signal(false);
   datos = signal<CardFormularioValidacion>(dataCrearGrupo);
   minDate: Date = new Date();
-  curso = signal<curso | null>(null);
+  curso = signal<cursoDto | null>(null);
   idConvocatoria = signal<string>('');
   idGrupo = signal<string>('');
   currentPage = signal(1);
-  grupo = signal<grupo | null>(null);
+  grupo = signal<grupoDto | null>(null);
+  visible = signal(false);
 
   ngOnInit(): void {
     this.formularioGrupo();
+    this.schedulesForm();
     this.obtenerIdConvocatoria();
     this.obtenerIdGrupo();
   }
@@ -107,6 +132,18 @@ export default class CrearGruposComponent implements OnInit {
       console.log('id grupo', this.idGrupo());
     }
   }
+  cerrarCalendario() {
+    console.log('cerrar');
+    this.visible.set(false);
+  }
+  schedulesHijo(schedule: daySchedule[]) {
+    console.log('llego desde el hijo', schedule);
+    this.extension.clear();
+    this.extension.push(this.form.control(schedule));
+    this.schedules.set(schedule);
+
+    console.log('asi que da el form', this.formGrupos.value);
+  }
 
   obtenerProfessor = injectQuery(() => ({
     queryKey: ['professors', 'grupos', this.currentPage()],
@@ -125,7 +162,7 @@ export default class CrearGruposComponent implements OnInit {
     staleTime: 1000 * 60,
   }));
   obtenerGrupo = injectQuery(() => ({
-    queryKey: ['professors', 'grupos', this.idGrupo()],
+    queryKey: ['grupos', this.idGrupo()],
     queryFn: async () => {
       try {
         const response = await this.grupoStore.getGrupo(this.idGrupo());
@@ -133,7 +170,7 @@ export default class CrearGruposComponent implements OnInit {
           throw Error;
         }
         this.grupo.set(response.data);
-        this.setGrupo();
+        console.log('data', response);
         return response;
       } catch (error) {
         throw error;
@@ -147,9 +184,22 @@ export default class CrearGruposComponent implements OnInit {
       this.progress.update((current) => current + 1);
     }
   }
-  setGrupo() {
-    this.formGrupos.patchValue(this.grupo()!);
-  }
+  setGrupo = effect(() => {
+    const grupo = this.obtenerGrupo.data()?.data;
+
+    if (grupo !== undefined) {
+      this.formGrupos.patchValue(grupo);
+      console.log(grupo.professor.firstName);
+      this.formGrupos.get('professorId')?.setValue(grupo.professor.id);
+      console.log('padre: ', this.extension);
+    }
+  });
+
+  enviarSchedulesPadreAHijo = effect(() => {
+    const schedules = this.extension.value;
+    this.schedules.set(schedules);
+    console.log('asi se ven en el apdre:', schedules);
+  });
 
   formularioGrupo() {
     this.formGrupos = this.form.group({
@@ -159,15 +209,40 @@ export default class CrearGruposComponent implements OnInit {
       observations: ['', [Validators.required]],
       professorId: ['', [Validators.required]],
       callId: ['', [Validators.required]],
+      capacity: ['', [Validators.required]],
+      schedules: this.form.array([], [Validators.required]),
+    });
+  }
+  schedulesForm(): FormGroup {
+    return this.form.group({
+      day: ['', [Validators.required]],
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
     });
   }
 
+  newSchedules = this.form.control('', Validators.required);
+  get extension() {
+    return this.formGrupos.get('schedules') as FormArray;
+  }
+  // agregarSchedule() {
+  //   if (this.newSchedules.valid) {
+  //     const newschedules = this.newSchedules.value;
+  //     this.extension.push(this.form.control(newschedules, Validators.required));
+  //     this.newSchedules.reset();
+  //   }
+  // }
+  // eliminarSchedule(index: number) {
+  //   if (this.extension.length > 0) {
+  //     this.extension.removeAt(index);
+  //   }
+  // }
   nuevoGrupo() {
     this.formGrupos.reset();
     this.progress.set(0);
   }
 
-  resumenDatos(grupo: grupo) {
+  resumenDatos(grupo: grupoDto) {
     this.validacionData.set(datosGrupoVerificacion(grupo));
     this.alertasService.showSuccess(
       'Registrado!',
@@ -217,7 +292,7 @@ export default class CrearGruposComponent implements OnInit {
       this.confirm1();
     }
   }
-  respuestaCursoAGrupo(event: { curso: curso }) {
+  respuestaCursoAGrupo(event: { curso: cursoDto }) {
     this.curso.set(event.curso);
 
     if (this.curso() && this.idConvocatoria()) {
@@ -254,5 +329,133 @@ export default class CrearGruposComponent implements OnInit {
       },
     });
   }
-  agregarHorario() {}
+  confirmAbrir() {
+    this.confirmationService.confirm({
+      message: 'Estas seguro de abrir el grupo?',
+      header: 'Confirmation',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Abrir',
+      },
+      accept: () => {
+        this.abrirGrupo();
+        this.confirmationService.close();
+      },
+      reject: () => {
+        this.mensajeCancelar();
+      },
+    });
+  }
+  confirmCerrar() {
+    this.confirmationService.confirm({
+      message: 'Estas seguro de cerrar el grupo?',
+      header: 'Confirmation',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Abrir',
+      },
+      accept: () => {
+        this.cerrarGrupo();
+        this.confirmationService.close();
+      },
+      reject: () => {
+        this.mensajeCancelar();
+      },
+    });
+  }
+  confirmCancelar() {
+    this.confirmationService.confirm({
+      message: 'Estas seguro de cancelar el grupo?',
+      header: 'Confirmation',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Abrir',
+      },
+      accept: () => {
+        this.cancelarGrupo();
+        this.confirmationService.close();
+      },
+      reject: () => {
+        this.mensajeCancelar();
+      },
+    });
+  }
+  agregarHorario() {
+    this.visible.set(true);
+  }
+  async abrirGrupo() {
+    try {
+      const response = await this.grupoStore.abrirGrupo(this.idGrupo());
+      if (!response) throw Error;
+      this.mensajeOperacionExitosa('abrio');
+    } catch (error) {
+      this.mensajeError(error);
+      throw error;
+    }
+  }
+  async cancelarGrupo() {
+    try {
+      const response = await this.grupoStore.cancelarGrupo(this.idGrupo());
+      if (!response) throw Error;
+      this.mensajeOperacionExitosa('cancelo');
+    } catch (error) {
+      this.mensajeError(error);
+      throw error;
+    }
+  }
+  async cerrarGrupo() {
+    try {
+      const response = await this.grupoStore.cerrarGrupo(this.idGrupo());
+      if (!response) throw Error;
+      this.mensajeOperacionExitosa('cerro');
+    } catch (error) {
+      this.mensajeError(error);
+      throw error;
+    }
+  }
+  mensajeOperacionExitosa(mensaje: string) {
+    this.messageService.add({
+      severity: 'succes',
+      summary: 'Succes',
+      detail: `se ${mensaje} el grupo con exito`,
+      life: 3000,
+    });
+  }
+  mensajeCancelar() {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Rejected',
+      detail: 'Eso estuvo cerca',
+      life: 3000,
+    });
+  }
+  mensajeError(error: any) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Rejected',
+      detail: `Por favor intenta mas tarde ${error.error.message}`,
+      life: 3000,
+    });
+  }
 }

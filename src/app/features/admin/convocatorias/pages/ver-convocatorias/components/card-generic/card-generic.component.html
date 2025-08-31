@@ -52,20 +52,20 @@
     />
     }
     <!--  -->
-    <p-button
+    <!-- <p-button
       class="m-2 p-2"
-      label="Grupos Convocatoria"
+      label="Competencias Convocatoria"
       [severity]="statusColor(item.status)"
       [disabled]="habilitar(item.status)"
-      (click)="gruposConvocatoria(item.id!)"
+      (click)="competenciaConvocatoria(item.id!)"
     />
     <p-button
       class="m-2 p-2"
-      label="Crear Grupo"
-      (click)="crearGrupo(item.id!)"
+      label="Crear competencia"
+      (click)="crearCompetencia(item.id!)"
       [severity]="statusColor(item.status)"
       [disabled]="habilitar(item.status)"
-    />
+    /> -->
     <p-button
       class="m-2 p-2"
       label="Cancelar Convocatoria"
@@ -78,13 +78,6 @@
       class="m-2 p-2"
       label="Cerrar Convocatoria"
       (click)="confirmacion($event, 'cerrar', item.id!)"
-      [severity]="statusColor(item.status)"
-      [disabled]="habilitar(item.status)"
-    />
-    <p-button
-      class="m-2 p-2"
-      label="Asignar Horario "
-      (click)="asignarHorario(item.id!)"
       [severity]="statusColor(item.status)"
       [disabled]="habilitar(item.status)"
     />

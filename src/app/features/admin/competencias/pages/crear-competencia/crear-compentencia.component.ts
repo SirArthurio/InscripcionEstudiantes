@@ -28,6 +28,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { competenciaDto } from '../../model/competenciaDto.type';
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
 import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum copy';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'app-crear-facultad',
@@ -40,6 +41,7 @@ import { statusCompetencia } from '@core/shared/enums/status-competencia-type.en
     ConfirmDialog,
     InputText,
     ValidationClassDirective,
+    Toast,
   ],
   templateUrl: './crear-compentencia.component.html',
   styleUrl: './crear-compentencia.component.scss',
@@ -175,12 +177,14 @@ export default class CrearCompentenciaComponent {
 
   tipoDeAccion() {
     if (this.isEditar()) {
-      this.isEditar();
+      this.editarCompetencia();
       console.log('editar');
     } else {
       this.confirm1();
     }
   }
+  editarCompetencia() {}
+
   crearCurso() {
     this.navigate.navigate(['/admin/cursos/crear-cursos'], {
       queryParams: { competencia: this.idCompetencia() },
@@ -282,7 +286,7 @@ export default class CrearCompentenciaComponent {
       );
       if (!response) throw Error;
       this.messageService.add({
-        severity: 'succes',
+        severity: 'success',
         summary: 'Exito!',
         detail: 'Se Archivo con Exito',
         life: 3000,

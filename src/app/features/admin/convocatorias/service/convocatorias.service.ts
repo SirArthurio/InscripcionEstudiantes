@@ -49,12 +49,6 @@ export class ConvocatoriasService {
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  GetConvocatoria(): Observable<ContentResponse<convocatoriaDTO>> {
-    return this.http
-      .get<ContentResponse<convocatoriaDTO>>(`${this.url}`)
-      .pipe(catchError((error) => throwError(() => error)));
-  }
-
   PublishConvocatoria(
     id: string
   ): Observable<ContentResponse<convocatoriaDTO>> {
@@ -96,6 +90,15 @@ export class ConvocatoriasService {
       .get<ContentResponsePaginated<convocatoriaDTO[]>>(`${this.url}/get-all`, {
         params,
       })
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  GetConvocatoria(
+    convocatoriaId: string
+  ): Observable<ContentResponse<convocatoriaDTO>> {
+    return this.http
+      .get<ContentResponse<convocatoriaDTO>>(
+        `${this.url}/get-by-id/${convocatoriaId}`
+      )
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

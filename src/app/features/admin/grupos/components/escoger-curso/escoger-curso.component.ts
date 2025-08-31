@@ -27,6 +27,7 @@ import { convocatoriaDTO } from '../../../convocatorias/model/convocatoriaDTO.ty
 import { CartaComponent } from '@core/shared/components/carta/carta.component';
 import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
+import { cursoDto } from '../../../cursos/models/cursoDto.type';
 
 @Component({
   selector: 'app-escoger-curso',
@@ -49,13 +50,13 @@ export class EscogerCursoComponent implements OnInit {
   cursoStore = inject(cursosStore);
   //signal
   currentPage = signal(1);
-  cursos = signal<curso[]>([]);
+  cursos = signal<cursoDto[]>([]);
   grupoSeleccionado = signal<grupo | null>(null);
   mostrarModalGrupo = signal<boolean>(false);
-  cursoParaAgregar = signal<curso | null>(null);
+  cursoParaAgregar = signal<cursoDto | null>(null);
   //outputs
   @Output() onAgregarCursoAGrupo = new EventEmitter<{
-    curso: curso;
+    curso: cursoDto;
   }>();
   //inputs
   idConvocatoria = input<string>('');
@@ -68,7 +69,7 @@ export class EscogerCursoComponent implements OnInit {
   });
 
   obtenerCurso = injectQuery(() => ({
-    queryKey: ['curso', this.idConvocatoria()],
+    queryKey: ['curso', 'grupo', this.idConvocatoria()],
     queryFn: async () => {
       try {
         const response = await this.cursoStore.getCursos(
@@ -89,7 +90,7 @@ export class EscogerCursoComponent implements OnInit {
 
   // Métodos
 
-  abrirModalGrupo(curso: curso, event?: Event) {
+  abrirModalGrupo(curso: cursoDto, event?: Event) {
     this.cursoParaAgregar.set(curso);
     this.confirm1(event ?? new Event('click'), curso);
   }
@@ -112,7 +113,7 @@ export class EscogerCursoComponent implements OnInit {
   seleccionarGrupo(grupo: grupo) {
     this.grupoSeleccionado.set(grupo);
   }
-  confirm1(event: Event, curso: curso) {
+  confirm1(event: Event, curso: cursoDto) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: ` Quieres agregar el curso ${curso.name} al grupo?`,
