@@ -339,9 +339,12 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
   }
   continuarProgreso() {
     this.nuevaConvocatoria();
-    const convocatoria = this.getConvocatoria.data()?.data;
+    const convocatoria = this.convocatoria();
     if (convocatoria) {
-      this.convocatoriaStore.setConvocatoria(convocatoria);
+      this.convocatoriaId.set(convocatoria.id!);
+      this.navegar.navigate(['/admin/convocatorias/crear-convocatorias'], {
+        queryParams: { convocatoriaId: convocatoria.id },
+      });
     }
   }
   crearGrupo() {
