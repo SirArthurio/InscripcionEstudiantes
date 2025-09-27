@@ -176,6 +176,7 @@ export default class RegisterProfesorComponent implements OnInit {
       this.datos.set(dataVerProfessor);
     }
   });
+
   resumenDatos(profesor: professor) {
     this.validacionData.set(datosProfessorVerificacion(profesor));
     this.alertService.showSuccess(
@@ -184,6 +185,7 @@ export default class RegisterProfesorComponent implements OnInit {
     );
     this.siguiente();
   }
+
   siguiente() {
     if (this.progress() < 1) {
       this.progress.update((current) => current + 1);

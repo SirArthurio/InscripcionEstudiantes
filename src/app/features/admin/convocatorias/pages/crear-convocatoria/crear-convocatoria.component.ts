@@ -93,6 +93,7 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.convocatoriaStore.resetConvocatoria();
+    this.formConvocatoria.reset();
   }
   private obtenerConvocatoriaId() {
     const id = this.router.snapshot.queryParamMap.get('convocatoriaId');
@@ -121,17 +122,21 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
 
   setDatos = effect(() => {
     const response = this.getConvocatoria.data()?.data;
+    console.log('seteando', response);
+
     if (response) {
       this.datosOriginales.set(response);
       this.formConvocatoria.patchValue(response);
+      var start = response.enrollmentStartDate;
+      var end = response.enrollmentEndDate;
 
-      var rangeDatesEnrollmentSet: [Date, Date] = [
-        DateFormatterService.createLocalDate(response.enrollmentStartDate),
+      const rangeDatesEnrollmentSet: [Date, Date] = [
+        new Date(start),
+        new Date(end),
 
-        DateFormatterService.createLocalDate(response.enrollmentEndDate),
+        // DateFormatterService.createLocalDate()
       ];
-
-      this.formConvocatoria.get('rangeDatesEnrollment')?.setValue(null);
+      this.formConvocatoria.get('rangeDatesEnrollment')?.reset();
 
       this.formConvocatoria
         .get('rangeDatesEnrollment')
@@ -149,23 +154,25 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
     this.formConvocatoria = this.form.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      rangeDatesClass: [, [Validators.required]],
-      classStartDate: ['', [Validators.required]],
-      classEndDate: ['', []],
       rangeDatesEnrollment: ['', [Validators.required]],
       enrollmentStartDate: ['', [Validators.required]],
       enrollmentEndDate: ['', [Validators.required]],
     });
   }
-
   convertirRangoAFechas() {
-    const startEnrollment = this.formConvocatoria.get('rangeDatesEnrollment')
-      ?.value?.[0];
-    const endEnrollment = this.formConvocatoria.get('rangeDatesEnrollment')
-      ?.value?.[1];
+    const range = this.formConvocatoria.get('rangeDatesEnrollment')?.value;
 
-    this.formConvocatoria.get('enrollmentStartDate')?.setValue(startEnrollment);
-    this.formConvocatoria.get('enrollmentEndDate')?.setValue(endEnrollment);
+    if (!range || range.length < 2) return;
+
+    const startDate = new Date(range[0]).toISOString().split('T')[0];
+    const endDate = new Date(range[1]).toISOString().split('T')[0];
+
+    this.formConvocatoria.patchValue({
+      enrollmentStartDate: startDate.toString(),
+      enrollmentEndDate: endDate.toString(),
+    });
+
+    console.log('Fechas convertidas:', { startDate, endDate });
   }
 
   nuevaConvocatoria() {
@@ -257,6 +264,7 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.convertirRangoAFechas();
+    console.log('comprobando :', this.formConvocatoria.value);
     if (this.formConvocatoria.invalid) {
       this.erroresForm();
     } else {
@@ -267,6 +275,8 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
   private async editarConvocatoria() {
     try {
       console.log(this.formularioTextoEditado());
+      this.convertirRangoAFechas();
+
       const response =
         await this.convocatoriaStore.updateInformationConvocatoria(
           this.convocatoriaId(),

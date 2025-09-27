@@ -19,6 +19,7 @@ export class ConvocatoriasService {
   CreateConvocatoria(
     convocatoria: convocatoria
   ): Observable<ContentResponse<convocatoriaDTO>> {
+    console.log('se creara: ', convocatoria);
     return this.http
       .post<ContentResponse<convocatoriaDTO>>(`${this.url}`, convocatoria)
       .pipe(catchError((error) => throwError(() => error)));

@@ -146,7 +146,6 @@ export default class CrearGruposComponent implements OnInit {
 
       this.extension.push(this.form.control(element));
     });
-    // this.extension.push(this.form.control(schedule.map((e) => e)));
     this.schedules.set(schedule);
 
     console.log('asi que da el form', this.formGrupos.value);
@@ -176,7 +175,9 @@ export default class CrearGruposComponent implements OnInit {
         if (!response) {
           throw Error;
         }
+        this.schedules.set(response.data.schedules);
         this.grupo.set(response.data);
+        console.log('schedules: ', response.data.schedules);
         console.log('data', response);
         return response;
       } catch (error) {
@@ -231,18 +232,7 @@ export default class CrearGruposComponent implements OnInit {
   get extension() {
     return this.formGrupos.get('schedules') as FormArray;
   }
-  // agregarSchedule() {
-  //   if (this.newSchedules.valid) {
-  //     const newschedules = this.newSchedules.value;
-  //     this.extension.push(this.form.control(newschedules, Validators.required));
-  //     this.newSchedules.reset();
-  //   }
-  // }
-  // eliminarSchedule(index: number) {
-  //   if (this.extension.length > 0) {
-  //     this.extension.removeAt(index);
-  //   }
-  // }
+
   nuevoGrupo() {
     this.formGrupos.reset();
     this.progress.set(0);

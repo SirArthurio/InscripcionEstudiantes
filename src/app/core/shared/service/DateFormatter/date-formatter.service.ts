@@ -19,7 +19,20 @@ export class DateFormatterService {
 
     return this.formatter.format(parsedDate);
   }
-  static createLocalDate(dateString: string): Date {
+  static createLocalDate(dateString: string | null | undefined): Date | null {
+    if (!dateString || typeof dateString !== 'string') {
+      console.warn(
+        'dateString is null, undefined, or not a string:',
+        dateString
+      );
+      return null;
+    }
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      console.warn('dateString is not in YYYY-MM-DD format:', dateString);
+      return null;
+    }
+
     const [year, month, day] = dateString.split('-').map(Number);
     return new Date(year, month - 1, day); // month - 1 porque Date usa 0-11
   }

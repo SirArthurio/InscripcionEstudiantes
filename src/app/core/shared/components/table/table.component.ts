@@ -66,6 +66,7 @@ export class TableComponent {
       this.columnas.set(columnasVisibles);
     }
   });
+
   edit(id: string) {
     this.router.navigate([`${this.data().url}`], {
       queryParams: {

@@ -57,6 +57,7 @@
         id="range"
         formControlName="rangeDatesEnrollment"
         selectionMode="range"
+        [readonlyInput]="true"
         [showButtonBar]="true"
         [minDate]="minDate"
         placeholder="Selecciona un rango"
@@ -92,18 +93,18 @@
         label="Publicar"
         [outlined]="true"
       />
+      <p-button
+        class="w-full mb-4 p-2"
+        (click)="confirmarEdicionFechas()"
+        label="Editar Fechas"
+        [outlined]="true"
+      />
       }
       <!--  -->
       <p-button
         class="w-full mb-4 p-2"
         (click)="tipoDeAccion()"
         [label]="datos().buttonText"
-        [outlined]="true"
-      />
-      <p-button
-        class="w-full mb-4 p-2"
-        (click)="confirmarEdicionFechas()"
-        label="Editar Fechas"
         [outlined]="true"
       />
 
