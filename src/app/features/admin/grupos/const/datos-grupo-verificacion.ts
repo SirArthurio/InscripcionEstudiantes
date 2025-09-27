@@ -4,11 +4,6 @@ import { grupoDto } from '../model/grupoDto.type';
 
 export const datosGrupoVerificacion = (grupo: grupoDto) => [
   {
-    name: 'Codigo',
-    content: grupo.code,
-  },
-
-  {
     name: 'Modalidad',
     content: grupo.modality,
   },

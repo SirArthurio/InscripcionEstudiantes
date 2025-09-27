@@ -117,7 +117,6 @@ export default class CrearCursosComponent {
 
   formularioCurso() {
     this.formCurso = this.form.group({
-      code: ['', [Validators.required]],
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       credits: [0, [Validators.required]],

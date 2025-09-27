@@ -31,9 +31,9 @@ export const programasStore = signalStore(
     resetPrograma() {
       patchState(store, { programa: initialProgramasStoreValue.programa });
     },
-    getProgramas(): Promise<ContentResponsePaginated<programs[]>> {
+    getProgramas(page: number): Promise<ContentResponsePaginated<programs[]>> {
       try {
-        const response = firstValueFrom(programaService.GetProgramas());
+        const response = firstValueFrom(programaService.GetProgramas(page));
         if (!response) throw Error;
         return response;
       } catch (error) {

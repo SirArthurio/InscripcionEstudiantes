@@ -27,7 +27,7 @@ import { competencias } from '../../model/competencias.type';
 import { ActivatedRoute, Router } from '@angular/router';
 import { competenciaDto } from '../../model/competenciaDto.type';
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
-import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum copy';
+import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum';
 import { Toast } from 'primeng/toast';
 
 @Component({
@@ -125,7 +125,6 @@ export default class CrearCompentenciaComponent {
 
   formularioCompetencia() {
     this.formCompetencias = this.form.group({
-      code: ['', [Validators.required]],
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
     });

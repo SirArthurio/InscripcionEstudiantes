@@ -15,9 +15,7 @@ export class CurrentUserService {
 
   CurrentUser(token: string): Observable<ContentResponse<currentUser>> {
     return this.http
-      .get<ContentResponse<currentUser>>(
-        `${this.api}/${this.prefix}/current-user`
-      )
+      .get<ContentResponse<currentUser>>(`${this.api}/${this.prefix}/profile`)
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

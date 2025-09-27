@@ -1,7 +1,6 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { TableComponent } from '@core/shared/components/table/table.component';
 import { GrupoStore } from '../../store/grupo.store';
-import { grupo } from '../../model/grupo.type';
 import { PaginationService } from '@core/shared/components/pagination/pagination.service';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { ActivatedRoute } from '@angular/router';
@@ -41,14 +40,11 @@ export default class VerGruposComponent implements OnInit {
   }
 
   obtenerGrupos = injectQuery(() => ({
-    queryKey: ['grupos', this.convocatoriaId(), this.currentPage()],
+    queryKey: ['grupos', this.convocatoriaId()],
     queryFn: async () => {
       try {
-        const response = await this.grupoStore.getGruposPorConvocatoria(
-          this.currentPage(),
-          this.convocatoriaId()
-        );
-        this.grupos.set(response.data);
+        const response = await this.grupoStore.getGrupos(this.convocatoriaId());
+        // this.grupos.set(response.data);
         console.log('data', response);
         return response;
       } catch (error) {

@@ -14,6 +14,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class ProfessorService {
   http = inject(HttpClient);
   api = environment.back;
+  prefix = 'professors';
 
   GetProfessors(
     page: number,
@@ -28,8 +29,46 @@ export class ProfessorService {
     }
     return this.http
       .get<ContentResponsePaginated<professor[]>>(
-        `${this.api}/professors/get-all`,
-        { params }
+        `${this.api}/${this.prefix}`,
+        {
+          params,
+        }
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  GetProfessor(id: string): Observable<ContentResponse<professor>> {
+    return this.http
+      .get<ContentResponse<professor>>(
+        `${this.api}/${this.prefix}/${id}/get-by-id`
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  PatchProfessor(
+    id: string,
+    professor: Partial<professor>
+  ): Observable<ContentResponse<professor>> {
+    return this.http
+      .patch<ContentResponse<professor>>(
+        `${this.api}/${this.prefix}/${id}`,
+        professor
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+
+  ActivateProfessor(id: string): Observable<ContentResponse<professor>> {
+    return this.http
+      .patch<ContentResponse<professor>>(
+        `${this.api}/${this.prefix}/${id}/activate`,
+        {}
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+
+  DesactivateProfessor(id: string): Observable<ContentResponse<professor>> {
+    return this.http
+      .patch<ContentResponse<professor>>(
+        `${this.api}/${this.prefix}/${id}/deactivate`,
+        {}
       )
       .pipe(catchError((error) => throwError(() => error)));
   }
@@ -38,10 +77,7 @@ export class ProfessorService {
     professor: professor
   ): Observable<ContentResponse<professor>> {
     return this.http
-      .post<ContentResponse<professor>>(
-        `${this.api}/professors/create`,
-        professor
-      )
+      .post<ContentResponse<professor>>(`${this.api}/${this.prefix}`, professor)
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

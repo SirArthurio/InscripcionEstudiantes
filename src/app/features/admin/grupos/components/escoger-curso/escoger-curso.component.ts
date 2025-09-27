@@ -1,43 +1,29 @@
 import {
   Component,
-  computed,
   effect,
   EventEmitter,
   inject,
-  Input,
   input,
   OnInit,
   Output,
   signal,
 } from '@angular/core';
 import { grupo } from '../../model/grupo.type';
-import { curso } from '../../../cursos/models/curso.type';
-import { competencias } from '../../../competencias/model/competencias.type';
 import { CommonModule } from '@angular/common';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { PaginationService } from '@core/shared/components/pagination/pagination.service';
-import { competenciaStore } from '../../../competencias/store/competencia.store';
 import { cursosStore } from '../../../cursos/store/cursos.store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-import { convocatoriasStore } from '../../../convocatorias/store/convocatorias.store';
-import { convocatoriaDTO } from '../../../convocatorias/model/convocatoriaDTO.type';
-import { CartaComponent } from '@core/shared/components/carta/carta.component';
-import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
+
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
 import { cursoDto } from '../../../cursos/models/cursoDto.type';
 
 @Component({
   selector: 'app-escoger-curso',
-  imports: [
-    CommonModule,
-    ConfirmDialogModule,
-    ToastModule,
-    ButtonModule,
-    CartaComponent,
-  ],
+  imports: [CommonModule, ConfirmDialogModule, ToastModule, ButtonModule],
   templateUrl: './escoger-curso.component.html',
   styleUrl: './escoger-curso.component.scss',
 })

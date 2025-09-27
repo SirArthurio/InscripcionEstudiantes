@@ -4,7 +4,9 @@ import { ContentResponse, ContentResponsePaginated } from '@core/shared/types';
 import { student } from '@core/shared/types/users/estudiante.type';
 import { environment } from '@environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
-
+interface institutionalEmail {
+  institutionalEmail: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -15,18 +17,18 @@ export class StudentsService {
 
   GetStudents(
     page: number = 1,
-    state?: string
+    status?: string
   ): Observable<ContentResponsePaginated<student[]>> {
     let params = new HttpParams();
-    if (page && page > 0) {
+    if (page) {
       params = params.append('page', page.toString());
     }
-    if (state && state !== 'todos' && state.trim() !== '') {
-      params = params.append('state', state);
+    if (status) {
+      params = params.append('status', status);
     }
     console.log('consulta students');
     return this.http
-      .get<ContentResponsePaginated<student[]>>(`${this.url}/get-all`, {
+      .get<ContentResponsePaginated<student[]>>(`${this.url}`, {
         params,
       })
       .pipe(
@@ -35,5 +37,46 @@ export class StudentsService {
           return throwError(() => error);
         })
       );
+  }
+  VerifyInstitucionalEmail(token: string): Observable<ContentResponse> {
+    let params = new HttpParams();
+    if (token) {
+      params = params.set('institutional-email-verification', token);
+    }
+
+    return this.http
+      .patch<ContentResponse>(
+        `${this.url}/institutional-email-verification`,
+        null,
+        {
+          params,
+        }
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  SendInstitucionalEmail(
+    email: institutionalEmail
+  ): Observable<ContentResponse> {
+    return this.http
+      .post<ContentResponse>(
+        `${this.url}/send-institutional-email-verification`,
+        email
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  RestoreStudent(id: string): Observable<ContentResponse> {
+    return this.http
+      .patch<ContentResponse>(`${this.url}/${id}/restore`, {})
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  DeleteStudent(id: string): Observable<ContentResponse> {
+    return this.http
+      .patch<ContentResponse>(`${this.url}/${id}/delete`, {})
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  PatchStudent(id: string): Observable<ContentResponse> {
+    return this.http
+      .patch<ContentResponse>(`${this.url}/${id}`, {})
+      .pipe(catchError((error) => throwError(() => error)));
   }
 }

@@ -70,7 +70,7 @@ export const competenciaStore = signalStore(
       getCompetencias(
         page: number,
         status: string
-      ): Promise<ContentResponsePaginated<competenciaDto[]>> {
+      ): Promise<ContentResponse<competenciaDto[]>> {
         try {
           const response = firstValueFrom(
             competenciaService.GetCompetencias(page, status)

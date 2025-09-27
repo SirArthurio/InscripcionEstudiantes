@@ -26,7 +26,7 @@ const currentInitialValue: currentValueStore = {
   isLogin: false,
 };
 const keyUser = environment.keyUser;
-export const currentStore = signalStore(
+export const CurrentStore = signalStore(
   { providedIn: 'root' },
 
   withState(currentInitialValue),

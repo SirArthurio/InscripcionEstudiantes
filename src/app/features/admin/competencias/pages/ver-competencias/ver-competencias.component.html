@@ -1,6 +1,6 @@
 <app-table
   [data]="{
-    datos: this.obtenerCompetencias.data()?.data?.page || [],
+    datos: this.obtenerCompetencias.data()?.data || [],
     url: 'admin/competencias/crear-competencias'
   }"
   [totalPages]="this.totalPages()"

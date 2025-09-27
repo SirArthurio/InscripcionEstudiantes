@@ -2,6 +2,6 @@ import { CardFormularioValidacion } from '@core/shared/components/card-formulari
 
 export const dataVerConvocatoria: CardFormularioValidacion = {
   title: 'Ver Convocatoria',
-  buttonText: 'Editar',
+  buttonText: 'Editar Textos',
   description: '',
 };

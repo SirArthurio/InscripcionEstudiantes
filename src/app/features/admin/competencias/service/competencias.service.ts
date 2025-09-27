@@ -16,7 +16,7 @@ export class CompetenciasService {
   GetCompetencias(
     page: number,
     status: string
-  ): Observable<ContentResponsePaginated<competenciaDto[]>> {
+  ): Observable<ContentResponse<competenciaDto[]>> {
     let params = new HttpParams();
     if (page) {
       params = params.append('page', page);
@@ -25,34 +25,40 @@ export class CompetenciasService {
       params = params.append('status', status);
     }
     return this.http
-      .get<ContentResponsePaginated<competenciaDto[]>>(
-        `${this.api}/competencies/get-all`,
-        { params }
-      )
+      .get<ContentResponse<competenciaDto[]>>(`${this.api}/competencies`, {
+        params,
+      })
       .pipe(catchError((error) => throwError(() => error)));
   }
   GetCompetencia(id: string): Observable<ContentResponse<competenciaDto>> {
     return this.http
-      .get<ContentResponse<competenciaDto>>(
-        `${this.api}/competencies/get-by-id/${id}`
-      )
+      .get<ContentResponse<competenciaDto>>(`${this.api}/competencies/${id}`)
       .pipe(catchError((error) => throwError(() => error)));
   }
   CreateCompetencias(
     facultad: competencias
   ): Observable<ContentResponse<competencias>> {
     return this.http
-      .post<ContentResponse<competencias>>(
-        `${this.api}/competencies/create`,
-        facultad
-      )
+      .post<ContentResponse<competencias>>(`${this.api}/competencies`, facultad)
       .pipe(catchError((error) => throwError(() => error)));
   }
   ActivarCompetencia(id: string): Observable<ContentResponse<competenciaDto>> {
     return this.http
       .patch<ContentResponse<competenciaDto>>(
-        `${this.api}/competencies/activate/${id}`,
+        `${this.api}/competencies/${id}/activate`,
         {}
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+
+  PatchCompetencia(
+    id: string,
+    competencia: Partial<competenciaDto>
+  ): Observable<ContentResponse<competenciaDto>> {
+    return this.http
+      .patch<ContentResponse<competenciaDto>>(
+        `${this.api}/competencies/${id}`,
+        competencia
       )
       .pipe(catchError((error) => throwError(() => error)));
   }
@@ -60,7 +66,7 @@ export class CompetenciasService {
   ArchivarCompetencia(id: string): Observable<ContentResponse<competenciaDto>> {
     return this.http
       .patch<ContentResponse<competenciaDto>>(
-        `${this.api}/competencies/archive/${id}`,
+        `${this.api}/competencies/${id}/archive`,
         {}
       )
       .pipe(catchError((error) => throwError(() => error)));

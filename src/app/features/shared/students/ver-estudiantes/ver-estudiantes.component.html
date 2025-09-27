@@ -1,6 +1,7 @@
 <app-table
+  [gruposFiltros]="filtros"
   [data]="{
-    datos: this.students(),
+    datos: this.getStudents.data()?.data?.page || [],
     url: '/pages/estudiantes/estudiante',
     ignorar: ['user', 'id']
   }"

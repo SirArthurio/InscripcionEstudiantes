@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
-import { programas } from '../../../../utils/const/index.const';
 import { HeaderDashboardComponent } from '../../dashboard/components/header-dashboard/header-dashboard.component';
 import { headerDasboardType } from '../../dashboard/dashboard/dashboard.type';
 import { headerDasboard } from '../../dashboard/constants/text.headerDashboardEstudiante.const';
@@ -21,6 +20,5 @@ import { CursosDisponiblesComponent } from '../../cursos/cursos-disponibles/curs
   styleUrl: './curso-estudiante.component.scss',
 })
 export class CursoEstudianteComponent {
-  programas = programas;
   header = signal<headerDasboardType>(headerDasboard('profesor'));
 }

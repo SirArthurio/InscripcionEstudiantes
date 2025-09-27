@@ -1,4 +1,4 @@
-import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum';
 import { GrupoFiltros } from '@core/shared/types';
 
 export const filtroTextConvocatoria: GrupoFiltros[] = [

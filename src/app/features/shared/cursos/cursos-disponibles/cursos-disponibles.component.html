@@ -1,4 +1,6 @@
 <div class="card">
+  <p-confirmdialog />
+  <p-toast />
   <header class="flex flex-row items-center">
     <i
       class="pi pi-book"
@@ -8,10 +10,10 @@
     <div class="ml-2 text-2xl font-bold">{{ texto.title }}</div>
   </header>
   <hr />
-  @if((this.obtenerGrupos.data()?.data?.length || 0) > 0){
+  @if((this.obtenerGrupos.data()?.length || 0) > 0){
 
   <!--  -->
-  @for (item of this.obtenerGrupos.data()?.data; track $index) {
+  @for (item of this.obtenerGrupos.data(); track $index) {
   <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
     <div class="text-xl font-semibold">{{ item.observations | titlecase }}</div>
     <div class="flex flex-row justify-between items-center w-full m-2">
@@ -19,9 +21,10 @@
 
       <p-button
         class="pr-2"
-        [label]="item.status"
+        label="Matricular"
         [severity]="statusColor(item.status)"
         [disabled]="item.availableSeats === 0"
+        (click)="confirmacionMatricula(item.id!)"
       />
     </div>
 

@@ -10,7 +10,6 @@ import { login } from '../login/model/Login.type';
 import { inject } from '@angular/core';
 import { firstValueFrom, throwError } from 'rxjs';
 import { loginResponse } from '../login/model/LoginResponse.type';
-import { currentUser } from '@core/shared/types/currentUser.type';
 import { AuthService } from '../service/auth.service';
 export type authStoreValue = {
   id: string;

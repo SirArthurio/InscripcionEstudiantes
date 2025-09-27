@@ -5,7 +5,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { ContentResponse, ContentResponsePaginated } from '@core/shared/types';
 import { convocatoria } from '../model/convocatoria.type';
 import { convocatoriaDTO } from '../model/convocatoriaDTO.type';
-import { editConvocatoria } from '../pages/ver-convocatorias/components/card-generic/model/edit.convocatoria.type';
+import { editTextConvocatoria } from '../pages/ver-convocatorias/components/card-generic/model/edit.convocatoria.type';
 
 @Injectable({
   providedIn: 'root',
@@ -20,10 +20,7 @@ export class ConvocatoriasService {
     convocatoria: convocatoria
   ): Observable<ContentResponse<convocatoriaDTO>> {
     return this.http
-      .post<ContentResponse<convocatoriaDTO>>(
-        `${this.url}/create`,
-        convocatoria
-      )
+      .post<ContentResponse<convocatoriaDTO>>(`${this.url}`, convocatoria)
       .pipe(catchError((error) => throwError(() => error)));
   }
 
@@ -34,7 +31,7 @@ export class ConvocatoriasService {
   ): Observable<ContentResponse<convocatoriaDTO>> {
     return this.http
       .patch<ContentResponse<convocatoriaDTO>>(
-        `${this.url}/update-enrollment-dates/${id}`,
+        `${this.url}/${id}/enrollment-dates`,
         { enrollmentStartDate, enrollmentEndDate }
       )
       .pipe(catchError((error) => throwError(() => error)));
@@ -42,10 +39,10 @@ export class ConvocatoriasService {
 
   UpdateInformationConvocatoria(
     id: string,
-    edit: editConvocatoria
+    edit: editTextConvocatoria
   ): Observable<ContentResponse<convocatoriaDTO>> {
     return this.http
-      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/update/${id}`, edit)
+      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/${id}`, edit)
       .pipe(catchError((error) => throwError(() => error)));
   }
 
@@ -53,7 +50,7 @@ export class ConvocatoriasService {
     id: string
   ): Observable<ContentResponse<convocatoriaDTO>> {
     return this.http
-      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/publish/${id}`, {})
+      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/${id}/publish`, {})
       .pipe(catchError((error) => throwError(() => error)));
   }
 
@@ -62,7 +59,7 @@ export class ConvocatoriasService {
     name: string
   ): Observable<ContentResponse<convocatoriaDTO>> {
     return this.http
-      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/close/${id}`, {
+      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/${id}/close`, {
         name,
       })
       .pipe(catchError((error) => throwError(() => error)));
@@ -70,7 +67,7 @@ export class ConvocatoriasService {
 
   CancelConvocatoria(id: string): Observable<ContentResponse<convocatoriaDTO>> {
     return this.http
-      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/cancel/${id}`, {})
+      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/${id}/cancel`, {})
       .pipe(catchError((error) => throwError(() => error)));
   }
 
@@ -87,7 +84,7 @@ export class ConvocatoriasService {
       params = params.append('status', status);
     }
     return this.http
-      .get<ContentResponsePaginated<convocatoriaDTO[]>>(`${this.url}/get-all`, {
+      .get<ContentResponsePaginated<convocatoriaDTO[]>>(`${this.url}`, {
         params,
       })
       .pipe(catchError((error) => throwError(() => error)));
@@ -97,7 +94,7 @@ export class ConvocatoriasService {
   ): Observable<ContentResponse<convocatoriaDTO>> {
     return this.http
       .get<ContentResponse<convocatoriaDTO>>(
-        `${this.url}/get-by-id/${convocatoriaId}`
+        `${this.url}/${convocatoriaId}/by-id`
       )
       .pipe(catchError((error) => throwError(() => error)));
   }

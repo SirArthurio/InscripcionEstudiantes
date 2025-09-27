@@ -6,7 +6,10 @@
     "baseUrl": ".",
     "paths": {
       "@environments/*": ["src/environments/*"],
-      "@core/*": ["src/app/core/*"]
+      "@core/*": ["src/app/core/*"],
+      "@students/*": ["src/features/students/*"],
+      "@professors/*": ["src/features/professors/*"],
+      "@admin/*": ["src/features/admin/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

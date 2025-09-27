@@ -5,13 +5,11 @@ import { environment } from '@environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
 import { login } from '../login/model/Login.type';
 import { loginResponse } from '../login/model/LoginResponse.type';
-import { RegistroUsuario } from '../register/model/Register.type';
+import { RegistroUsuario } from '../../students/register/model/Register.type';
 interface password {
   password: string;
 }
-interface institutionalEmail {
-  institutionalEmail: string;
-}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -42,10 +40,7 @@ export class AuthService {
   ForgotPassword(email: string): Observable<ContentResponse> {
     const headers = new HttpHeaders().set('user-email', email);
     return this.http
-      .post<ContentResponse>(
-        `${this.api}/${this.prefix}/forgot-password`,
-        email
-      )
+      .post<ContentResponse>(`${this.api}/${this.prefix}/forgot`, email)
       .pipe(catchError((error) => throwError(() => error)));
   }
   ResetPassword(password: string, token?: string): Observable<ContentResponse> {
@@ -57,35 +52,14 @@ export class AuthService {
     const body: password = { password };
     console.log(body);
     return this.http
-      .patch<ContentResponse>(
-        `${this.api}/${this.prefix}/reset-password`,
-        body,
-        { params }
-      )
+      .patch<ContentResponse>(`${this.api}/${this.prefix}/reset`, body, {
+        params,
+      })
       .pipe(catchError((error) => throwError(() => error)));
   }
-  VerifyInstitucionalEmail(token: string): Observable<ContentResponse> {
-    let params = new HttpParams();
-    if (token) {
-      params = params.set('verify-email-token', token);
-    }
-
+  Profile(): Observable<ContentResponse> {
     return this.http
-      .patch<ContentResponse>(
-        `${this.api}/${this.prefix}/verify-institutional-email`,
-        null,
-        { params }
-      )
-      .pipe(catchError((error) => throwError(() => error)));
-  }
-  SendInstitucionalEmail(
-    email: institutionalEmail
-  ): Observable<ContentResponse> {
-    return this.http
-      .post<ContentResponse>(
-        `${this.api}/${this.prefix}/send-institutional-email-verification`,
-        email
-      )
+      .get<ContentResponse>(`${this.api}/${this.prefix}/profile`)
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

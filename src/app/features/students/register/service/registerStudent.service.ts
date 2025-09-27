@@ -11,15 +11,12 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class RegisterStudentService {
   api = environment.back;
   prefix = 'students';
-  url = `${this.api}/${this.prefix}/`;
+  url = `${this.api}/${this.prefix}`;
   http = inject(HttpClient);
 
-  RegisterStudent(
-    student: student,
-    idPrograma: string
-  ): Observable<ContentResponse<null>> {
+  RegisterStudent(student: student): Observable<ContentResponse<null>> {
     return this.http
-      .post<ContentResponse<null>>(`${this.url}register/${idPrograma}`, student)
+      .post<ContentResponse<null>>(`${this.url}`, student)
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

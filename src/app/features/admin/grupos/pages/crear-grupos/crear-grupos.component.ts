@@ -137,9 +137,16 @@ export default class CrearGruposComponent implements OnInit {
     this.visible.set(false);
   }
   schedulesHijo(schedule: daySchedule[]) {
-    console.log('llego desde el hijo', schedule);
     this.extension.clear();
-    this.extension.push(this.form.control(schedule));
+    schedule.forEach((element) => {
+      element.endTime = DateFormatterService.convertToHHmmss(element.endTime);
+      element.startTime = DateFormatterService.convertToHHmmss(
+        element.startTime
+      );
+
+      this.extension.push(this.form.control(element));
+    });
+    // this.extension.push(this.form.control(schedule.map((e) => e)));
     this.schedules.set(schedule);
 
     console.log('asi que da el form', this.formGrupos.value);
@@ -149,7 +156,7 @@ export default class CrearGruposComponent implements OnInit {
     queryKey: ['professors', 'grupos', this.currentPage()],
     queryFn: async () => {
       try {
-        const response = await this.professorStore.getProfessor(1, '');
+        const response = await this.professorStore.getProfessors(1, '');
         if (!response) {
           throw Error;
         }
@@ -203,7 +210,6 @@ export default class CrearGruposComponent implements OnInit {
 
   formularioGrupo() {
     this.formGrupos = this.form.group({
-      code: ['', [Validators.required]],
       modality: ['', [Validators.required]],
       courseId: ['', [Validators.required]],
       observations: ['', [Validators.required]],

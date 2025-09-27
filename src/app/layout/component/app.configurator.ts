@@ -13,7 +13,7 @@ import Aura from '@primeng/themes/aura';
 import { PrimeNG } from 'primeng/config';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { LayoutService } from '../service/layout.service';
-import { currentStore } from 'src/app/features/auth/store/current.store';
+import { CurrentStore } from 'src/app/features/auth/store/current.store';
 
 const presets = {
   Aura,
@@ -118,7 +118,7 @@ export class AppConfigurator {
 
   presets = Object.keys(presets);
 
-  currentUserStore = inject(currentStore);
+  currentUserStore = inject(CurrentStore);
 
   showMenuModeButton = signal(
     !this.router.url.includes('auth') && this.currentUserStore.isLogin()

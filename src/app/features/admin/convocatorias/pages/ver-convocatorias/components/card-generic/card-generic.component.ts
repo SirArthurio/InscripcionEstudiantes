@@ -16,7 +16,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
-import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum';
 
 @Component({
   selector: 'convocatorias-card-generic',

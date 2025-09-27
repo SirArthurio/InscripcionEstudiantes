@@ -18,6 +18,7 @@ import { tableConst } from './const/table.const';
 import CargandoComponent from '../cargando/cargando.component';
 import { FiltroComponent } from '../filtro/filtro.component';
 import { GrupoFiltros } from '@core/shared/types';
+import { TruncatePipe } from '@core/pipes/truncate.pipe';
 interface tableData {
   datos: any[];
   url: string;
@@ -34,6 +35,7 @@ interface tableData {
     InputIconModule,
     CargandoComponent,
     FiltroComponent,
+    TruncatePipe,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',

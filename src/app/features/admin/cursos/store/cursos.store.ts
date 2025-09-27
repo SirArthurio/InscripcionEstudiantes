@@ -85,21 +85,21 @@ export const cursosStore = signalStore(
           throw error;
         }
       },
-      getCursosCompetencia(
-        page: number,
-        status: string,
-        idCompetencia: string
-      ): Promise<ContentResponsePaginated<cursoDto[]>> {
-        try {
-          const response = firstValueFrom(
-            cursoService.GetCursosCompetencias(idCompetencia, page, status)
-          );
-          if (!response) throw Error;
-          return response;
-        } catch (error) {
-          throw error;
-        }
-      },
+      // getCursosCompetencia(
+      //   page: number,
+      //   status: string,
+      //   idCompetencia: string
+      // ): Promise<ContentResponsePaginated<cursoDto[]>> {
+      //   try {
+      //     const response = firstValueFrom(
+      //       cursoService.GetCursosCompetencias(idCompetencia, page, status)
+      //     );
+      //     if (!response) throw Error;
+      //     return response;
+      //   } catch (error) {
+      //     throw error;
+      //   }
+      // },
       createCurso(curso: curso): Promise<ContentResponse<curso>> {
         try {
           this.invalidarQuery();

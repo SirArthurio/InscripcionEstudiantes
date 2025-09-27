@@ -43,12 +43,13 @@ export default class CalendarioComponent implements OnInit {
     return this.cursos
       .filter(
         (date) =>
-          date.classEndDate !== undefined && date.classEndDate >= this.hoy
+          date.enrollmentStartDate !== undefined &&
+          date.enrollmentEndDate >= this.hoy
       )
       .map((e) => ({
         title: e.name,
-        start: e.classStartDate,
-        end: this.sumarUnDia(e.classEndDate as string),
+        start: e.enrollmentStartDate,
+        end: this.sumarUnDia(e.enrollmentEndDate as string),
       }));
   }
   sumarUnDia(fecha: string): string {

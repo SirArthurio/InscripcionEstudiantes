@@ -33,11 +33,11 @@ export const StudentStore = signalStore(
     },
     async getStudents(
       page: number,
-      state: string
+      status: string
     ): Promise<ContentResponsePaginated<student[]>> {
       try {
         const response = await firstValueFrom(
-          studentService.GetStudents(page, state)
+          studentService.GetStudents(page, status)
         );
         if (!response) throw Error;
         return response;

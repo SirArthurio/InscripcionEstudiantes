@@ -13,7 +13,7 @@ import { LayoutService } from '../../service/layout.service';
 import { MenuModule } from 'primeng/menu';
 import { menuPerfilItems } from './consts/menuPerfilItems.const';
 import { MenubarModule } from 'primeng/menubar';
-import { currentStore } from 'src/app/features/auth/store/current.store';
+import { CurrentStore } from 'src/app/features/auth/store/current.store';
 import { loginStore } from 'src/app/features/auth/store/auth.store';
 
 @Component({
@@ -34,7 +34,7 @@ export class AppTopbar {
   items!: MenuItem[];
   router = inject(Router);
   mostrarCalendario = false;
-  currentUserStore = inject(currentStore);
+  currentUserStore = inject(CurrentStore);
   loginstore = inject(loginStore);
 
   constructor(public layoutService: LayoutService) {}

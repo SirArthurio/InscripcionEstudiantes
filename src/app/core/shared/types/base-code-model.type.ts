@@ -1,6 +1,6 @@
 export type baseCode = {
   id?: string;
-  code: string;
+  code?: string;
   name: string;
   description: string;
 };

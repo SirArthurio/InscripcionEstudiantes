@@ -16,22 +16,6 @@
   >
     <div class="contenedor">
       <label
-        for="code"
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Codigo</label
-      >
-      <input
-        pInputText
-        id="code"
-        type="text"
-        placeholder="Codigo"
-        class="w-full md:w-[30rem] mb-8"
-        formControlName="code"
-        appValidationClass
-      />
-    </div>
-    <div class="contenedor">
-      <label
         for="name"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
         >Nombre</label
@@ -67,32 +51,12 @@
       <label
         for="range"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Fecha Clases
-      </label>
-      <p-datepicker
-        id="range"
-        formControlName="rangeDatesClass"
-        selectionMode="range"
-        [readonlyInput]="true"
-        [showButtonBar]="true"
-        [minDate]="minDate"
-        placeholder="Selecciona un rango"
-        [showIcon]="true"
-        class="w-full md:w-[30rem] mb-8"
-        appValidationClass
-      ></p-datepicker>
-    </div>
-    <div class="contenedor">
-      <label
-        for="range"
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
         >Fecha Convocatoria
       </label>
       <p-datepicker
         id="range"
         formControlName="rangeDatesEnrollment"
         selectionMode="range"
-        [readonlyInput]="true"
         [showButtonBar]="true"
         [minDate]="minDate"
         placeholder="Selecciona un rango"
@@ -134,6 +98,12 @@
         class="w-full mb-4 p-2"
         (click)="tipoDeAccion()"
         [label]="datos().buttonText"
+        [outlined]="true"
+      />
+      <p-button
+        class="w-full mb-4 p-2"
+        (click)="confirmarEdicionFechas()"
+        label="Editar Fechas"
         [outlined]="true"
       />
 

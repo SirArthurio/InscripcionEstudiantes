@@ -46,7 +46,6 @@ import { programasStore } from '../../store/programas.store';
     ConfirmDialog,
     InputText,
     ValidationClassDirective,
-    Select,
   ],
   templateUrl: './crear-programas.component.html',
   styleUrl: './crear-programas.component.scss',

@@ -30,9 +30,13 @@ export default class ProgramasComponent {
     queryKey: ['programas', this.currentPage()],
     queryFn: async () => {
       try {
-        const response = await this.programaStore.getProgramas();
+        const response = await this.programaStore.getProgramas(
+          this.currentPage()
+        );
+        if (!response) throw Error;
         this.totalPages.set(response.data.metadata?.totalPages!);
         this.programas.set(response.data.page);
+        return response;
       } catch (error) {
         throw error;
       }

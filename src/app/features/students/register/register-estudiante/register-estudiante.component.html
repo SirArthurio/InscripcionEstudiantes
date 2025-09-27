@@ -16,7 +16,7 @@
         id="firstName"
         type="firstName"
         placeholder="Nombre"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         formControlName="firstName"
         appValidationClass
       />
@@ -32,7 +32,7 @@
         id="lastName"
         type="text"
         placeholder="Apellido "
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         formControlName="lastName"
         appValidationClass
       />
@@ -41,7 +41,7 @@
       <label
         for="birthDate"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Fecha Cumpleaños</label
+        >Fecha Nacimiento</label
       >
       <input
         pInputText
@@ -49,7 +49,7 @@
         type="date"
         [min]="edadadService.VerificacionMenor80Edad()"
         [max]="edadadService.VerificacionMayor16Edad()"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         formControlName="birthDate"
         appValidationClass
       />
@@ -67,7 +67,7 @@
         placeholder="Selecciona un genero"
         id="date"
         type="date"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         formControlName="gender"
         appValidationClass
       />
@@ -82,7 +82,7 @@
         formControlName="documentType"
         [options]="documentsTypes()"
         optionValue="code"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         optionLabel="documentType"
         placeholder="selecciona un tipo de documento"
         appValidationClass
@@ -100,7 +100,7 @@
         type="text"
         SoloNumeros
         placeholder="numero documento "
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         formControlName="documentNumber"
         appValidationClass
         [minlength]="6"
@@ -123,7 +123,7 @@
         formControlName="phone"
         [minlength]="10"
         [maxlength]="10"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         appValidationClass
       />
     </div>
@@ -138,7 +138,7 @@
         type="text"
         placeholder="Lugar de Nacimiento"
         formControlName="birthPlace"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         appValidationClass
       />
     </div>
@@ -153,19 +153,19 @@
         type="text"
         placeholder="Calle 20# 21-29 primero de mayo"
         formControlName="placeOfResidence"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         appValidationClass
       />
     </div>
     <h2 class="col-span-2">Datos Academicos</h2>
     <div class="contenedor">
       <label
-        for="program"
+        for="programId"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
         >Programa Acedemico</label
       >
       <p-autocomplete
-        formControlName="program"
+        formControlName="programId"
         [suggestions]="programFilteredValue()"
         placeholder="Selecciona o busca tu programa"
         optionValue="id"
@@ -188,7 +188,7 @@
         [min]="1"
         [max]="20"
         placeholder="Semestre Academico"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         formControlName="semester"
         appValidationClass
       />
@@ -204,7 +204,7 @@
         id="admissionDate"
         type="date"
         [max]="edadadService.VerificacionMayor16Edad()"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         formControlName="admissionDate"
         appValidationClass
       />
@@ -220,23 +220,54 @@
         id="institutionalEmail"
         type="text"
         placeholder="Email Institucional "
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-0.5"
         formControlName="institutionalEmail"
         appValidationClass
       />
     </div>
     <div class="contenedor" formGroupName="user">
       <label
+        for="institutionalUser"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Usuario</label
+      >
+      <input
+        pInputText
+        id="institutionalUser"
+        type="text"
+        placeholder="Usuario Institucional "
+        class="w-full md:w-[30rem] mb-0.5"
+      />
+    </div>
+    <div class="contenedor" formGroupName="user">
+      <label
         for="password"
         class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
-        >Password</label
+        >Contraseña</label
       >
       <p-password
         id="password"
         formControlName="password"
-        placeholder="Password"
+        placeholder="***********"
         [toggleMask]="true"
-        styleClass="mb-4"
+        styleClass="mb-0.5"
+        [fluid]="true"
+        [feedback]="false"
+      ></p-password>
+    </div>
+
+    <div class="contenedor" formGroupName="user">
+      <label
+        for="password"
+        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
+        >Confirmar contraseña</label
+      >
+      <p-password
+        id="password2"
+        formControlName="password2"
+        placeholder="***********"
+        [toggleMask]="true"
+        styleClass=""
         [fluid]="true"
         [feedback]="false"
       ></p-password>

@@ -2,7 +2,7 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { UserTypes } from '@core/shared/enums/user-types.enum';
 import { UserRole } from '@core/shared/types/currentUser.type';
 import { AvatarModule } from 'primeng/avatar';
-import { currentStore } from 'src/app/features/auth/store/current.store';
+import { CurrentStore } from 'src/app/features/auth/store/current.store';
 
 interface header {
   title: string;
@@ -23,7 +23,7 @@ interface content {
 })
 export class HeaderDashboardComponent {
   header = input<header | null>(null);
-  currentUserStore = inject(currentStore);
+  currentUserStore = inject(CurrentStore);
 
   user = signal<content>({
     firstName: '',

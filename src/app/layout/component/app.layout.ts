@@ -13,7 +13,7 @@ import { AppTopbar } from './topbar/app.topbar';
 import { AppSidebar } from './app.sidebar';
 import { AppFooter } from './app.footer';
 import { LayoutService } from '../service/layout.service';
-import { currentStore } from 'src/app/features/auth/store/current.store';
+import { CurrentStore } from 'src/app/features/auth/store/current.store';
 
 @Component({
   selector: 'app-layout',
@@ -36,7 +36,7 @@ import { currentStore } from 'src/app/features/auth/store/current.store';
 export class AppLayout {
   overlayMenuOpenSubscription: Subscription;
   isLogin = signal(false);
-  currentUserStore = inject(currentStore);
+  currentUserStore = inject(CurrentStore);
   menuOutsideClickListener: any;
 
   @ViewChild(AppSidebar) appSidebar!: AppSidebar;

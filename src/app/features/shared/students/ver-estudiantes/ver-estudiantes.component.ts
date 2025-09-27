@@ -14,7 +14,10 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
 import { PaginationService } from '@core/shared/components/pagination/pagination.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { PaginatedData } from '@core/shared/types';
+import { ContentResponsePaginated, PaginatedData } from '@core/shared/types';
+import { filtrosEstudiantes } from '../const/filtros-estudiante.const';
+import { FiltroService } from '@core/shared/components/filtro/filtro.service';
+import { statusEstudiantes } from '@core/shared/enums/status-estudiantes-type.enum';
 
 @Component({
   selector: 'app-ver-estudiantes',
@@ -32,7 +35,9 @@ export default class VerEstudiantesComponent implements OnInit, OnDestroy {
   totalPages = signal<number>(1);
   route = inject(ActivatedRoute);
   currentPage = signal<number>(1);
-
+  filtros = filtrosEstudiantes;
+  filtroService = inject(FiltroService);
+  status = signal<statusEstudiantes>(statusEstudiantes.activos);
   ngOnDestroy(): void {
     this.paginationService.reset();
   }
@@ -44,17 +49,20 @@ export default class VerEstudiantesComponent implements OnInit, OnDestroy {
     this.currentPage.set(this.paginationService.currentPage());
   });
 
-  status = toSignal(
-    this.route.queryParams.pipe(map((q) => q['state'] || 'todos'))
-  );
-
-  setStudents = effect(() => {
-    const response = this.getStudents.data();
-    if (response) {
-      this.students.set(response.page);
-      this.totalPages.set(response.metadata?.totalPages!);
-    } else this.students.set([]);
+  getStatus = effect(() => {
+    const status = this.filtroService.currentFiltro();
+    if (status !== '') {
+      this.status.set(status as statusEstudiantes);
+    }
   });
+
+  // setStudents = effect(() => {
+  //   const response = this.getStudents.data();
+  //   if (response) {
+  //     this.students.set(response.page);
+  //     this.totalPages.set(response.metadata?.totalPages!);
+  //   } else this.students.set([]);
+  // });
 
   filter() {
     if (!this.status()) {
@@ -65,14 +73,19 @@ export default class VerEstudiantesComponent implements OnInit, OnDestroy {
   getStudents = injectQuery(() => ({
     queryKey: ['estudiantes', this.currentPage(), this.status()],
 
-    queryFn: async (): Promise<PaginatedData<student[]>> => {
-      console.log('data', this.currentPage()!, '', this.status());
-      const response = await this.studentStore.getStudents(
-        this.currentPage()!,
-        this.status()
-      );
-      if (!response) throw Error;
-      return response.data;
+    queryFn: async () => {
+      try {
+        console.log('data', this.currentPage()!, '', this.status());
+        const response = await this.studentStore.getStudents(
+          this.currentPage()!,
+          this.status()
+        );
+        console.log(response);
+        if (!response) throw Error;
+        return response;
+      } catch (error) {
+        throw error;
+      }
     },
     staleTime: 1000 * 60,
   }));

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { DashboardGenericComponent } from './components/dashboard-generic/dashboard.Generic.component';
-import { currentStore } from '../../auth/store/current.store';
+import { CurrentStore } from '../../auth/store/current.store';
 import { UserTypes } from '@core/shared/enums/user-types.enum';
 
 @Component({
@@ -13,7 +13,7 @@ import { UserTypes } from '@core/shared/enums/user-types.enum';
   `,
 })
 export class Dashboard {
-  currentUserStore = inject(currentStore);
+  currentUserStore = inject(CurrentStore);
   get getUser() {
     return this.currentUserStore.user();
   }

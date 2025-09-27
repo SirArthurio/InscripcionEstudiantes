@@ -11,7 +11,7 @@ import { firstValueFrom } from 'rxjs';
 import { convocatoria } from '../model/convocatoria.type';
 import { convocatoriaDTO } from '../model/convocatoriaDTO.type';
 import { ConvocatoriasService } from '../service/convocatorias.service';
-import { editConvocatoria } from '../pages/ver-convocatorias/components/card-generic/model/edit.convocatoria.type';
+import { editTextConvocatoria } from '../pages/ver-convocatorias/components/card-generic/model/edit.convocatoria.type';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
 
@@ -125,6 +125,7 @@ export const convocatoriasStore = signalStore(
         enrollmentEndDate: string
       ): Promise<ContentResponse<convocatoriaDTO>> {
         try {
+          console.log('actua fecha :', enrollmentStartDate, enrollmentEndDate);
           queryClient.invalidateQueries({ queryKey: ['convocatoria'] });
 
           const response = await firstValueFrom(
@@ -143,7 +144,7 @@ export const convocatoriasStore = signalStore(
 
       async updateInformationConvocatoria(
         id: string,
-        edit: editConvocatoria
+        edit: editTextConvocatoria
       ): Promise<ContentResponse<convocatoriaDTO>> {
         try {
           queryClient.invalidateQueries({ queryKey: ['convocatoria'] });

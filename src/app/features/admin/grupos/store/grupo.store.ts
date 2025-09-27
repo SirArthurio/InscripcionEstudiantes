@@ -44,13 +44,18 @@ export const GrupoStore = signalStore(
       invalidateQueryGrupos() {
         queryClient.invalidateQueries({ queryKey: ['grupos'] });
       },
-      getGruposPorConvocatoria(
+      getGruposPorConvocatoriaStudent(
         page: number,
-        idConvocatoria: string
+        idConvocatoria: string,
+        studentId: string
       ): Promise<ContentResponse<grupoDto[]>> {
         try {
           const response = firstValueFrom(
-            grupoService.GetGruposPorConvocatoria(page, idConvocatoria)
+            grupoService.GetGruposPorConvocatoriaStudent(
+              page,
+              idConvocatoria,
+              studentId
+            )
           );
           if (!response) throw Error;
           return response;
@@ -61,6 +66,15 @@ export const GrupoStore = signalStore(
       getGrupo(id: string): Promise<ContentResponse<grupoDto>> {
         try {
           const response = firstValueFrom(grupoService.GetGrupo(id));
+          if (!response) throw Error;
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+      getGrupos(callId: string): Promise<ContentResponse<grupoDto[]>> {
+        try {
+          const response = firstValueFrom(grupoService.GetGrupos(callId));
           if (!response) throw Error;
           return response;
         } catch (error) {

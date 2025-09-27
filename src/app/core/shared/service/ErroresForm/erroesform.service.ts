@@ -4,6 +4,7 @@ import {
   FormControl,
   FormGroup,
   ValidationErrors,
+  ValidatorFn,
 } from '@angular/forms';
 
 @Injectable({
@@ -20,6 +21,25 @@ export class ErroesformService {
         this.marcarFormularioError(control as FormGroup);
       }
     });
+  }
+  static isFieldOneEquialFieldTwo(field: string, field2: string): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const control = formGroup.get(field);
+      const matchingControl = formGroup.get(field2);
+      if (!control || !matchingControl) return null;
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ passwordsNotEqual: true });
+        return { passwordsNotEqual: true };
+      } else {
+        if (matchingControl.errors) {
+          delete matchingControl.errors['Las contraseñas no son iguales!'];
+          if (Object.keys(matchingControl.errors).length === 0) {
+            matchingControl.setErrors(null);
+          }
+        }
+        return null;
+      }
+    };
   }
 
   mostrarErroresFormulario(form: FormGroup): string[] {

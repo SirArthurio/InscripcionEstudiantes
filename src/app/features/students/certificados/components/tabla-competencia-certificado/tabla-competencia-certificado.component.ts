@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  input,
+  output,
+  Signal,
+  signal,
+} from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -100,9 +108,13 @@ export class TablaCompetenciaCertificadoComponent {
   // Signals
   archivosSubiendo = signal<ArchivoSubida[]>([]);
   competenciaExpandida = signal<string | null>(null);
+  visible = signal<boolean>(false);
+  progress = signal<number>(0);
+  interval = signal<any>(null);
 
   //injects
   messageService = inject(MessageService);
+  cdr = inject(ChangeDetectorRef);
 
   onUpload(event: any, competencia: CompetenciaStudent) {
     const archivo = event.files[0];
@@ -119,6 +131,7 @@ export class TablaCompetenciaCertificadoComponent {
       });
       return;
     }
+    this.mostrarProgreso();
 
     // Simular subida con progreso
     const archivoSubida: ArchivoSubida = {
@@ -127,10 +140,15 @@ export class TablaCompetenciaCertificadoComponent {
       progreso: 0,
     };
 
+    ///////////////////
     this.archivosSubiendo.update((archivos) => [...archivos, archivoSubida]);
 
-    // Simular progreso de subida
-    const interval = setInterval(() => {
+    if (this.interval()) {
+      clearInterval(this.interval()!);
+      this.interval.set(null);
+    }
+
+    const id = setInterval(() => {
       this.archivosSubiendo.update((archivos) =>
         archivos.map((a) =>
           a.competenciaId === competencia.id
@@ -139,11 +157,16 @@ export class TablaCompetenciaCertificadoComponent {
         )
       );
 
+      this.progress.update((p) => Math.min(p + 10, 100));
+
+      ///progreso
+
       const archivoActual = this.archivosSubiendo().find(
         (a) => a.competenciaId === competencia.id
       );
       if (archivoActual && archivoActual.progreso >= 100) {
-        clearInterval(interval);
+        clearInterval(this.interval()!);
+        this.cerrarProgreso();
 
         // Actualizar competencia
         const index = this.competencias().findIndex(
@@ -171,6 +194,7 @@ export class TablaCompetenciaCertificadoComponent {
         });
 
         this.onArchivoSubido.emit({ competencia, archivo });
+        this.cerrarProgreso();
       }
     }, 200);
   }
@@ -275,5 +299,24 @@ export class TablaCompetenciaCertificadoComponent {
       month: 'short',
       day: 'numeric',
     });
+  }
+
+  ////////////
+  mostrarProgreso() {
+    if (!this.visible()) {
+      this.messageService.add({
+        key: 'confirm',
+        sticky: false,
+        severity: 'custom',
+        summary: 'Subiendo el archivo',
+        styleClass: 'backdrop-blur-lg rounded-2xl',
+      });
+      this.visible.set(true);
+      this.progress.set(0);
+    }
+  }
+
+  cerrarProgreso() {
+    this.visible.set(false);
   }
 }

@@ -56,10 +56,10 @@ export default class VerCursosComponent implements OnInit {
     queryFn: async () => {
       try {
         console.log('status', this.status());
-        const response = await this.cursoStore.getCursosCompetencia(
+        const response = await this.cursoStore.getCursos(
           this.currentPage(),
-          this.status(),
-          this.competenciaId()
+          this.status()
+          // this.competenciaId()
         );
         this.totalPages.set(response.data.metadata?.totalPages!);
         this.cursos.set(response.data.page);

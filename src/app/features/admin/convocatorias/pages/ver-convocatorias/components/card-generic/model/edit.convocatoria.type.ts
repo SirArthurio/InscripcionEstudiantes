@@ -1,6 +1,7 @@
 import { baseCode } from '@core/shared/types';
 
-export type editConvocatoria = baseCode & {
-  classStartDate: string;
-  classEndDate: string;
+export type editTextConvocatoria = Omit<baseCode, 'code'> & {};
+export type editFechasConvocatoria = {
+  enrollmentStartDate: string;
+  enrollmentEndDate: string;
 };

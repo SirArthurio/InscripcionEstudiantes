@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ValidationClassDirective } from '@core/directives/app-validation-class.directive';
 import { SoloNumerosDirective } from '@core/directives/solo-numeros.directive';
 import { CardFormularioValidacionComponent } from '@core/shared/components/card-formulario-validacion/card-formulario-validacion.component';
@@ -18,7 +18,6 @@ import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { ErroesformService } from '@core/shared/service/ErroresForm/erroesform.service';
 import { VerificacionFechasLimiteService } from '@core/shared/service/VerficacionFechasLimites.service';
 import { professor } from '@core/shared/types';
-import { programs } from '@core/shared/types/programas.type';
 import { UnicesarValidator } from '@core/shared/Validators';
 import {
   documentNumberValidator,
@@ -38,6 +37,8 @@ import { genre } from 'src/app/utils/const/genre.const';
 import { dataCrearProfessor } from '../../const/data-crearProfessor.const';
 import { dataVerProfessor } from '../../const/data-verProfessor.const';
 import { datosProfessorVerificacion } from '../../const/datosProfessorVerificar';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { throwError } from 'rxjs';
 
 interface documentType {
   id: number;
@@ -63,7 +64,7 @@ interface documentType {
   templateUrl: './register-profesor.component.html',
   styleUrl: './register-profesor.component.scss',
 })
-export default class RegisterProfesorComponent {
+export default class RegisterProfesorComponent implements OnInit {
   //services
   edadadService = inject(VerificacionFechasLimiteService);
   formErroresService = inject(ErroesformService);
@@ -75,7 +76,8 @@ export default class RegisterProfesorComponent {
   //formularios
   formRegister!: FormGroup;
   form = inject(FormBuilder);
-  route = inject(Router);
+  router = inject(ActivatedRoute);
+  navigate = inject(Router);
 
   //signals
   documentsTypes = signal<documentType[] | []>(documentTypes);
@@ -86,6 +88,7 @@ export default class RegisterProfesorComponent {
   generos = genre;
   data = dataCrearProfessor;
   validacionData = signal<datosResumen[] | []>([]);
+  professorId = signal<string>('');
 
   RegisterForm() {
     this.formRegister = this.form.group({
@@ -139,19 +142,38 @@ export default class RegisterProfesorComponent {
       throw error;
     }
   }
+
   ngOnInit() {
     this.RegisterForm();
+    this.obtenerIdProfessor();
   }
 
-  getProfessor = effect(() => {
-    const response = this.professorStore.professor();
-    if (response) {
-      this.formRegister.patchValue(response);
+  obtenerIdProfessor() {
+    const id = this.router.snapshot.queryParamMap.get('id');
+    if (id) {
+      this.professorId.set(id);
+    }
+  }
+
+  getProfessor = injectQuery(() => ({
+    queryKey: ['professor', this.professorId()],
+    queryFn: async () => {
+      try {
+        const response = this.professorStore.getProfessor(this.professorId());
+        if (!response) throw Error;
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    },
+  }));
+
+  setData = effect(() => {
+    const datos = this.getProfessor.data()?.data;
+    if (datos) {
+      this.formRegister.patchValue(datos);
       this.isEditar.set(true);
       this.datos.set(dataVerProfessor);
-    } else {
-      this.isEditar.set(false);
-      this.datos.set(dataCrearProfessor);
     }
   });
   resumenDatos(profesor: professor) {

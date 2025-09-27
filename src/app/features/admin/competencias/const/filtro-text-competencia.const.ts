@@ -1,4 +1,4 @@
-import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum copy';
+import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum';
 import { GrupoFiltros } from '@core/shared/types';
 
 export const filtroTextCompetencias: GrupoFiltros[] = [

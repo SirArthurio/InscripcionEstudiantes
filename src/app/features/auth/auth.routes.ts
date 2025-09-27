@@ -8,7 +8,9 @@ export default [
   {
     path: 'register',
     loadComponent: () =>
-      import('./register/register-estudiante/register-estudiante.component'),
+      import(
+        '../students/register/register-estudiante/register-estudiante.component'
+      ),
   },
   {
     path: 'reset-password',
@@ -21,11 +23,15 @@ export default [
   {
     path: 'verify-email',
     loadComponent: () =>
-      import('./verify-intitucional-email/verify-intitucional-email.component'),
+      import(
+        '../students/verify-intitucional-email/verify-intitucional-email.component'
+      ),
   },
   {
     path: 'send-institutional-email',
     loadComponent: () =>
-      import('./send-institucional-email/send-institucional-email.component'),
+      import(
+        '../students/send-institucional-email/send-institucional-email.component'
+      ),
   },
 ] as Routes;

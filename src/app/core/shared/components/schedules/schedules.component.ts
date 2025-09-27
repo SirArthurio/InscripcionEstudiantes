@@ -464,26 +464,26 @@ export class SchedulesComponent {
 
   private dayName(date: Date): string {
     const days = [
-      'Domingo',
-      'Lunes',
-      'Martes',
-      'Miércoles',
-      'Jueves',
-      'Viernes',
-      'Sábado',
+      'domingo',
+      'lunes',
+      'martes',
+      'miercoles',
+      'jueves',
+      'viernes',
+      'sabado',
     ];
     return days[date.getDay()];
   }
 
   private dayNumber(dayName: string): number {
     const dayMap: Record<string, number> = {
-      Domingo: 0,
-      Lunes: 1,
-      Martes: 2,
-      Miércoles: 3,
-      Jueves: 4,
-      Viernes: 5,
-      Sábado: 6,
+      domingo: 0,
+      lunes: 1,
+      martes: 2,
+      miercoles: 3,
+      jueves: 4,
+      viernes: 5,
+      sabado: 6,
     };
     return dayMap[dayName];
   }

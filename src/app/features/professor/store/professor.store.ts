@@ -33,13 +33,24 @@ export const professorStore = signalStore(
     resetProfessors() {
       patchState(store, { professors: professorInitialValueStore.professors });
     },
-    getProfessor(
+    getProfessors(
       page: number,
       status: string
     ): Promise<ContentResponsePaginated<professor[]>> {
       try {
         const response = firstValueFrom(
           professorService.GetProfessors(page, status)
+        );
+        if (!response) throw Error;
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    },
+    getProfessor(professorId: string): Promise<ContentResponse<professor>> {
+      try {
+        const response = firstValueFrom(
+          professorService.GetProfessor(professorId)
         );
         if (!response) throw Error;
         return response;

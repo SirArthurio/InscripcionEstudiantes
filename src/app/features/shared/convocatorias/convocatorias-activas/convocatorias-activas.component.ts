@@ -15,7 +15,7 @@ import { convocatoriasStore } from 'src/app/features/admin/convocatorias/store/c
 import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NoDataComponent } from '@core/shared/components/no-data/no-data.component';
-import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum copy';
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum';
 import { Router } from '@angular/router';
 
 @Component({

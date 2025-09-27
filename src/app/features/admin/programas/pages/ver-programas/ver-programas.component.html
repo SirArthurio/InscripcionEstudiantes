@@ -1,5 +1,8 @@
 <app-table
-  [data]="{ datos: this.programas(), url: 'asads' }"
+  [data]="{
+    datos: this.obtenerProgramas.data()?.data?.page || [],
+    url: 'asads'
+  }"
   [totalPages]="this.totalPages()"
   [isLoading]="this.obtenerProgramas.isLoading()"
 />

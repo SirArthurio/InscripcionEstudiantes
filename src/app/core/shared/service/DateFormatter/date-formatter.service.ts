@@ -19,4 +19,26 @@ export class DateFormatterService {
 
     return this.formatter.format(parsedDate);
   }
+  static createLocalDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day); // month - 1 porque Date usa 0-11
+  }
+
+  static convertToHHmmss(time: string): string {
+    if (!time) return '';
+
+    // Verificar si ya tiene el formato correcto HH:mm:ss
+    if (time.includes(':') && time.split(':').length === 3) {
+      return time;
+    }
+
+    // Verificar si tiene formato HH:mm
+    if (time.includes(':') && time.split(':').length === 2) {
+      return `${time}:00`;
+    }
+
+    // Si no tiene el formato esperado, devolver vacío o manejar error
+    console.warn(`Formato de tiempo inválido: ${time}`);
+    return '';
+  }
 }

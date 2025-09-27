@@ -5,7 +5,7 @@ import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from '../app.menuitem';
 import { itemsMenu } from './model/type/menuItems.type';
 import { menu } from './const/menu-datos.const';
-import { currentStore } from 'src/app/features/auth/store/current.store';
+import { CurrentStore } from 'src/app/features/auth/store/current.store';
 
 @Component({
   selector: 'app-menu',
@@ -26,7 +26,7 @@ import { currentStore } from 'src/app/features/auth/store/current.store';
 })
 export class AppMenu {
   model = signal<MenuItem[]>([]);
-  currentUserStore = inject(currentStore);
+  currentUserStore = inject(CurrentStore);
   rol = signal<string>('');
 
   role = effect(() => {

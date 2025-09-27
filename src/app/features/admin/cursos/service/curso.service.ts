@@ -12,6 +12,7 @@ import { cursoDto } from '../models/cursoDto.type';
 export class CursoService {
   http = inject(HttpClient);
   api = environment.back;
+  prefix = 'courses';
 
   GetCursos(
     page?: number,
@@ -26,52 +27,59 @@ export class CursoService {
     }
 
     return this.http
-      .get<ContentResponsePaginated<cursoDto[]>>(
-        `${this.api}/courses/get-all`,
-        {
-          params,
-        }
-      )
+      .get<ContentResponsePaginated<cursoDto[]>>(`${this.api}/${this.prefix}`, {
+        params,
+      })
       .pipe(catchError((error) => throwError(() => error)));
   }
-  GetCursosCompetencias(
-    idCompetencia: string,
-    page?: number,
-    status?: string
-  ): Observable<ContentResponsePaginated<cursoDto[]>> {
-    let params = new HttpParams();
-    if (page) {
-      params = params.append('page', page);
-    }
-    if (status) {
-      params = params.append('status', status);
-    }
 
-    return this.http
-      .get<ContentResponsePaginated<cursoDto[]>>(
-        `${this.api}/courses/get-all-by-competency/${idCompetencia}`,
-        {
-          params,
-        }
-      )
-      .pipe(catchError((error) => throwError(() => error)));
-  }
+  // GetCursosCompetencias(
+  //   idCompetencia: string,
+  //   page?: number,
+  //   status?: string
+  // ): Observable<ContentResponsePaginated<cursoDto[]>> {
+  //   let params = new HttpParams();
+  //   if (page) {
+  //     params = params.append('page', page);
+  //   }
+  //   if (status) {
+  //     params = params.append('status', status);
+  //   }
+
+  //   return this.http
+  //     .get<ContentResponsePaginated<cursoDto[]>>(
+  //       `${this.api}/courses/get-all-by-competency/${idCompetencia}`,
+  //       {
+  //         params,
+  //       }
+  //     )
+  //     .pipe(catchError((error) => throwError(() => error)));
+  // }
+
   GetCurso(id: string): Observable<ContentResponse<cursoDto>> {
     return this.http
-      .get<ContentResponse<cursoDto>>(`${this.api}/courses/get-by-id/${id}`)
+      .get<ContentResponse<cursoDto>>(`${this.api}/courses/${id}/get-by-id`)
       .pipe(catchError((error) => throwError(() => error)));
   }
 
   CreateCursos(curso: curso): Observable<ContentResponse<curso>> {
     return this.http
-      .post<ContentResponse<curso>>(`${this.api}/courses/create`, curso)
+      .post<ContentResponse<curso>>(`${this.api}/courses`, curso)
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+  PatchCurso(
+    id: string,
+    curso: Partial<cursoDto>
+  ): Observable<ContentResponse<cursoDto>> {
+    return this.http
+      .patch<ContentResponse<cursoDto>>(`${this.api}/courses/${id}`, curso)
       .pipe(catchError((error) => throwError(() => error)));
   }
 
   ActivarCurso(id: string): Observable<ContentResponse<cursoDto>> {
     return this.http
       .patch<ContentResponse<cursoDto>>(
-        `${this.api}/courses/activate/${id}`,
+        `${this.api}/courses/${id}/activate`,
         {}
       )
       .pipe(catchError((error) => throwError(() => error)));
@@ -79,7 +87,7 @@ export class CursoService {
 
   ArchivarCurso(id: string): Observable<ContentResponse<cursoDto>> {
     return this.http
-      .patch<ContentResponse<cursoDto>>(`${this.api}/courses/archive/${id}`, {})
+      .patch<ContentResponse<cursoDto>>(`${this.api}/courses/${id}/archive`, {})
       .pipe(catchError((error) => throwError(() => error)));
   }
 }

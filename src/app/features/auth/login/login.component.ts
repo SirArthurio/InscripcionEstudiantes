@@ -20,12 +20,12 @@ import { datosLogin } from './const/datos-login.const';
 import { loginStore } from '../store/auth.store';
 import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { ErroesformService } from '@core/shared/service/ErroresForm/erroesform.service';
-import { currentStore } from '../store/current.store';
+import { CurrentStore } from '../store/current.store';
 import { UserRole } from '@core/shared/types/currentUser.type';
 import { Dialog } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
-import SendInstitucionalEmailComponent from '../send-institucional-email/send-institucional-email.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import SendInstitucionalEmailComponent from '../../students/send-institucional-email/send-institucional-email.component';
 
 @Component({
   selector: 'app-login',
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
   alertService = inject(AlertasService);
   route = inject(Router);
   //store
-  currentStore = inject(currentStore);
+  currentStore = inject(CurrentStore);
   loginStore = inject(loginStore);
   //form
   formLogin!: FormGroup;

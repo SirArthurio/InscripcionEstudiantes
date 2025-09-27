@@ -13,9 +13,9 @@ import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AuthService } from '../service/auth.service';
 import { firstValueFrom } from 'rxjs';
 import ErrorComponent from '@core/shared/pages/error/error.component';
+import { StudentsService } from '../../students/service/students.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -30,7 +30,7 @@ export default class VerifyInstitucionalComponent implements OnInit {
   errorFormService = inject(ErroesformService);
   messageService = inject(MessageService);
   route = inject(ActivatedRoute);
-  loginService = inject(AuthService);
+  studentService = inject(StudentsService);
 
   //signal
   token = signal<string>('');
@@ -55,7 +55,7 @@ export default class VerifyInstitucionalComponent implements OnInit {
     try {
       console.log('entro y token: ', this.token());
       const response = await firstValueFrom(
-        this.loginService.VerifyInstitucionalEmail(this.token())
+        this.studentService.VerifyInstitucionalEmail(this.token())
       );
       if (!response) {
         this.succes.set(false);
@@ -71,7 +71,7 @@ export default class VerifyInstitucionalComponent implements OnInit {
   }
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((query) => {
-      const verify = query.get('email_verification_token');
+      const verify = query.get('institutional-email-verification');
       this.token.set(verify || '');
     });
     console.log(this.token());

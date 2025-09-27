@@ -6,7 +6,7 @@ import { TableComponent } from '@core/shared/components/table/table.component';
 import { competenciaStore } from '../../store/competencia.store';
 import { filtroTextCompetencias } from '../../const/filtro-text-competencia.const';
 import { FiltroService } from '@core/shared/components/filtro/filtro.service';
-import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum copy';
+import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum';
 
 @Component({
   selector: 'app-ver-programas',
@@ -26,6 +26,7 @@ export default class VerProgramasComponent {
   totalPages = signal(1);
   filtroCompetencias = filtroTextCompetencias;
   status = signal<statusCompetencia>(statusCompetencia.activo);
+
   obtenerPaginaActual = effect(() => {
     this.currentPage.set(this.paginationService.currentPage());
   });
@@ -41,12 +42,13 @@ export default class VerProgramasComponent {
     queryKey: ['competencias', this.status(), this.currentPage()],
     queryFn: async () => {
       try {
+        console.log('data antes: ', this.status(), this.currentPage());
         const response = await this.competenciaStore.getCompetencias(
           this.currentPage(),
           this.status()
         );
-        this.totalPages.set(response.data.metadata?.totalPages!);
-        this.competencias.set(response.data.page);
+        if (!response) throw Error;
+        this.competencias.set(response.data);
         return response;
       } catch (error) {
         throw error;

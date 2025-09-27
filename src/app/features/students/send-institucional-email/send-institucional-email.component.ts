@@ -15,10 +15,9 @@ import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-import { AuthService } from '../service/auth.service';
 import { firstValueFrom } from 'rxjs';
-import { currentStore } from '../store/current.store';
 import { textIntitucionalEmail } from './const/text-send-institucional-email.const';
+import { StudentsService } from '../../students/service/students.service';
 
 @Component({
   selector: 'app-send-institucional-email',
@@ -42,8 +41,7 @@ export default class SendInstitucionalEmailComponent {
   errorFormService = inject(ErroesformService);
   messageService = inject(MessageService);
   //store
-  currentStore = inject(currentStore);
-  authService = inject(AuthService);
+  studentService = inject(StudentsService);
   //texto
   texto = textIntitucionalEmail;
   //variables
@@ -61,7 +59,7 @@ export default class SendInstitucionalEmailComponent {
   async enviarDatos(email: string) {
     const institutionalEmail = { institutionalEmail: email };
     const response = await firstValueFrom(
-      this.authService.SendInstitucionalEmail(institutionalEmail)
+      this.studentService.SendInstitucionalEmail(institutionalEmail)
     );
     this.alertService.showSuccess('Exito', `${response.message}`, 6000);
     this.visible = false;

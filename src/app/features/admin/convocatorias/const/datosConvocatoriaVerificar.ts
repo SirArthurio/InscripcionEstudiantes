@@ -7,10 +7,7 @@ export const datosConvocatoriaVerificacion = (
     name: 'Nombre',
     content: convocatoria.name,
   },
-  {
-    name: 'Codigo',
-    content: convocatoria.code,
-  },
+
   {
     name: 'Descripcion',
     content: convocatoria.description,
@@ -22,13 +19,5 @@ export const datosConvocatoriaVerificacion = (
   {
     name: 'Fecha Fin Convocatoria',
     content: convocatoria.enrollmentEndDate,
-  },
-  {
-    name: 'Fecha Inicio',
-    content: convocatoria.classStartDate,
-  },
-  {
-    name: 'Fecha Fin',
-    content: convocatoria.classEndDate || '',
   },
 ];

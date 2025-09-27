@@ -37,7 +37,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { SoloNumerosDirective } from '@core/directives/solo-numeros.directive';
 import { ValidationClassDirective } from '@core/directives/app-validation-class.directive';
 import { programasStore } from 'src/app/features/admin/programas/store/programas.store';
-import { Register } from '@tanstack/angular-query-experimental';
+
 interface documentType {
   id: number;
   documentType: string;
@@ -85,13 +85,14 @@ export default class RegisterEstudianteComponent implements OnInit {
   checked: boolean = false;
   generos = genre;
   data = registerEstudianteConstData;
+
   ngOnInit() {
     this.RegisterForm();
     this.obtenerProgramas();
   }
   async obtenerProgramas() {
     try {
-      const response = await this.programaStore.getProgramas();
+      const response = await this.programaStore.getProgramas(1);
       if (!response) throw Error;
       this.programas.set(response.data.page);
     } catch (error) {}
@@ -113,24 +114,35 @@ export default class RegisterEstudianteComponent implements OnInit {
   }
   RegisterForm() {
     this.formRegister = this.form.group({
-      user: this.form.group({
-        institutionalEmail: ['', [Validators.required, UnicesarValidator()]],
-        password: ['', Validators.required],
-      }),
-
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      user: this.form.group(
+        {
+          institutionalEmail: ['', [Validators.required, UnicesarValidator()]],
+          password: ['', [Validators.required, Validators.minLength(8)]],
+          password2: ['', [Validators.required, Validators.minLength(8)]],
+        },
+        {
+          validators: [
+            ErroesformService.isFieldOneEquialFieldTwo('password', 'password2'),
+          ],
+        }
+      ),
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
       birthDate: ['', Validators.required],
-      program: ['', [Validators.required]],
+      programId: ['', [Validators.required]],
       semester: [
         '',
         [Validators.required, Validators.min(1), Validators.max(20)],
       ],
-      birthPlace: ['', [Validators.required]],
-      placeOfResidence: ['', [Validators.required]],
+      birthPlace: ['', [Validators.required, Validators.minLength(3)]],
+      placeOfResidence: ['', [Validators.required, Validators.minLength(5)]],
       documentNumber: [
         '',
-        [Validators.required, documentNumberValidator(6, 10)],
+        [
+          Validators.required,
+          Validators.minLength(6),
+          documentNumberValidator(6, 10),
+        ],
       ],
       documentType: ['', Validators.required],
       gender: ['', Validators.required],
@@ -138,16 +150,10 @@ export default class RegisterEstudianteComponent implements OnInit {
       admissionDate: ['', [Validators.required]],
     });
   }
-  limpiarDatos(): student {
-    const { program, ...datos } = this.formRegister.value;
-    return datos;
-  }
 
   enviarFormulario() {
     if (this.formRegister.valid) {
-      console.log('datos', this.formRegister.value);
-      const id = this.formRegister.get('program')?.value;
-      this.enviarDatos(this.limpiarDatos(), id);
+      this.enviarDatos(this.formRegister.value);
     } else {
       this.manejoErroresForm();
     }
@@ -159,10 +165,10 @@ export default class RegisterEstudianteComponent implements OnInit {
     );
     console.log('error', this.formRegister);
   }
-  async enviarDatos(student: student, idPrograma: string) {
+  async enviarDatos(student: student) {
     try {
       const response = await firstValueFrom(
-        this.registerStudentService.RegisterStudent(student, idPrograma)
+        this.registerStudentService.RegisterStudent(student)
       );
       if (response) {
         this.confirmacion(response.message || '');
@@ -192,5 +198,9 @@ export default class RegisterEstudianteComponent implements OnInit {
   }
   navegar() {
     this.route.navigate(['/auth/login']);
+  }
+
+  get userForm(): FormGroup {
+    return this.formRegister.get('user') as FormGroup;
   }
 }

@@ -45,7 +45,7 @@ export default class VerProfessorComponent implements OnDestroy, OnInit {
     queryKey: ['professor', this.pagina()],
 
     queryFn: async (): Promise<PaginatedData<professor[]>> => {
-      const response = await this.professorStore.getProfessor(
+      const response = await this.professorStore.getProfessors(
         this.pagina(),
         ''
       );
