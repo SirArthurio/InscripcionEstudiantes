@@ -1,0 +1,147 @@
+<!-- HTML mejorado -->
+<section class="contenedor-formulario">
+  <form #formulario class="relative formulario-grupos" [formGroup]="formGrupos">
+    <!-- Grid de campos del formulario -->
+    <div class="campos-grid">
+      <!-- Modalidad -->
+      <div class="campo-wrapper">
+        <label for="modality" class="campo-label">Modalidad</label>
+        <p-select
+          [options]="modalidades"
+          optionValue="name"
+          optionLabel="name"
+          id="modality"
+          placeholder="Selecciona modalidad"
+          class="campo-input"
+          formControlName="modality"
+          appValidationClass
+        />
+      </div>
+
+      <!-- Docente -->
+      <div class="campo-wrapper">
+        <label for="professorId" class="campo-label">Docente</label>
+        <p-select
+          [options]="this.obtenerProfessor.data()?.data?.page"
+          optionValue="id"
+          optionLabel="firstName"
+          id="professorId"
+          placeholder="Selecciona docente"
+          class="campo-input"
+          formControlName="professorId"
+          appValidationClass
+        />
+      </div>
+
+      <!-- Observaciones -->
+      <div class="campo-wrapper">
+        <label for="observations" class="campo-label">Observaciones</label>
+        <input
+          pInputText
+          id="observations"
+          placeholder="Observaciones del grupo"
+          class="campo-input"
+          formControlName="observations"
+          appValidationClass
+        />
+      </div>
+
+      <!-- Capacidad -->
+      <div class="campo-wrapper">
+        <label for="capacity" class="campo-label">Capacidad</label>
+        <p-inputNumber
+          SoloNumeros
+          id="capacity"
+          [min]="1"
+          placeholder="Capacidad del grupo"
+          class="campo-input"
+          formControlName="capacity"
+          appValidationClass
+        />
+      </div>
+    </div>
+
+    <!-- Sección de acciones -->
+    @if (progress()===0) {
+    <div class="acciones-section">
+      <h3 class="acciones-titulo">
+        <i class="pi pi-cog"></i>
+        Acciones Disponibles
+      </h3>
+
+      <div class="acciones-grid">
+        <!-- Agregar horario -->
+        <p-button
+          class="accion-btn"
+          (onClick)="agregarHorario()"
+          label="Agregar Horario"
+          icon="pi pi-clock"
+          [outlined]="true"
+          severity="primary"
+        />
+
+        @if(this.isEditar()){
+        <!-- Abrir grupo -->
+        <p-button
+          class="accion-btn"
+          (onClick)="confirmAbrir()"
+          label="Abrir Grupo"
+          icon="pi pi-lock-open"
+          [outlined]="true"
+          severity="success"
+        />
+
+        <!-- Cancelar grupo -->
+        <p-button
+          class="accion-btn"
+          (onClick)="confirmCancelar()"
+          label="Cancelar Grupo"
+          icon="pi pi-times"
+          [outlined]="true"
+          severity="danger"
+        />
+
+        <!-- Cerrar grupo -->
+        <p-button
+          class="accion-btn"
+          (onClick)="confirmCerrar()"
+          label="Cerrar Grupo"
+          icon="pi pi-lock"
+          [outlined]="true"
+          severity="warn"
+        />
+        }
+
+        <!-- Acción principal -->
+        <p-button
+          class="accion-btn accion-principal"
+          (onClick)="tipoDeAccion()"
+          [label]="datos().buttonText || ''"
+          icon="pi pi-save"
+          severity="primary"
+        />
+      </div>
+    </div>
+    } @else if(progress()===1){
+    <!-- Aquí puedes agregar contenido para el siguiente paso -->
+    }
+
+    <!-- Efecto de luz animado -->
+    <app-carta
+      [duration]="6"
+      [delay]="2"
+      [borderWidth]="2"
+      borderRadius="xl"
+      [reverse]="true"
+    />
+  </form>
+</section>
+
+<!-- Calendario de horarios -->
+<app-schedules
+  [visible]="visibleSchedule()"
+  (visibleChange)="this.cerrarCalendario()"
+  [editSchedules]="this.schedules()"
+  (confirmedSchedules)="this.schedulesHijo($event)"
+  [isEditMode]="this.isEditar()"
+/>

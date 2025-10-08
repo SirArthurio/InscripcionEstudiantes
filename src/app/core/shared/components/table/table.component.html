@@ -1,9 +1,10 @@
 <div class="card">
   <!-- Paginación -->
   <app-pagination [totalPages]="totalPages()" />
+  @if (!showFiltros()) {
   <app-filtro [gruposFiltros]="gruposFiltros()" [titulo]="titulo()" />
 
-  @if(!isLoading()){
+  } @if(!isLoading()){
   <!--  -->
   @if(data().datos.length>0){
 

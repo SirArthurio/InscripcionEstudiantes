@@ -174,12 +174,12 @@ export const menu: itemsMenu[] = [
             routerLink: ['/admin/cursos/ver-cursos'],
             roles: ['superadmin', 'profesor'],
           },
-          {
-            icon: 'pi pi-book',
-            label: 'Crear cursos',
-            routerLink: ['/admin/cursos/crear-cursos'],
-            roles: ['superadmin', 'profesor'],
-          },
+          // {
+          //   icon: 'pi pi-book',
+          //   label: 'Crear cursos',
+          //   routerLink: ['/admin/cursos/crear-cursos'],
+          //   roles: ['superadmin', 'profesor'],
+          // },
         ],
       },
       {
@@ -192,12 +192,12 @@ export const menu: itemsMenu[] = [
             routerLink: ['/admin/grupos/ver-grupos'],
             roles: ['superadmin', 'profesor'],
           },
-          {
-            icon: 'pi pi-book',
-            label: 'Crear Grupos',
-            routerLink: ['/admin/grupos/crear-grupos'],
-            roles: ['superadmin', 'profesor'],
-          },
+          // {
+          //   icon: 'pi pi-book',
+          //   label: 'Crear Grupos',
+          //   routerLink: ['/admin/grupos/crear-grupos'],
+          //   roles: ['superadmin', 'profesor'],
+          // },
         ],
       },
     ],

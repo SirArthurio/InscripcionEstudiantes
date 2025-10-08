@@ -17,12 +17,13 @@ import { Calendar, CalendarOptions } from '@fullcalendar/core/index.js';
 import esLocale from '@fullcalendar/core/locales/es';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { DialogModule } from 'primeng/dialog';
-import { daySchedule } from '@core/shared/types';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import interactionPlugin from '@fullcalendar/interaction';
 import { ButtonModule } from 'primeng/button';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
+import { scheduleStore } from 'src/app/features/admin/schedules/store/schedule.store';
+import { schedule } from 'src/app/features/admin/schedules/model/schedule.type';
 
 @Component({
   selector: 'app-schedules',
@@ -37,25 +38,28 @@ import { TagModule } from 'primeng/tag';
   styleUrl: './schedules.component.scss',
 })
 export class SchedulesComponent {
+  //inputs
   visible = input<boolean>(false);
-  editSchedules = input<daySchedule[]>([]);
+  editSchedules = input<schedule[]>([]);
   calendarOptions!: CalendarOptions;
+  //outputs
   visibleChange = output();
-  @Output() confirmedSchedules = new EventEmitter<daySchedule[]>();
+  @Output() confirmedSchedules = new EventEmitter<schedule[]>();
   eliminarSchedulePadre = output<number>();
-
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
-
+  //variables
   calendarApi = signal<Calendar | null>(null);
-  hoursSelected = signal<daySchedule[]>([]);
+  hoursSelected = signal<schedule[]>([]);
   confirmVisible = signal<boolean>(false);
-  isEditMode = signal<boolean>(false);
-
+  isEditMode = input<boolean>(false);
+  //services
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
-
+  //stores
+  scheduleStore = inject(scheduleStore);
   ngOnInit() {
     this.initializeCalendar();
+    this.bandera();
   }
 
   ngAfterViewInit() {
@@ -66,6 +70,7 @@ export class SchedulesComponent {
       }
     }, 100);
   }
+  bandera() {}
 
   private initializeCalendar() {
     this.calendarOptions = {
@@ -105,17 +110,17 @@ export class SchedulesComponent {
       const schedules = this.editSchedules();
 
       if (schedules && schedules.length > 0) {
-        if (!this.isEditMode()) {
-          this.isEditMode.set(true);
-        }
+        // if (!this.isEditMode()) {
+        //   this.isEditMode.set(true);
+        // }
         if (!this.areSchedulesEqual(schedules, this.hoursSelected())) {
           this.loadEditSchedules(schedules);
         }
       } else {
-        if (this.isEditMode()) {
-          this.isEditMode.set(false);
-          this.clearCalendar();
-        }
+        // if (this.isEditMode()) {
+        //   this.isEditMode.set(false);
+        //   this.clearCalendar();
+        // }
       }
     },
     { allowSignalWrites: true }
@@ -145,7 +150,7 @@ export class SchedulesComponent {
     }
   }
 
-  private loadEditSchedules(datos: daySchedule[]) {
+  private loadEditSchedules(datos: schedule[]) {
     console.log('Cargando schedules para edición:', datos);
     const schedules = datos.map((e) => e);
 
@@ -183,15 +188,16 @@ export class SchedulesComponent {
   private handleTimeSelection(start: Date, end: Date) {
     console.log('Manejando selección de tiempo:', { start, end });
 
-    if (this.isEditMode()) {
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Modo edición',
-        detail: 'Haz clic en un horario existente para eliminarlo',
-        life: 3000,
-      });
-      return;
-    }
+    // if (this.isEditMode()) {
+    //   this.messageService.add({
+    //     severity: 'info',
+    //     summary: 'Modo edición',
+    //     detail: 'Haz clic en un horario existente para eliminarlo',
+    //     life: 3000,
+    //   });
+
+    //   return;
+    // }
 
     this.addSchedule(start, end);
   }
@@ -227,7 +233,7 @@ export class SchedulesComponent {
       return;
     }
 
-    const newSchedule: daySchedule = { day, startTime, endTime };
+    const newSchedule: schedule = { day, startTime, endTime };
 
     this.hoursSelected.update((current) => {
       const updated = [...current, newSchedule];
@@ -253,7 +259,7 @@ export class SchedulesComponent {
           isExisting: false,
         },
       });
-
+      this.scheduleStore.setSchedule(this.hoursSelected());
       console.log('Evento agregado al calendario con ID:', eventId);
     }
 
@@ -272,6 +278,8 @@ export class SchedulesComponent {
       console.warn('No se encontró scheduleData en el evento');
       return;
     }
+    if (this.isEditMode()) {
+    }
 
     console.log('Removiendo schedule:', scheduleData);
 
@@ -287,7 +295,7 @@ export class SchedulesComponent {
       console.log('Schedules después de remover:', filtered);
       return filtered;
     });
-
+    this.scheduleStore.setSchedule(this.hoursSelected());
     event.remove();
 
     this.messageService.add({
@@ -308,7 +316,9 @@ export class SchedulesComponent {
   }
 
   openConfirmation() {
-    console.log('Abriendo confirmación, schedules:', this.hoursSelected());
+    console.log('=== DEBUG CONFIRMATION ===');
+    console.log('Schedules:', this.hoursSelected());
+    console.log('confirmVisible antes:', this.confirmVisible());
 
     if (this.hoursSelected().length === 0) {
       this.messageService.add({
@@ -321,6 +331,12 @@ export class SchedulesComponent {
     }
 
     this.confirmVisible.set(true);
+    console.log('confirmVisible después:', this.confirmVisible());
+
+    // Forzar detección de cambios si es necesario
+    setTimeout(() => {
+      console.log('confirmVisible en timeout:', this.confirmVisible());
+    }, 100);
   }
 
   cancelar() {
@@ -366,9 +382,9 @@ export class SchedulesComponent {
     this.hoursSelected.set([]);
     this.confirmVisible.set(false);
 
-    if (!this.editSchedules()?.length) {
-      this.isEditMode.set(false);
-    }
+    // if (!this.editSchedules()?.length) {
+    //   this.isEditMode.set(false);
+    // }
   }
   removeScheduleByIndex(index: number) {
     console.log('Removiendo schedule en índice:', index);
@@ -489,8 +505,8 @@ export class SchedulesComponent {
   }
 
   private areSchedulesEqual(
-    schedules1: daySchedule[],
-    schedules2: daySchedule[]
+    schedules1: schedule[],
+    schedules2: schedule[]
   ): boolean {
     if (schedules1.length !== schedules2.length) return false;
     return schedules1.every((s1) =>
@@ -511,32 +527,5 @@ export class SchedulesComponent {
       acceptVisible: false,
       rejectVisible: false,
     });
-  }
-
-  debugState() {
-    console.log('=== ESTADO DEL CALENDARIO ===');
-    console.log('visible:', this.visible());
-    console.log('isEditMode:', this.isEditMode());
-    console.log('hoursSelected:', this.hoursSelected());
-    console.log('editSchedules input:', this.editSchedules());
-    console.log('confirmVisible:', this.confirmVisible());
-
-    const api = this.calendarApi();
-    if (api) {
-      const events = api.getEvents();
-      console.log('Eventos en calendario:', events.length);
-      events.forEach((event: any) => {
-        console.log('- Evento:', {
-          id: event.id,
-          title: event.title,
-          daysOfWeek: event.extendedProps?.daysOfWeek,
-          startTime: event.extendedProps?.startTime,
-          endTime: event.extendedProps?.endTime,
-        });
-      });
-    } else {
-      console.log('API del calendario no disponible');
-    }
-    console.log('============================');
   }
 }

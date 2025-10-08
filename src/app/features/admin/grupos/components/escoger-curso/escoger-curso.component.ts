@@ -1,9 +1,10 @@
 import {
   Component,
+  computed,
   effect,
   EventEmitter,
   inject,
-  input,
+  OnDestroy,
   OnInit,
   Output,
   signal,
@@ -17,27 +18,42 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
 import { cursoDto } from '../../../cursos/models/cursoDto.type';
+import { competenciaDto } from '../../../competencias/model/competenciaDto.type';
+import { DialogModule } from 'primeng/dialog';
+import { competenciaStore } from '../../../competencias/store/competencia.store';
+import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum';
+import { GrupoStore } from '../../store/grupo.store';
+import { ActivatedRoute } from '@angular/router';
+import { grupoDto } from '../../model/grupoDto.type';
 
 @Component({
   selector: 'app-escoger-curso',
-  imports: [CommonModule, ConfirmDialogModule, ToastModule, ButtonModule],
+  imports: [
+    CommonModule,
+    ConfirmDialogModule,
+    ToastModule,
+    ButtonModule,
+    DialogModule,
+  ],
   templateUrl: './escoger-curso.component.html',
   styleUrl: './escoger-curso.component.scss',
 })
-export class EscogerCursoComponent implements OnInit {
+export class EscogerCursoComponent implements OnInit, OnDestroy {
   //servicios
   paginationService = inject(PaginationService);
   messageService = inject(MessageService);
   confirmationService = inject(ConfirmationService);
+  router = inject(ActivatedRoute);
   //store
+  grupoStore = inject(GrupoStore);
   cursoStore = inject(cursosStore);
+  competenciaStore = inject(competenciaStore);
   //signal
   currentPage = signal(1);
   cursos = signal<cursoDto[]>([]);
-  grupoSeleccionado = signal<grupo | null>(null);
+  grupoSeleccionado = signal<grupoDto | null>(null);
   mostrarModalGrupo = signal<boolean>(false);
   cursoParaAgregar = signal<cursoDto | null>(null);
   //outputs
@@ -45,17 +61,34 @@ export class EscogerCursoComponent implements OnInit {
     curso: cursoDto;
   }>();
   //inputs
-  idConvocatoria = input<string>('');
+  idConvocatoria = signal<string>('');
+  competencias: competenciaDto[] = [];
+  // Signals para manejo de estado
+  competenciaSeleccionada = signal<competenciaDto | null>(null);
 
   ngOnInit() {
     console.log('idConvocatoriaBusqueda', this.idConvocatoria());
   }
+
+  ngOnDestroy(): void {
+    this.competenciaStore.resetCompetencias();
+    this.grupoStore.resetConvocatoriaId();
+    this.grupoStore.resetGrupo();
+  }
+  obtenerIdConvocatoria() {
+    const id = this.router.snapshot.queryParamMap.get('convocatoriaId');
+    if (id) {
+      this.grupoStore.setConvocatoriaId(id);
+      this.idConvocatoria.set(id);
+    }
+  }
+
   obtenerPaginaActual = effect(() => {
     this.currentPage.set(this.paginationService.currentPage());
   });
 
   obtenerCurso = injectQuery(() => ({
-    queryKey: ['curso', 'grupo', this.idConvocatoria()],
+    queryKey: ['curso', 'convocatoria', this.idConvocatoria()],
     queryFn: async () => {
       try {
         const response = await this.cursoStore.getCursos(
@@ -72,12 +105,38 @@ export class EscogerCursoComponent implements OnInit {
     staleTime: 1000 * 60,
   }));
 
+  setCompetencias = effect(() => {
+    const competencias = this.obtenerCompetencias.data()?.data;
+    if (competencias) {
+      this.competenciaStore.setCompetencias(competencias);
+    }
+  });
+
+  obtenerCompetencias = injectQuery(() => ({
+    queryKey: ['competencias', 'elegir'],
+    queryFn: async () => {
+      try {
+        const response = await this.competenciaStore.getCompetencias(
+          1,
+          statusCompetencia.activo
+        );
+        if (!response) throw Error;
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    },
+  }));
+
   // Computed properties
 
   // Métodos
 
   abrirModalGrupo(curso: cursoDto, event?: Event) {
+    this.cursoParaAgregar.set(null);
     this.cursoParaAgregar.set(curso);
+    this.grupoStore.resetCursoId();
+    this.grupoStore.setCursoId(curso.id!);
     this.confirm1(event ?? new Event('click'), curso);
   }
 
@@ -87,7 +146,7 @@ export class EscogerCursoComponent implements OnInit {
     this.grupoSeleccionado.set(null);
   }
 
-  confirmarAgregarCurso() {
+  crearGrupo() {
     const curso = this.cursoParaAgregar();
 
     if (curso) {
@@ -96,7 +155,8 @@ export class EscogerCursoComponent implements OnInit {
     this.confirmationService.close();
   }
 
-  seleccionarGrupo(grupo: grupo) {
+  seleccionarGrupo(grupo: grupoDto) {
+    this.grupoSeleccionado.set(null);
     this.grupoSeleccionado.set(grupo);
   }
   confirm1(event: Event, curso: cursoDto) {
@@ -121,7 +181,7 @@ export class EscogerCursoComponent implements OnInit {
           summary: 'Confirmado',
           detail: 'Lo haz agregado!',
         });
-        this.confirmarAgregarCurso();
+        this.crearGrupo();
       },
       reject: () => {
         this.messageService.add({
@@ -133,5 +193,17 @@ export class EscogerCursoComponent implements OnInit {
         this.confirmationService.close();
       },
     });
+  }
+  // Métodos
+  seleccionarCompetencia(competencia: competenciaDto) {
+    console.log('competencia seleccionada: ', competencia);
+    this.grupoStore.setCompetenciaId(competencia.id!);
+    this.competenciaSeleccionada.set(competencia);
+  }
+
+  seleccionarCurso(curso: competenciaDto) {
+    console.log('curso seleccionada: ', curso);
+    this.grupoStore.resetCursoId();
+    this.grupoStore.setCursoId(curso.id!);
   }
 }

@@ -1,0 +1,171 @@
+/* Contenedor principal del formulario */
+.contenedor-formulario {
+  @apply mb-12;
+}
+
+.formulario-grupos {
+  @apply relative rounded-2xl p-8 space-y-8;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  overflow: hidden;
+}
+
+/* Grid de campos del formulario */
+.campos-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+/* Wrapper de cada campo */
+.campo-wrapper {
+  @apply flex flex-col gap-2;
+}
+
+/* Labels de los campos */
+.campo-label {
+  @apply text-base font-semibold;
+  color: var(--text-color);
+}
+
+/* Inputs del formulario */
+::ng-deep .campo-input {
+  @apply w-full;
+}
+
+::ng-deep .campo-input input,
+::ng-deep .campo-input .p-select,
+::ng-deep .campo-input .p-inputnumber {
+  @apply w-full;
+}
+
+/* Sección de acciones */
+.acciones-section {
+  @apply mt-8 pt-8 border-t space-y-4;
+  border-color: var(--surface-border);
+}
+
+.acciones-titulo {
+  @apply flex items-center gap-2 text-xl font-semibold mb-4;
+  color: var(--text-color);
+}
+
+.acciones-titulo i {
+  @apply text-xl;
+  color: var(--primary-color);
+}
+
+/* Grid de botones de acción */
+.acciones-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+}
+
+/* Botones de acción */
+::ng-deep .acciones-section .accion-btn {
+  @apply w-full transition-all duration-300;
+}
+
+::ng-deep .acciones-section .accion-btn .p-button {
+  @apply w-full font-semibold;
+  min-height: 3rem;
+}
+
+::ng-deep .acciones-section .accion-btn .p-button:hover {
+  @apply -translate-y-0.5;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+::ng-deep .acciones-section .accion-btn .p-button-label {
+  @apply font-semibold;
+}
+
+::ng-deep .acciones-section .accion-btn .p-button-icon {
+  @apply text-base;
+}
+
+/* Botón principal destacado */
+::ng-deep .acciones-section .accion-principal {
+  @apply sm:col-span-2;
+}
+
+::ng-deep .acciones-section .accion-principal .p-button {
+  @apply text-lg;
+  min-height: 3.5rem;
+  box-shadow: 0 4px 6px -1px rgba(var(--primary-500), 0.3),
+    0 2px 4px -1px rgba(var(--primary-500), 0.2);
+}
+
+::ng-deep .acciones-section .accion-principal .p-button:hover {
+  box-shadow: 0 10px 15px -3px rgba(var(--primary-500), 0.4),
+    0 4px 6px -2px rgba(var(--primary-500), 0.3);
+}
+
+/* Animación de entrada */
+@keyframes slideInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.formulario-grupos {
+  animation: slideInScale 0.5s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formulario-grupos {
+    @apply p-4;
+  }
+
+  .campos-grid {
+    @apply grid-cols-1;
+  }
+
+  .acciones-grid {
+    @apply grid-cols-1;
+  }
+
+  ::ng-deep .acciones-section .accion-btn .p-button {
+    @apply text-sm;
+    min-height: 2.75rem;
+  }
+
+  ::ng-deep .acciones-section .accion-principal .p-button {
+    @apply text-base;
+    min-height: 3rem;
+  }
+
+  .campo-label {
+    @apply text-sm;
+  }
+}
+
+/* Estados de validación */
+::ng-deep .campo-input.ng-invalid.ng-touched input,
+::ng-deep .campo-input.ng-invalid.ng-touched .p-select,
+::ng-deep .campo-input.ng-invalid.ng-touched .p-inputnumber-input {
+  border-color: var(--red-500);
+}
+
+::ng-deep .campo-input.ng-valid.ng-touched input,
+::ng-deep .campo-input.ng-valid.ng-touched .p-select,
+::ng-deep .campo-input.ng-valid.ng-touched .p-inputnumber-input {
+  border-color: var(--green-500);
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .formulario-grupos {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  ::ng-deep .acciones-section .accion-btn .p-button:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+}

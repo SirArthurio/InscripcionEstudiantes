@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
@@ -8,6 +8,14 @@ import { map } from 'rxjs';
 })
 export class FiltroService {
   private activatedRoute = inject(ActivatedRoute);
+  initialValue = signal<string>('');
+  resetFiltro() {
+    this.initialValue.set('');
+  }
+
+  actualizarFiltro(filtro: string) {
+    this.initialValue.update(() => filtro);
+  }
 
   currentFiltro = toSignal(
     this.activatedRoute.queryParamMap.pipe(
@@ -17,6 +25,6 @@ export class FiltroService {
         return statusParam;
       })
     ),
-    { initialValue: '' }
+    { initialValue: this.initialValue() }
   );
 }

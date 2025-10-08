@@ -7,5 +7,4 @@ export * from './base-code-model.type';
 export * from './users/professor.type';
 export * from './users/estudiante.type';
 export * from './users/superadmin.tye';
-export * from './day-schedule.type';
 export * from './filtro.type';

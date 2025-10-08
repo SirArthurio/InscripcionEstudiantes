@@ -9,7 +9,8 @@
       "@core/*": ["src/app/core/*"],
       "@students/*": ["src/features/students/*"],
       "@professors/*": ["src/features/professors/*"],
-      "@admin/*": ["src/features/admin/*"]
+      "@admin/*": ["src/features/admin/*"],
+      "@shared/*": ["src/features/shared"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

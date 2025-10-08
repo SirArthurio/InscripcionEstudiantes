@@ -95,7 +95,7 @@ export const competenciaStore = signalStore(
       },
       createCompetencia(
         competencia: competencias
-      ): Promise<ContentResponse<competencias>> {
+      ): Promise<ContentResponse<competenciaDto>> {
         try {
           const response = firstValueFrom(
             competenciaService.CreateCompetencias(competencia)

@@ -1,5 +1,6 @@
-import { daySchedule } from '@core/shared/types/day-schedule.type';
-
 export type schedule = {
-  schedules: daySchedule[];
+  id?: string;
+  day: string;
+  startTime: string;
+  endTime: string;
 };

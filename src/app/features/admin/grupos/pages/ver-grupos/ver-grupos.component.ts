@@ -33,8 +33,16 @@ export default class VerGruposComponent implements OnInit {
   });
 
   obtenerConvocatoria() {
+    console.log('Ejecutando obtenerConvocatoria');
+    console.log('QueryParams completos:', this.router.snapshot.queryParamMap);
+    console.log('Todas las keys:', this.router.snapshot.queryParamMap.keys);
+
     const id = this.router.snapshot.queryParamMap.get('convocatoria');
+    console.log('ID obtenido:', id);
+
     if (id) {
+      console.log('obtener convocatoria id:', id);
+      this.grupoStore.setConvocatoriaId(id);
       this.convocatoriaId.set(id);
     }
   }

@@ -1,0 +1,70 @@
+<div class="grupos-lista">
+  <h4 class="grupos-titulo mb-4">Grupos por Competencia y Curso</h4>
+
+  <!-- Estructura jerárquica -->
+  <div *ngIf="gruposAgrupados().length > 0">
+    <!-- Por cada competencia -->
+    <div
+      *ngFor="let competencia of gruposAgrupados()"
+      class="competencia-seccion mb-6"
+    >
+      <!-- Título de Competencia -->
+      <div class="competencia-header mb-3">
+        <i class="pi pi-star text-primary text-xl"></i>
+        <h5 class="competencia-titulo">{{ competencia.competenciaNombre }}</h5>
+      </div>
+
+      <!-- Por cada curso de la competencia -->
+      <div
+        *ngFor="let curso of competencia.cursos"
+        class="curso-seccion mb-4 ml-4"
+      >
+        <!-- Título de Curso -->
+        <div class="curso-header mb-2">
+          <i class="pi pi-book text-primary-500"></i>
+          <h6 class="curso-titulo">{{ curso.code }} {{ curso.cursoNombre }}</h6>
+          <span class="grupo-count">({{ curso.grupos.length }} grupos)</span>
+        </div>
+
+        <!-- Grupos del curso -->
+        <div class="grupos-grid ml-4">
+          <div
+            *ngFor="let grupo of curso.grupos"
+            class="grupo-card p-card p-card-body cursor-pointer"
+            [class.selected]="grupoSeleccionado()?.id === grupo.id"
+            (click)="seleccionarGrupo(grupo)"
+          >
+            <div class="flex align-items-center gap-3">
+              <i class="pi pi-users text-primary text-xl"></i>
+              <div class="flex-1">
+                <h5 class="grupo-nombre m-0 mb-1">{{ grupo.code }}</h5>
+                <div class="grupo-meta text-xs">
+                  <span>Capacidad: {{ grupo.capacity }}</span>
+                  <span class="ml-2"
+                    >Disponibles: {{ grupo.availableSeats }}</span
+                  >
+                </div>
+              </div>
+              <i
+                [class]="
+                  grupoSeleccionado()?.id === grupo.id
+                    ? 'pi pi-check-circle text-primary text-xl'
+                    : 'pi pi-circle text-400 text-xl'
+                "
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vacío -->
+  <div
+    class="empty-grupos text-center py-8"
+    *ngIf="gruposAgrupados().length === 0"
+  >
+    <i class="pi pi-users text-400 text-4xl mb-3"></i>
+    <p class="text-color-secondary">No hay grupos disponibles</p>
+  </div>
+</div>

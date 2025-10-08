@@ -55,14 +55,9 @@ export class ConvocatoriasService {
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  CloseConvocatoria(
-    id: string,
-    name: string
-  ): Observable<ContentResponse<convocatoriaDTO>> {
+  CloseConvocatoria(id: string): Observable<ContentResponse<convocatoriaDTO>> {
     return this.http
-      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/${id}/close`, {
-        name,
-      })
+      .patch<ContentResponse<convocatoriaDTO>>(`${this.url}/${id}/close`, {})
       .pipe(catchError((error) => throwError(() => error)));
   }
 

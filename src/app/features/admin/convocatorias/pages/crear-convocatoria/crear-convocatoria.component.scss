@@ -1,3 +1,123 @@
 .contenedor {
   @apply m-2 p-2;
 }
+/* Contenedor de acciones */
+.acciones-container {
+  @apply w-full space-y-4;
+}
+
+.acciones-titulo {
+  @apply flex items-center gap-2 text-xl font-semibold mb-4 pb-3 border-b;
+  color: var(--text-color);
+  border-color: var(--surface-border);
+}
+
+.acciones-titulo i {
+  @apply text-xl;
+  color: var(--primary-color);
+}
+
+/* Grid de acciones en modo edición */
+.acciones-grid-editar {
+  @apply space-y-4;
+}
+
+.acciones-principales {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+}
+
+.acciones-especiales {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+}
+
+/* Contenedor de acción principal única */
+.accion-principal-contenedor {
+  @apply w-full;
+}
+
+/* Estilos personalizados para botones PrimeNG */
+::ng-deep .acciones-container .accion-btn {
+  @apply w-full transition-all duration-300;
+}
+
+::ng-deep .acciones-container .accion-btn .p-button {
+  @apply w-full font-semibold;
+  min-height: 3rem;
+}
+
+::ng-deep .acciones-container .accion-btn .p-button:hover {
+  @apply -translate-y-0.5;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+::ng-deep .acciones-container .accion-btn .p-button-label {
+  @apply font-semibold;
+}
+
+::ng-deep .acciones-container .accion-btn .p-button-icon {
+  @apply text-base;
+}
+
+/* Botón principal destacado */
+::ng-deep .acciones-container .accion-main .p-button {
+  @apply text-lg;
+  min-height: 3.5rem;
+}
+
+/* Botón de acción destacada (Publicar) */
+::ng-deep .acciones-container .accion-destacada .p-button {
+  box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.3),
+    0 2px 4px -1px rgba(34, 197, 94, 0.2);
+}
+
+::ng-deep .acciones-container .accion-destacada .p-button:hover {
+  box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.4),
+    0 4px 6px -2px rgba(34, 197, 94, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .acciones-principales,
+  .acciones-especiales {
+    @apply grid-cols-1;
+  }
+
+  ::ng-deep .acciones-container .accion-btn .p-button {
+    @apply text-sm;
+    min-height: 2.75rem;
+  }
+
+  ::ng-deep .acciones-container .accion-main .p-button {
+    @apply text-base;
+    min-height: 3rem;
+  }
+
+  .acciones-titulo {
+    @apply text-lg;
+  }
+}
+
+/* Animación de entrada */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.acciones-container {
+  animation: slideInUp 0.4s ease-out;
+}
+
+/* Estilos para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  ::ng-deep .acciones-container .accion-btn .p-button:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+}

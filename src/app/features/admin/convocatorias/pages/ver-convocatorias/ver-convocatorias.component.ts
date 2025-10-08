@@ -19,6 +19,8 @@ import { GrupoFiltros, PaginatedData } from '@core/shared/types';
 import { FiltroComponent } from '@core/shared/components/filtro/filtro.component';
 import { filtroTextConvocatoria } from './const/filtro-text-convocatoria.const';
 import { FiltroService } from '@core/shared/components/filtro/filtro.service';
+import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum';
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum';
 
 @Component({
   selector: 'app-ver-convocatorias',
@@ -47,6 +49,7 @@ export default class VerConvocatoriasComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.paginatedService.reset();
+    this.filtroService.actualizarFiltro(statusConvocatorias.publicada);
   }
 
   setConvocatoria = effect(() => {
@@ -81,5 +84,6 @@ export default class VerConvocatoriasComponent implements OnDestroy, OnInit {
   });
   ngOnDestroy(): void {
     this.paginatedService.reset();
+    this.filtroService.resetFiltro();
   }
 }

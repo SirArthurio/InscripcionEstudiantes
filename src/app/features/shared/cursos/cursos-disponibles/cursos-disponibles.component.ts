@@ -42,6 +42,7 @@ export class CursosDisponiblesComponent implements OnInit {
   navegar = inject(Router);
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
+  currentUser = inject(CurrentStore);
   //servicios
   statusService = inject(StatusService);
   paginationService = inject(PaginationService);
@@ -64,22 +65,18 @@ export class CursosDisponiblesComponent implements OnInit {
   obtenerPaginaActual = effect(() => {
     this.currentPage.set(this.paginationService.currentPage());
   });
-  filtrarGrupos(grupos: grupoDto[]): grupoDto[] {
-    return grupos.filter((e) => e.status == 'abierto');
-  }
+  // filtrarGrupos(grupos: grupoDto[]): grupoDto[] {
+  //   return grupos.filter((e) => e.status == 'abierto');
+  // }
 
   obtenerGrupos = injectQuery(() => ({
     queryKey: ['grupos', this.convocatoriaId(), this.currentPage()],
     queryFn: async () => {
       try {
-        const response = await this.grupoStore.getGruposPorConvocatoriaStudent(
-          this.currentPage(),
-          this.convocatoriaId(),
-          'asd'
-        );
+        const response = await this.grupoStore.getGrupos(this.convocatoriaId());
         this.gruposDisponibles.set(response.data);
         console.log('data', response);
-        return this.filtrarGrupos(response.data);
+        return response.data;
       } catch (error) {
         throw error;
       }

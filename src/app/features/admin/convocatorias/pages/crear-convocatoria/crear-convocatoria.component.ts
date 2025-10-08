@@ -14,22 +14,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CardFormularioValidacionComponent } from '../../../../../core/shared/components/card-formulario-validacion/card-formulario-validacion.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { modalidad } from '../../const/modalidad.const';
 import { DatePicker } from 'primeng/datepicker';
-import { ErroesformService } from '../../../../../core/shared/service/ErroresForm/erroesform.service';
-import { AlertasService } from '../../../../../core/shared/service/Alertas/alertas.service';
 import { ButtonModule } from 'primeng/button';
-import { DateFormatterService } from '../../../../../core/shared/service/DateFormatter/date-formatter.service';
-import { datosResumen } from '../../../../../core/shared/components/card-formulario-validacion/model/datosResumen.type';
 import { convocatoria } from '../../model/convocatoria.type';
 import { datosConvocatoriaVerificacion } from '../../const/datosConvocatoriaVerificar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { CartaComponent } from '../../../../../core/shared/components/carta/carta.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { convocatoriasStore } from '../../store/convocatorias.store';
 import { CardFormularioValidacion } from '@core/shared/components/card-formulario-validacion/model/cardFormValidacion.type';
 import { convocatoriaDTO } from '../../model/convocatoriaDTO.type';
 import {
@@ -39,6 +32,15 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { dataVerConvocatoria } from '../../const/data-verConvocatoria.const';
+import { CardFormularioValidacionComponent } from '@core/shared/components/card-formulario-validacion/card-formulario-validacion.component';
+import { datosResumen } from '@core/shared/components/card-formulario-validacion/model/datosResumen.type';
+import { CartaComponent } from '@core/shared/components/carta/carta.component';
+import { AlertasService } from '@core/shared/service/Alertas/alertas.service';
+import { DateFormatterService } from '@core/shared/service/DateFormatter/date-formatter.service';
+import { ErroesformService } from '@core/shared/service/ErroresForm/erroesform.service';
+import { convocatoriasStore } from '../../store/convocatorias.store';
+import { TooltipModule } from 'primeng/tooltip';
+import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum';
 @Component({
   selector: 'app-crear-convocatoria',
   imports: [
@@ -51,6 +53,7 @@ import { dataVerConvocatoria } from '../../const/data-verConvocatoria.const';
     DatePicker,
     ButtonModule,
     CartaComponent,
+    TooltipModule,
   ],
   templateUrl: './crear-convocatoria.component.html',
   styleUrl: './crear-convocatoria.component.scss',
@@ -79,6 +82,8 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
 
   //variables
   isEditar = signal(false);
+  isActiva = signal(false);
+  isFecha = signal(true);
   datos = signal<CardFormularioValidacion>(dataCrearConvocatoria);
   modalidades = modalidad;
   minDate: Date = new Date();
@@ -102,6 +107,17 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
     }
   }
 
+  private estaActivaLaConvocatoria(convocatoria: convocatoriaDTO): boolean {
+    return convocatoria.status === statusConvocatorias.publicada;
+  }
+  tienefecha = effect(() => {
+    const fechaInicio = this.getConvocatoria.data()?.data.enrollmentEndDate;
+    const fechaFinal = this.getConvocatoria.data()?.data.enrollmentStartDate;
+    if (fechaFinal == null && fechaInicio == null) {
+      this.isFecha.set(false);
+    }
+  });
+
   getConvocatoria = injectQuery(() => ({
     queryKey: ['convocatoria', this.convocatoriaId()],
     queryFn: async () => {
@@ -110,6 +126,10 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
           this.convocatoriaId()
         );
         if (!response) throw Error;
+        if (this.estaActivaLaConvocatoria(response.data)) {
+          this.isActiva.set(true);
+        }
+
         this.isEditar.set(true);
         console.log('datos', response);
         this.datos.set(dataVerConvocatoria);
@@ -122,9 +142,12 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
 
   setDatos = effect(() => {
     const response = this.getConvocatoria.data()?.data;
-    console.log('seteando', response);
 
     if (response) {
+      if (response.enrollmentEndDate == null) {
+        console.log('seteando fecha ');
+        this.isFecha.set(false);
+      }
       this.datosOriginales.set(response);
       this.formConvocatoria.patchValue(response);
       var start = response.enrollmentStartDate;
@@ -154,9 +177,9 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
     this.formConvocatoria = this.form.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      rangeDatesEnrollment: ['', [Validators.required]],
-      enrollmentStartDate: ['', [Validators.required]],
-      enrollmentEndDate: ['', [Validators.required]],
+      rangeDatesEnrollment: [''],
+      enrollmentStartDate: [''],
+      enrollmentEndDate: [''],
     });
   }
   convertirRangoAFechas() {
@@ -342,8 +365,8 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
     const convocatoria = this.convocatoria();
     if (convocatoria) {
       this.convocatoriaId.set(convocatoria.id!);
-      this.navegar.navigate(['/admin/convocatorias/crear-convocatorias'], {
-        queryParams: { convocatoriaId: convocatoria.id },
+      this.navegar.navigate(['/grupos/crear-grupos'], {
+        queryParams: { convocatoria: convocatoria.id },
       });
     }
   }
@@ -355,16 +378,7 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
       });
     }
   }
-  verGrupos() {
-    const convocatoria = this.getConvocatoria.data()?.data;
-    if (convocatoria) {
-      this.navegar.navigate(['/admin/grupos/ver-grupos'], {
-        queryParams: {
-          convocatoria: convocatoria.id,
-        },
-      });
-    }
-  }
+
   accionActualizarTipo(nombre: string, id: string) {
     switch (nombre) {
       case 'publicar':
@@ -378,8 +392,46 @@ export default class CrearConvocatoriaComponent implements OnInit, OnDestroy {
         break;
     }
   }
-  cancelarConvocatoria(id: string) {}
-  cerrarConvocatoria(id: string) {}
+  async cancelarConvocatoria(id: string) {
+    try {
+      const response = await this.convocatoriaStore.cancelConvocatoria(id);
+      if (!response) throw Error;
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Confirmar',
+        detail: 'Se cancelo con Exito :D',
+      });
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rejected',
+        detail: 'Algo ha salido mal, por favor intenta mas tarde :C',
+        life: 3000,
+      });
+
+      throw error;
+    }
+  }
+  async cerrarConvocatoria(id: string) {
+    try {
+      const response = await this.convocatoriaStore.closeConvocatoria(id);
+      if (!response) throw Error;
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Confirmar',
+        detail: 'Se cancelo con Exito :D',
+      });
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rejected',
+        detail: 'Algo ha salido mal, por favor intenta mas tarde :C',
+        life: 3000,
+      });
+
+      throw error;
+    }
+  }
   async publicarConvocatoria(id: string) {
     try {
       const response = await this.convocatoriaStore.publishConvocatoria(id);

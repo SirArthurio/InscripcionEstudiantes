@@ -11,6 +11,11 @@ export class VerificacionFechasLimiteService {
     hoy.setFullYear(hoy.getFullYear() - 16);
     return hoy.toISOString().split('T')[0];
   }
+  VerificacionMayor18Edad(): string {
+    const hoy = new Date();
+    hoy.setFullYear(hoy.getFullYear() - 18);
+    return hoy.toISOString().split('T')[0];
+  }
   VerificacionNoMayorHoy(): string {
     return new Date().toISOString().split('T')[0];
   }

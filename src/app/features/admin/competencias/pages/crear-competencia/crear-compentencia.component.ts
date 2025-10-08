@@ -116,6 +116,16 @@ export default class CrearCompentenciaComponent {
       console.log('id', this.idCompetencia());
     }
   }
+  continuarProgreso() {
+    this.nuevaCompetencia();
+    const competencia = this.competencia();
+    if (competencia) {
+      this.idCompetencia.set(competencia.id!);
+      this.navigate.navigate(['/admin/grupos/crear-grupos'], {
+        queryParams: { convocatoria: competencia.id },
+      });
+    }
+  }
 
   siguiente() {
     if (this.progress() < 1) {
@@ -152,6 +162,7 @@ export default class CrearCompentenciaComponent {
       if (!response) {
         throw Error;
       }
+      this.competencia.set(response.data);
       this.resumenDatos(response.data);
     } catch (error: HttpErrorResponse | any) {
       this.alertasService.showError(error.error.message);

@@ -15,6 +15,7 @@ import { ButtonModule, ButtonSeverity } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
+import { FiltroService } from './filtro.service';
 interface FiltroBoton {
   key: string;
   label: string;
@@ -67,7 +68,7 @@ export class FiltroComponent {
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
+  private filtroService = inject(FiltroService);
   // Signals para manejo de estado
   filtrosActivos = signal<Record<string, string[]>>({});
   totalFiltrosActivos = computed(() => {

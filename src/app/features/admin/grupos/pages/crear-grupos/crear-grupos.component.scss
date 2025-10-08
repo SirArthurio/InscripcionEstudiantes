@@ -1,3 +1,169 @@
-.contenedor {
-  @apply m-2 p-2;
+/* Animaciones personalizadas */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Utilidades de animación */
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+/* Contenedor con efecto hover y barra superior */
+.card-hover {
+  @apply relative overflow-hidden transition-all duration-300 ease-out;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+}
+
+.card-hover:hover {
+  @apply -translate-y-1 shadow-lg shadow-primary;
+}
+
+.card-hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-400));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-out;
+}
+
+.card-hover:hover::before {
+  transform: scaleX(1);
+}
+
+/* Header de página */
+.page-header {
+  @apply text-center p-8 rounded-2xl shadow-lg shadow-primary;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+}
+
+/* Iconos de sección con fondo */
+.section-icon-wrapper {
+  @apply flex items-center justify-center p-3 rounded-xl;
+  background: var(--primary-50);
+  color: var(--primary-color);
+}
+
+/* Borde inferior de header de sección */
+.section-header-border {
+  border-bottom: 2px solid var(--surface-border);
+}
+
+/* Estilos para PrimeNG Dialog */
+::ng-deep .p-dialog {
+  @apply rounded-2xl shadow-2xl shadow-primary;
+  border: 1px solid var(--surface-border);
+}
+
+::ng-deep .p-dialog-header {
+  @apply p-6 rounded-t-2xl;
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+::ng-deep .p-dialog-content {
+  @apply p-8;
+  background: var(--surface-card);
+}
+
+::ng-deep .p-dialog-header-icon {
+  @apply transition-colors duration-200;
+  color: var(--text-color-secondary);
+}
+
+::ng-deep .p-dialog-header-icon:hover {
+  color: var(--primary-color);
+}
+
+/* Backdrop con blur */
+::ng-deep .backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+  @apply bg-black/40;
+}
+
+/* Toast personalizado */
+::ng-deep .p-toast {
+  @apply z-[9999];
+}
+
+::ng-deep .p-toast-message {
+  @apply rounded-xl shadow-xl shadow-primary;
+}
+
+/* Confirm Dialog */
+::ng-deep .p-confirmdialog {
+  @apply rounded-2xl shadow-2xl shadow-primary;
+}
+
+::ng-deep .p-confirmdialog-icon {
+  @apply text-5xl;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header {
+    @apply p-6;
+  }
+
+  .card-hover {
+    @apply p-6;
+  }
+}
+/* Header con layout flex */
+.page-header {
+  @apply text-center p-8 rounded-2xl shadow-lg shadow-primary;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+}
+
+.page-header-content {
+  @apply flex items-start gap-4;
+}
+
+.volver-btn {
+  @apply flex-shrink-0;
+}
+
+.header-center {
+  @apply flex-1 flex flex-col items-center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header {
+    @apply p-4;
+  }
+
+  .page-header-content {
+    @apply flex-col items-stretch;
+  }
+
+  .header-center h1 {
+    @apply text-2xl mb-3;
+  }
+
+  .header-center h1 i {
+    @apply text-2xl;
+  }
 }

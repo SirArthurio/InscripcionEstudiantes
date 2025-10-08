@@ -1,195 +1,98 @@
-<app-card-formulario-validacion
-  [validacionData]="validacionData()"
-  [data]="datos()"
-  [progress]="progress()"
-  [isEditar]="isEditar()"
-  (nuevaAccion)="nuevoGrupo()"
+<div
+  class="min-h-screen p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
 >
   <p-toast />
   <p-confirmdialog />
-  <div class="grid grid-cols-2">
-    <section class="contenedor">
-      <form
-        #formulario
-        class="relative grid grid-cols-1 justify-items-center border-transparent rounded-xl p-2"
-        [formGroup]="formGrupos"
-      >
-        <div class="contenedor">
-          <label
-            for="modality"
-            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-            >Modalidad</label
-          >
-          <p-select
-            [options]="modalidades"
-            optionValue="name"
-            optionLabel="name"
-            id="modality"
-            type="text"
-            placeholder="Modalidad"
-            class="w-full md:w-[30rem] mb-8"
-            formControlName="modality"
-            appValidationClass
-          />
-        </div>
-        <div class="contenedor">
-          <label
-            for="professorId"
-            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-            >Docente</label
-          >
-          <p-select
-            [options]="this.obtenerProfessor.data()?.data?.page"
-            optionValue="id"
-            optionLabel="firstName"
-            id="professorId"
-            type="text"
-            placeholder="Profesor"
-            class="w-full md:w-[30rem] mb-8"
-            formControlName="professorId"
-            appValidationClass
-          />
-        </div>
 
-        <div class="contenedor">
-          <label
-            for="observations"
-            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-            >Observaciones</label
-          >
-          <input
-            pInputText
-            id="observations"
-            type="text"
-            placeholder="observations"
-            class="w-full md:w-[30rem] mb-8"
-            formControlName="observations"
-            appValidationClass
-          />
-        </div>
-        <div class="contenedor">
-          <label
-            for="capacity"
-            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-            >Capacidad</label
-          >
-          <p-inputNumber
-            SoloNumeros
-            id="capacity"
-            type="text"
-            [min]="1"
-            placeholder="Capacidad Del grupo"
-            class="w-full md:w-[30rem] mb-8"
-            formControlName="capacity"
-            appValidationClass
-          />
-        </div>
-        <!-- <div class="contenedor">
-          <label
-            for="courseId"
-            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-            >Curso</label
-          >
-          <input
-            pInputText
-            [readonly]="true"
-            id="courseId"
-            type="text"
-            placeholder="Curso"
-            class="w-full md:w-[30rem] mb-8"
-            formControlName="courseId"
-            appValidationClass
-          />
-        </div>
-        <div class="contenedor">
-          <label
-            for="callId"
-            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-            >Convocatoria</label
-          >
-          <input
-            pInputText
-            [readOnly]="true"
-            id="callId"
-            type="text"
-            placeholder="Convocatoria"
-            class="w-full md:w-[30rem] mb-8"
-            formControlName="callId"
-            appValidationClass
-          />
-        </div> -->
+  <!-- Hero Header -->
+  <div class="animate-fade-in-up page-header mb-12">
+    <div class="page-header-content">
+      <!-- Botón de volver a la izquierda -->
+      <p-button
+        class="volver-btn"
+        icon="pi pi-arrow-left"
+        label="Volver"
+        [outlined]="true"
+        severity="secondary"
+        (onClick)="volver()"
+      />
 
-        <div class="flex flex-col">
-          @if (progress()===0) {
-          <!--  -->
-          <label
-            for="courseId"
-            class="block flex-col text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-            >Acciones Disonibles</label
-          >
-          <div class="grid grid-cols-2">
-            <p-button
-              class="w-full mb-4 m-1 p-1"
-              (click)="agregarHorario()"
-              label="Agregar Horario"
-              [outlined]="true"
-            />
-            @if(this.isEditar()){
-
-            <p-button
-              class="w-full mb-4 m-1 p-1"
-              (click)="confirmAbrir()"
-              label="Abrir Grupo"
-              [outlined]="true"
-            />
-            <p-button
-              class="w-full mb-4 m-1 p-1"
-              (click)="confirmCancelar()"
-              label="Cancelar Grupo"
-              [outlined]="true"
-            />
-            <p-button
-              class="w-full mb-4 m-1 p-1"
-              (click)="confirmCerrar()"
-              label="Cerrar Grupo"
-              [outlined]="true"
-            />
-
-            }
-
-            <p-button
-              class="w-full mb-4 m-1 p-1"
-              (click)="tipoDeAccion()"
-              [label]="datos().buttonText"
-              [outlined]="true"
-            />
-            <!--  -->
-          </div>
-
-          }@else if(progress()===1){ }
-        </div>
-
-        <app-carta
-          [duration]="6"
-          [delay]="2"
-          [borderWidth]="2"
-          borderRadius="xl"
-          [reverse]="true"
+      <!-- Título y botón de crear -->
+      <div class="header-center">
+        <h1
+          class="flex items-center justify-center gap-4 text-4xl font-bold mb-4"
+          style="color: var(--text-color)"
         >
-        </app-carta>
-      </form>
-    </section>
-    <section class="contenedor">
+          <i
+            class="pi pi-graduation-cap text-4xl"
+            style="color: var(--primary-color)"
+          ></i>
+          Competencias y Cursos
+        </h1>
+
+        <p-button
+          icon="pi pi-plus"
+          label="Nueva Convocatoria"
+          severity="primary"
+          (onClick)="crear()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <!-- Sección de Cursos -->
+    <section
+      class="animate-fade-in-up animation-delay-100 card-hover rounded-2xl p-8 shadow-lg"
+    >
+      <div class="flex items-center gap-3 mb-6 pb-4 section-header-border">
+        <div class="section-icon-wrapper">
+          <i class="pi pi-book text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-semibold" style="color: var(--text-color)">
+          Explorar Cursos
+        </h2>
+      </div>
       <app-escoger-curso
         (onAgregarCursoAGrupo)="respuestaCursoAGrupo($event)"
-        [idConvocatoria]="this.idConvocatoria()"
       />
     </section>
+
+    <!-- Sección de Grupos -->
+    <section
+      class="animate-fade-in-up animation-delay-200 card-hover rounded-2xl p-8 shadow-lg"
+    >
+      <div class="flex items-center gap-3 mb-6 pb-4 section-header-border">
+        <div class="section-icon-wrapper">
+          <i class="pi pi-users text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-semibold" style="color: var(--text-color)">
+          Grupos Creados
+        </h2>
+      </div>
+      <grupos-creados />
+    </section>
   </div>
-  <app-schedules
-    [visible]="visible()"
-    (visibleChange)="this.cerrarCalendario()"
-    [editSchedules]="this.schedules()"
-    (confirmedSchedules)="this.schedulesHijo($event)"
-  />
-</app-card-formulario-validacion>
+
+  <p-dialog
+    [modal]="true"
+    [(visible)]="this.visibleGrupo"
+    (onHide)="this.cerrarCrearGrupo()"
+    maskStyleClass="backdrop-blur-sm"
+    [style]="{ width: '90vw', maxWidth: '600px' }"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-plus-circle" style="color: var(--primary-color)"></i>
+        <span class="font-semibold">Crear Nuevo Grupo</span>
+      </div>
+    </ng-template>
+    <grupo-modal-crear-grupo
+      (cerrarModal)="this.cerrarCrearGrupo()"
+      (abrirModal)="showCrearGrupo()"
+    />
+  </p-dialog>
+</div>

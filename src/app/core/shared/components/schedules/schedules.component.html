@@ -32,14 +32,6 @@
         <button
           type="button"
           pButton
-          label="Debug"
-          class="p-button-help p-button-sm"
-          (click)="debugState()"
-        ></button>
-
-        <button
-          type="button"
-          pButton
           label="Limpiar"
           class="p-button-secondary p-button-sm"
           (click)="cancelar()"
@@ -100,9 +92,12 @@
   header="Confirmar horarios"
   [visible]="confirmVisible()"
   [modal]="true"
+  [baseZIndex]="10000"
   [style]="{ width: '40vw', minWidth: '400px' }"
   [draggable]="false"
   [resizable]="false"
+  [closable]="true"
+  appendTo="body"
   (onHide)="confirmVisible.set(false)"
 >
   <div class="p-3">

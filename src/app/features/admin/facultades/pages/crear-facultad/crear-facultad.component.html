@@ -9,186 +9,197 @@
 
   <form
     #formulario
-    class="relative grid grid-cols-1 md:grid-cols-2 justify-items-center border-transparent rounded-xl p-2"
+    class="relative formulario-facultad"
     [formGroup]="formFacultad"
   >
-    <div class="contenedor">
-      <label
-        for="code"
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Codigo</label
-      >
-      <input
-        pInputText
-        id="code"
-        type="text"
-        placeholder="Codigo"
-        class="w-full md:w-[30rem] mb-8"
-        formControlName="code"
-        appValidationClass
-      />
+    <!-- Sección: Información Básica -->
+    <div class="seccion-formulario">
+      <h2 class="seccion-titulo">
+        <i class="pi pi-building"></i>
+        Información Básica
+      </h2>
+
+      <div class="campos-grid">
+        <div class="campo-wrapper">
+          <label for="code" class="campo-label">Código</label>
+          <input
+            pInputText
+            id="code"
+            type="text"
+            placeholder="Código de la facultad"
+            class="campo-input"
+            formControlName="code"
+            appValidationClass
+          />
+        </div>
+
+        <div class="campo-wrapper">
+          <label for="name" class="campo-label">Nombre</label>
+          <input
+            pInputText
+            id="name"
+            type="text"
+            placeholder="Nombre de la facultad"
+            class="campo-input"
+            formControlName="name"
+            appValidationClass
+          />
+        </div>
+
+        <div class="campo-wrapper campo-full">
+          <label for="description" class="campo-label">Descripción</label>
+          <textarea
+            pInputTextarea
+            id="description"
+            placeholder="Descripción de la facultad"
+            class="campo-input"
+            formControlName="description"
+            appValidationClass
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
     </div>
-    <div class="contenedor">
-      <label
-        for="name"
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Nombre</label
-      >
-      <input
-        pInputText
-        id="name"
-        type="text"
-        placeholder="Nombre"
-        class="w-full md:w-[30rem] mb-8"
-        formControlName="name"
-        appValidationClass
-      />
+
+    <!-- Sección: Datos de Contacto -->
+    <div class="seccion-formulario">
+      <h2 class="seccion-titulo">
+        <i class="pi pi-phone"></i>
+        Datos de Contacto
+      </h2>
+
+      <div class="campos-grid">
+        <div class="campo-wrapper">
+          <label for="phoneNumber" class="campo-label">Número de Celular</label>
+          <input
+            pInputText
+            SoloNumeros
+            id="phoneNumber"
+            type="text"
+            placeholder="Teléfono"
+            formControlName="phoneNumber"
+            [minlength]="10"
+            [maxlength]="10"
+            class="campo-input"
+            appValidationClass
+          />
+        </div>
+
+        <div class="campo-wrapper">
+          <label for="email" class="campo-label">Email Institucional</label>
+          <input
+            pInputText
+            id="email"
+            type="email"
+            placeholder="Email Institucional"
+            class="campo-input"
+            formControlName="email"
+            appValidationClass
+          />
+        </div>
+
+        <div class="campo-wrapper campo-full">
+          <label for="address" class="campo-label">Dirección</label>
+          <input
+            pInputText
+            id="address"
+            type="text"
+            placeholder="Dirección de la facultad"
+            class="campo-input"
+            formControlName="address"
+            appValidationClass
+          />
+        </div>
+      </div>
     </div>
-    <div class="contenedor">
-      <label
-        for="description"
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Descripcion</label
-      >
-      <input
-        pInputText
-        id="description"
-        type="text"
-        placeholder="description"
-        class="w-full md:w-[30rem] mb-8"
-        formControlName="description"
-        appValidationClass
-      />
-    </div>
-    <div class="contenedor">
-      <label
-        for="phoneNumber"
-        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
-        >Numero de celular</label
-      >
-      <input
-        pInputText
-        SoloNumeros
-        id="phoneNumber"
-        type="text"
-        placeholder="Teléfono"
-        formControlName="phoneNumber"
-        [minlength]="10"
-        [maxlength]="10"
-        class="w-full md:w-[30rem] mb-8"
-        appValidationClass
-      />
-    </div>
-    <div class="contenedor">
-      <label
-        for="email"
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Email</label
-      >
-      <input
-        pInputText
-        id="email"
-        type="text"
-        placeholder="Email Institucional "
-        class="w-full md:w-[30rem] mb-8"
-        formControlName="email"
-        appValidationClass
-      />
-    </div>
-    <div class="contenedor">
-      <label
-        for="address"
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Direccion</label
-      >
-      <input
-        pInputText
-        id="address"
-        type="text"
-        placeholder="Direccion"
-        class="w-full md:w-[30rem] mb-8"
-        formControlName="address"
-        appValidationClass
-      />
-    </div>
-    <div class="contenedor" formArrayName="extensions">
-      <div>
-        <label
-          for="extensions"
-          class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-          >Extension</label
-        >
-        <input
-          pInputText
-          placeholder="Extension"
-          type="text"
-          class="w-full md:w-[30rem] mb-8"
-          [formControl]="newExtension"
-          appValidationClass
-        />
+
+    <!-- Sección: Extensiones -->
+    <div class="seccion-formulario" formArrayName="extensions">
+      <h2 class="seccion-titulo">
+        <i class="pi pi-hashtag"></i>
+        Extensiones Telefónicas
+      </h2>
+
+      <div class="extension-nueva">
+        <div class="campo-wrapper flex-1">
+          <label for="new-extension" class="campo-label">Nueva Extensión</label>
+          <input
+            pInputText
+            id="new-extension"
+            placeholder="Número de extensión"
+            type="text"
+            class="campo-input"
+            [formControl]="newExtension"
+            appValidationClass
+          />
+        </div>
         <p-button
-          class="w-full mb-4"
-          (click)="agregarExtension()"
-          label="Agregar Extension"
+          class="agregar-extension-btn"
+          (onClick)="agregarExtension()"
+          label="Agregar"
+          icon="pi pi-plus"
           [outlined]="true"
+          severity="primary"
         />
       </div>
 
-      @if (extension.controls.length>0 ) {
-
-      <!--  -->
-      @for (item of extension.controls; track item;let i = $index) {
-      <div class="contenedor">
-        <input
-          pInputText
-          type="text"
-          class="w-full md:w-[30rem] mb-8"
-          [formControlName]="i"
-          appValidationClass
-        />
-        <p-button
-          class="w-full mb-4"
-          (click)="eliminarExtension(i)"
-          label="Eliminar Extension"
-          [outlined]="true"
-        />
+      @if (extension.controls.length > 0) {
+      <div class="extensiones-lista">
+        @for (item of extension.controls; track item; let i = $index) {
+        <div class="extension-item">
+          <input
+            pInputText
+            type="text"
+            class="campo-input flex-1"
+            [formControlName]="i"
+            appValidationClass
+            placeholder="Extensión"
+          />
+          <p-button
+            class="eliminar-extension-btn"
+            (onClick)="eliminarExtension(i)"
+            icon="pi pi-trash"
+            severity="danger"
+            [outlined]="true"
+            [text]="true"
+          />
+        </div>
+        }
       </div>
-
-      }
-      <!--  -->
       }
     </div>
 
-    <div class="contenedor">
-      <label
-        for=""
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Acciones</label
-      >
+    <!-- Sección de Acciones -->
+    <div class="acciones-section">
       @if (isEditar()) {
       <p-button
-        class="w-full mb-4 m-2 p-2"
-        (click)="crearPrograma()"
+        class="accion-btn"
+        (onClick)="crearPrograma()"
         label="Crear Programa"
+        icon="pi pi-plus"
         [outlined]="true"
+        severity="secondary"
       />
       } @if (progress()===0) {
-      <!--  -->
       <p-button
-        class="w-full mb-4 m-2 p-2"
-        (click)="tipoDeAccion()"
+        class="accion-btn accion-principal"
+        (onClick)="tipoDeAccion()"
         [label]="datos().buttonText"
-        [outlined]="true"
-      />}@else if(progress()===1){ }
+        icon="pi pi-save"
+        severity="primary"
+      />
+      } @else if(progress()===1) {
+      <!-- Contenido para siguiente paso -->
+      }
     </div>
 
+    <!-- Efecto de luz animado -->
     <app-carta
       [duration]="6"
       [delay]="2"
       [borderWidth]="2"
       borderRadius="xl"
       [reverse]="true"
-    >
-    </app-carta>
+    />
   </form>
 </app-card-formulario-validacion>

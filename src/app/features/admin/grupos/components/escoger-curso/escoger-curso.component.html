@@ -1,39 +1,105 @@
 <div class="competencias-cursos-container">
-  <p-toast />
-  <p-confirmdialog />
   <!-- Header -->
-  <div class="page-header">
-    <h1 class="page-title">
-      <i class="pi pi-book"></i>
-      Cursos
-    </h1>
+
+  <!-- Grid de Competencias -->
+  <div class="competencias-section">
+    <h2 class="section-title">
+      <i class="pi pi-star"></i>
+      Competencias Disponibles
+    </h2>
+
+    <div
+      class="competencias-grid"
+      *ngIf="this.obtenerCompetencias.data()?.data"
+    >
+      <div
+        *ngFor="
+          let competencia of this.obtenerCompetencias.data()?.data;
+          let i = index
+        "
+        class="competencia-card p-card"
+        [class.selected]="competenciaSeleccionada()?.id === competencia.id"
+        [style.animation-delay]="i * 0.1 + 's'"
+        (click)="seleccionarCompetencia(competencia)"
+      >
+        <div class="competencia-header">
+          <div class="competencia-code" *ngIf="competencia.code">
+            {{ competencia.code }}
+          </div>
+          <div class="competencia-status" *ngIf="competencia.status">
+            <i class="pi pi-circle-fill"></i>
+            {{ competencia.status }}
+          </div>
+        </div>
+
+        <div class="competencia-content">
+          <h3 class="competencia-nombre">{{ competencia.name }}</h3>
+          <p class="competencia-descripcion">{{ competencia.description }}</p>
+        </div>
+
+        <div class="competencia-footer">
+          <div class="selection-indicator">
+            <span class="indicator-text">
+              {{
+                competenciaSeleccionada()?.id === competencia.id
+                  ? "Seleccionada"
+                  : "Seleccionar"
+              }}
+            </span>
+            <i
+              [class]="
+                competenciaSeleccionada()?.id === competencia.id
+                  ? 'pi pi-check-circle'
+                  : 'pi pi-circle'
+              "
+            ></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div
+      class="empty-state"
+      *ngIf="this.obtenerCompetencias.data()?.data?.length === 0"
+    >
+      <i class="pi pi-search empty-icon"></i>
+      <h3 class="empty-title">No hay competencias disponibles</h3>
+      <p class="empty-description">
+        No se han cargado competencias en el sistema
+      </p>
+    </div>
   </div>
 
-  <!-- Estado vacío -->
-
   <!-- Cursos de la Competencia Seleccionada -->
-  <div class="cursos-section">
+  <div class="cursos-section" *ngIf="competenciaSeleccionada()">
     <div class="section-header">
       <h2 class="section-title">
         <i class="pi pi-list"></i>
-        Cursos disponibles
+        Cursos de {{ competenciaSeleccionada()?.name }}
       </h2>
       <div class="section-meta">
-        <span class="p-badge m-2 p-2 rounded-md"
-          >{{ cursos().length }} cursos</span
+        <span class="p-badge"
+          >{{ obtenerCurso.data()?.data?.page?.length }} cursos</span
         >
       </div>
     </div>
 
-    @if((this.obtenerCurso.data()?.data?.page?.length ?? 0) > 0){
-    <div class="cursos-grid">
-      @for (curso of this.obtenerCurso.data()?.data?.page; track $index; let i =
-      $index) {
-      <div class="curso-card p-card" [style.animation-delay]="i * 0.1 + 's'">
+    <div class="cursos-grid" *ngIf="obtenerCurso.data()?.data?.page">
+      <div
+        *ngFor="let curso of obtenerCurso.data()?.data?.page; let i = index"
+        class="curso-card p-card"
+        [style.animation-delay]="i * 0.1 + 's'"
+        (click)="seleccionarCurso(curso)"
+      >
         <!-- Header del curso -->
         <div class="curso-header">
           <div class="curso-code" *ngIf="curso.code">
-            Competencia: {{ curso.competency.name }}
+            {{ curso.code }}
+          </div>
+          <div class="curso-status" *ngIf="curso.status">
+            <i class="pi pi-circle-fill"></i>
+            {{ curso.status }}
           </div>
         </div>
 
@@ -57,87 +123,87 @@
 
         <!-- Footer del curso -->
         <div class="curso-footer">
-          <button
-            class="p-button p-button-primary agregar-curso-btn"
-            (click)="abrirModalGrupo(curso); $event.stopPropagation()"
+          <p-button
+            label="Crear Grupo"
+            icon="pi pi-plus"
+            [style]="{ width: '100%' }"
+            (onClick)="abrirModalGrupo(curso); $event.stopPropagation()"
           >
-            <i class="pi pi-plus"></i>
-            <span>Agregar a Grupo</span>
-          </button>
+          </p-button>
         </div>
       </div>
-      }
     </div>
-    }
 
     <!-- Estado vacío para cursos -->
-    @if (cursos().length===0) {
-    <div class="empty-state">
+    <div
+      class="empty-state"
+      *ngIf="obtenerCurso.data()?.data?.page?.length === 0"
+    >
       <i class="pi pi-book empty-icon"></i>
       <h3 class="empty-title">No hay cursos disponibles</h3>
       <p class="empty-description">
         Esta competencia no tiene cursos asignados
       </p>
     </div>
-    }
   </div>
 
-  <!-- Modal para seleccionar grupo -->
-  @if (mostrarModalGrupo()) {
-  <div class="modal-overlay" (click)="cerrarModalGrupo()">
-    <div class="modal-container p-card" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h3 class="modal-title">
-          <i class="pi pi-users"></i>
-          Agregar curso a grupo
-        </h3>
-        <button
-          class="p-button p-button-text modal-close"
-          (click)="cerrarModalGrupo()"
-        >
-          <i class="pi pi-times"></i>
-        </button>
+  <!-- Modal PrimeNG para seleccionar grupo -->
+  <p-dialog
+    header="Agregar curso a grupo"
+    [modal]="true"
+    [visible]="mostrarModalGrupo()"
+    [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    (onHide)="cerrarModalGrupo()"
+  >
+    <!-- Icono en el header -->
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <i class="pi pi-users text-primary"></i>
+        <span>Agregar curso a grupo</span>
       </div>
+    </ng-template>
 
-      <div class="modal-content">
-        @if (cursoParaAgregar()) {
-        <div class="curso-seleccionado p-card">
-          <h4 class="curso-modal-nombre">{{ cursoParaAgregar()?.name }}</h4>
-          <p class="curso-modal-descripcion">
-            {{ cursoParaAgregar()?.description }}
-          </p>
-          <div class="curso-modal-info">
-            <span class="info-badge">
-              <i class="pi pi-clock"></i>
-              {{ cursoParaAgregar()?.weeklyHours }}h/semana
-            </span>
-            <span class="info-badge">
-              <i class="pi pi-star"></i>
-              {{ cursoParaAgregar()?.credits }} créditos
-            </span>
-          </div>
+    <!-- Contenido del modal -->
+    <div class="modal-content-primeng">
+      <!-- Información del curso seleccionado -->
+      <div class="curso-seleccionado p-card mb-4" *ngIf="cursoParaAgregar()">
+        <h4 class="curso-modal-nombre">{{ cursoParaAgregar()?.name }}</h4>
+        <p class="curso-modal-descripcion mb-3">
+          {{ cursoParaAgregar()?.description }}
+        </p>
+        <div class="curso-modal-info">
+          <span class="p-badge p-badge-info mr-2">
+            <i class="pi pi-clock mr-1"></i>
+            {{ cursoParaAgregar()?.weeklyHours }}h/semana
+          </span>
+          <span class="p-badge p-badge-success">
+            <i class="pi pi-star mr-1"></i>
+            {{ cursoParaAgregar()?.credits }} créditos
+          </span>
         </div>
-        }
       </div>
 
-      <div class="modal-footer">
-        <button
-          class="p-button p-button-secondary"
-          (click)="cerrarModalGrupo()"
-        >
-          <i class="pi pi-times"></i>
-          <span>Cancelar</span>
-        </button>
-        <button
-          class="p-button p-button-primary"
-          [disabled]="!grupoSeleccionado()"
-          (click)="confirmarAgregarCurso()"
-        >
-          <i class="pi pi-check"></i>
-          <span>Agregar Curso</span>
-        </button>
-      </div>
+      <!-- Lista de grupos -->
     </div>
-  </div>
-  }
+
+    <!-- Footer del modal con botones -->
+    <ng-template pTemplate="footer">
+      <div class="flex gap-2">
+        <p-button
+          label="Cancelar"
+          icon="pi pi-times"
+          severity="secondary"
+          (onClick)="cerrarModalGrupo()"
+        >
+        </p-button>
+        <p-button
+          label="Agregar Curso"
+          icon="pi pi-check"
+          [disabled]="!grupoSeleccionado()"
+        >
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
 </div>

@@ -37,9 +37,12 @@ export class CompetenciasService {
   }
   CreateCompetencias(
     facultad: competencias
-  ): Observable<ContentResponse<competencias>> {
+  ): Observable<ContentResponse<competenciaDto>> {
     return this.http
-      .post<ContentResponse<competencias>>(`${this.api}/competencies`, facultad)
+      .post<ContentResponse<competenciaDto>>(
+        `${this.api}/competencies`,
+        facultad
+      )
       .pipe(catchError((error) => throwError(() => error)));
   }
   ActivarCompetencia(id: string): Observable<ContentResponse<competenciaDto>> {

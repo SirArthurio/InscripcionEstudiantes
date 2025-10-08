@@ -1,3 +1,242 @@
-.contenedor {
-  @apply m-2 p-2;
+/* Contenedor principal del formulario */
+.formulario-facultad {
+  @apply relative rounded-2xl p-8 space-y-8;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  overflow: hidden;
+}
+
+/* Secciones del formulario */
+.seccion-formulario {
+  @apply space-y-6;
+}
+
+/* Títulos de sección */
+.seccion-titulo {
+  @apply flex items-center gap-3 text-2xl font-bold pb-4 border-b mb-6;
+  color: var(--text-color);
+  border-color: var(--surface-border);
+}
+
+.seccion-titulo i {
+  @apply text-2xl;
+  color: var(--primary-color);
+}
+
+/* Grid de campos */
+.campos-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+/* Wrapper de cada campo */
+.campo-wrapper {
+  @apply flex flex-col gap-2;
+}
+
+/* Campo que ocupa el ancho completo */
+.campo-full {
+  @apply md:col-span-2;
+}
+
+/* Labels de los campos */
+.campo-label {
+  @apply text-base font-semibold;
+  color: var(--text-color);
+}
+
+/* Inputs del formulario */
+::ng-deep .campo-input {
+  @apply w-full;
+}
+
+::ng-deep .campo-input input,
+::ng-deep .campo-input textarea {
+  @apply w-full;
+}
+
+/* Textarea específico */
+::ng-deep .campo-input textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Sección de extensión nueva */
+.extension-nueva {
+  @apply flex gap-3 items-end flex-wrap;
+}
+
+.extension-nueva .campo-wrapper {
+  @apply flex-1 min-w-[200px];
+}
+
+::ng-deep .agregar-extension-btn {
+  @apply flex-shrink-0 self-end;
+}
+
+::ng-deep .agregar-extension-btn .p-button {
+  min-height: 2.5rem;
+}
+
+/* Lista de extensiones */
+.extensiones-lista {
+  @apply space-y-3 mt-4 p-4 rounded-lg;
+  background: var(--surface-50);
+}
+
+.extension-item {
+  @apply flex gap-3 items-center;
+}
+
+.extension-item .campo-input {
+  @apply flex-1;
+}
+
+::ng-deep .eliminar-extension-btn .p-button {
+  @apply transition-all duration-300;
+}
+
+::ng-deep .eliminar-extension-btn .p-button:hover {
+  @apply scale-110;
+}
+
+/* Sección de acciones */
+.acciones-section {
+  @apply mt-8 pt-8 border-t flex flex-col sm:flex-row gap-3;
+  border-color: var(--surface-border);
+}
+
+/* Botones de acción */
+::ng-deep .acciones-section .accion-btn {
+  @apply transition-all duration-300;
+}
+
+::ng-deep .acciones-section .accion-btn .p-button {
+  @apply w-full font-semibold;
+  min-height: 3rem;
+}
+
+::ng-deep .acciones-section .accion-btn .p-button:hover {
+  @apply -translate-y-0.5;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Botón principal */
+::ng-deep .acciones-section .accion-principal .p-button {
+  @apply text-lg;
+  min-height: 3.5rem;
+  box-shadow: 0 4px 6px -1px rgba(var(--primary-500), 0.3),
+    0 2px 4px -1px rgba(var(--primary-500), 0.2);
+}
+
+::ng-deep .acciones-section .accion-principal .p-button:hover {
+  box-shadow: 0 10px 15px -3px rgba(var(--primary-500), 0.4),
+    0 4px 6px -2px rgba(var(--primary-500), 0.3);
+}
+
+/* Animación de entrada */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formulario-facultad {
+  animation: slideInUp 0.5s ease-out;
+}
+
+.seccion-formulario {
+  animation: slideInUp 0.6s ease-out backwards;
+}
+
+.seccion-formulario:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.seccion-formulario:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.seccion-formulario:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Estados de validación */
+::ng-deep .campo-input.ng-invalid.ng-touched input,
+::ng-deep .campo-input.ng-invalid.ng-touched textarea {
+  border-color: var(--red-500);
+}
+
+::ng-deep .campo-input.ng-valid.ng-touched input,
+::ng-deep .campo-input.ng-valid.ng-touched textarea {
+  border-color: var(--green-500);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formulario-facultad {
+    @apply p-4 space-y-6;
+  }
+
+  .campos-grid {
+    @apply grid-cols-1;
+  }
+
+  .campo-full {
+    @apply col-span-1;
+  }
+
+  .seccion-titulo {
+    @apply text-xl pb-3 mb-4;
+  }
+
+  .seccion-titulo i {
+    @apply text-xl;
+  }
+
+  .campo-label {
+    @apply text-sm;
+  }
+
+  .extension-nueva {
+    @apply flex-col items-stretch;
+  }
+
+  .extension-nueva .campo-wrapper {
+    @apply min-w-full;
+  }
+
+  ::ng-deep .agregar-extension-btn {
+    @apply w-full;
+  }
+
+  ::ng-deep .agregar-extension-btn .p-button {
+    @apply w-full;
+  }
+
+  .acciones-section {
+    @apply flex-col;
+  }
+
+  ::ng-deep .acciones-section .accion-principal .p-button {
+    @apply text-base;
+    min-height: 3rem;
+  }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .formulario-facultad {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  .extensiones-lista {
+    background: rgba(var(--surface-100), 0.5);
+  }
 }

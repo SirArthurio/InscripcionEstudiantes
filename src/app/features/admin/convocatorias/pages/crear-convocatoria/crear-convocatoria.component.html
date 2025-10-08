@@ -11,7 +11,7 @@
 
   <form
     #formulario
-    class="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center border-transparent rounded-xl p-2"
+    class="relative grid grid-cols-1 md:grid-cols-2 justify-items-center border-transparent rounded-xl p-2"
     [formGroup]="formConvocatoria"
   >
     <div class="contenedor">
@@ -59,6 +59,8 @@
         selectionMode="range"
         [readonlyInput]="true"
         [showButtonBar]="true"
+        pTooltip="Ingresa la fecha de inicio y la fecha final"
+        tooltipPosition="top"
         [minDate]="minDate"
         placeholder="Selecciona un rango"
         [showIcon]="true"
@@ -67,49 +69,88 @@
       ></p-datepicker>
     </div>
 
-    <div class="contenedor grid grid-cols-2 justify-items-center">
-      <label
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2 col-span-2"
-        >Acciones
-      </label>
-      @if (progress()===0) {
-      <!--  -->
-      @if (isEditar()) {
-      <p-button
-        class="w-full mb-4 p-2"
-        (click)="crearGrupo()"
-        label="Crear Grupo"
-        [outlined]="true"
-      />
-      <p-button
-        class="w-full mb-4 p-2"
-        (click)="verGrupos()"
-        label="Ver Grupo"
-        [outlined]="true"
-      />
-      <p-button
-        class="w-full mb-4 p-2"
-        (click)="accionActualizarTipo('publicar', this.convocatoriaId())"
-        label="Publicar"
-        [outlined]="true"
-      />
-      <p-button
-        class="w-full mb-4 p-2"
-        (click)="confirmarEdicionFechas()"
-        label="Editar Fechas"
-        [outlined]="true"
-      />
-      }
-      <!--  -->
-      <p-button
-        class="w-full mb-4 p-2"
-        (click)="tipoDeAccion()"
-        [label]="datos().buttonText"
-        [outlined]="true"
-      />
+    <!-- HTML para reemplazar la sección de acciones -->
+    <div class="acciones-container col-span-3">
+      <h3 class="acciones-titulo">
+        <i class="pi pi-cog"></i>
+        Acciones
+      </h3>
 
-      <!--  -->
-      }@else if(progress()===1){ }
+      @if (progress()===0) { @if (isEditar()) {
+      <!-- Grid de acciones en modo edición -->
+      <div class="acciones-grid-editar">
+        <!-- Acciones principales -->
+        <div class="acciones-principales">
+          <p-button
+            class="accion-btn"
+            (onClick)="crearGrupo()"
+            label="Crear Grupos"
+            icon="pi pi-plus"
+            [outlined]="true"
+            severity="primary"
+          />
+          @if(!this.isFecha()){
+          <p-button
+            class="accion-btn"
+            (onClick)="confirmarEdicionFechas()"
+            label="Editar Fechas"
+            icon="pi pi-calendar"
+            [outlined]="true"
+            severity="warn"
+          />
+          }
+        </div>
+
+        <!-- Acciones especiales -->
+
+        <h3 class="acciones-titulo">
+          <i class="pi pi-cog"></i>
+          Administrar convocatoria
+        </h3>
+      </div>
+      <div class="acciones-grid-editar">
+        <div class="acciones-principales">
+          @if (!isActiva()) {
+          <p-button
+            class="accion-btn accion-destacada"
+            (onClick)="accionActualizarTipo('publicar', this.convocatoriaId())"
+            label="Publicar"
+            icon="pi pi-check-circle"
+            severity="success"
+          />
+          }
+          <p-button
+            class="accion-btn accion-destacada"
+            (onClick)="accionActualizarTipo('publicar', this.convocatoriaId())"
+            label="Cerrar"
+            icon="pi pi-check-circle"
+            severity="warn"
+          />
+          <p-button
+            class="accion-btn accion-destacada"
+            (onClick)="accionActualizarTipo('publicar', this.convocatoriaId())"
+            label="Cancelar"
+            icon="pi pi-check-circle"
+            severity="danger"
+          />
+        </div>
+      </div>
+
+      }
+
+      <!-- Acción principal cuando no es edición -->
+      <div class="accion-principal-contenedor">
+        <p-button
+          class="accion-btn accion-main"
+          (onClick)="tipoDeAccion()"
+          [label]="datos().buttonText"
+          icon="pi pi-save"
+          severity="primary"
+        />
+      </div>
+      } @else if(progress()===1){
+      <!-- Acciones para el siguiente paso -->
+      }
     </div>
 
     <app-carta

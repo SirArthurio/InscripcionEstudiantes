@@ -1,0 +1,44 @@
+/* Headers de competencia */
+.competencia-header {
+  @apply flex items-center gap-2 pb-2 border-b-2;
+  border-color: var(--primary-color);
+}
+
+.competencia-titulo {
+  @apply text-lg font-bold m-0;
+  color: var(--text-color);
+}
+
+/* Headers de curso */
+.curso-header {
+  @apply flex items-center gap-2 pb-2 border-b;
+  border-color: var(--surface-border);
+}
+
+.curso-titulo {
+  @apply text-base font-semibold m-0;
+  color: var(--text-color);
+}
+
+.grupo-count {
+  @apply text-xs;
+  color: var(--text-color-secondary);
+}
+
+/* Sección de competencia */
+.competencia-seccion {
+  @apply p-4 rounded-xl;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+}
+
+/* Sección de curso */
+.curso-seccion {
+  @apply p-3 rounded-lg;
+  background: var(--surface-50);
+}
+
+/* Meta info de grupos */
+.grupo-meta {
+  color: var(--text-color-secondary);
+}

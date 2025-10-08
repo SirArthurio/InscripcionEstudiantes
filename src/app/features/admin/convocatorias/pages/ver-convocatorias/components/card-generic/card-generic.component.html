@@ -1,88 +1,100 @@
-<div class="card">
+<div class="convocatorias-container">
   <p-toast />
   <p-confirmdialog />
-  <header class="flex flex-row items-center">
-    <i
-      class="pi pi-calendar"
-      style="font-size: 4rem"
-      style="color: var(--primary-color)"
-    ></i>
-    <div class="ml-2 text-2xl font-bold">{{ texto().title }}</div>
+
+  <!-- Header -->
+  <header class="convocatorias-header">
+    <i class="pi pi-calendar header-icon"></i>
+    <h1 class="header-titulo">{{ texto().title }}</h1>
   </header>
 
-  <hr />
-  @if(convocatoria().length>0){ @for (item of convocatoria(); track $index) {
-  <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
-    <div class="text-xl font-semibold">{{ item.name }}</div>
-    <div class="flex flex-row justify-between items-center w-full m-2">
-      <div>
-        <div class="text-sm font-light">
-          Clases: {{ item.enrollmentStartDate }} - {{ item.enrollmentEndDate }}
+  <!-- Lista de convocatorias -->
+  @if(convocatoria().length > 0) {
+  <div class="convocatorias-lista">
+    @for (item of convocatoria(); track $index) {
+    <article class="convocatoria-card">
+      <!-- Header de la card -->
+      <div class="card-header">
+        <h2 class="card-titulo">{{ item.name }}</h2>
+        <p-tag [severity]="statusColor(item.status)" class="card-status">
+          {{ item.status }}
+        </p-tag>
+      </div>
+
+      <!-- Información de fechas -->
+      <div class="card-fechas">
+        <div class="fecha-item">
+          <i class="pi pi-calendar-times fecha-icon"></i>
+          <div class="fecha-content">
+            <span class="fecha-label">Clases</span>
+            <span class="fecha-valor">
+              {{ item.enrollmentStartDate }} - {{ item.enrollmentEndDate }}
+            </span>
+          </div>
         </div>
-        <div class="text-sm font-light">
-          Convocatoria: {{ item.enrollmentStartDate }} -
-          {{ item.enrollmentEndDate }}
+
+        <div class="fecha-item">
+          <i class="pi pi-calendar-plus fecha-icon"></i>
+          <div class="fecha-content">
+            <span class="fecha-label">Convocatoria</span>
+            <span class="fecha-valor">
+              {{ item.enrollmentStartDate }} - {{ item.enrollmentEndDate }}
+            </span>
+          </div>
         </div>
       </div>
 
-      <p-tag [severity]="statusColor(item.status)">
-        {{ item.status }}
-      </p-tag>
-    </div>
+      <!-- Descripción -->
+      <p class="card-descripcion">
+        {{ item.description }}
+      </p>
 
-    <div class="text-sm m-2">
-      {{ item.description }}
-    </div>
+      <!-- Acciones -->
+      <div class="card-acciones">
+        @if(editarConvocatoria()) {
+        <p-button
+          class="accion-btn"
+          label="Editar/Ver"
+          icon="pi pi-pencil"
+          severity="primary"
+          [outlined]="true"
+          (onClick)="editar(item)"
+        />
+        } @if(item.status != statusConvocatoria.publicada) {
+        <p-button
+          class="accion-btn"
+          label="Publicar"
+          icon="pi pi-check-circle"
+          (onClick)="confirmacion($event, 'publicar', item.id!)"
+          [severity]="statusColor(item.status)"
+          [disabled]="habilitar(item.status)"
+        />
+        }
 
-    @if(editarConvocatoria()){
-    <p-button
-      class="m-2 p-2"
-      label="Editar"
-      [severity]="'primary'"
-      (click)="editar(item)"
-    />
+        <p-button
+          class="accion-btn"
+          label="Cancelar"
+          icon="pi pi-times-circle"
+          (onClick)="confirmacion($event, 'cancelar', item.id!)"
+          severity="danger"
+          [outlined]="true"
+          [disabled]="habilitar(item.status)"
+        />
+
+        <p-button
+          class="accion-btn"
+          label="Cerrar"
+          icon="pi pi-lock"
+          (onClick)="confirmacion($event, 'cerrar', item.id!)"
+          severity="warn"
+          [outlined]="true"
+          [disabled]="habilitar(item.status)"
+        />
+      </div>
+    </article>
     }
-    <!--  -->
-    @if(item.status!=statusConvocatoria.publicada){<p-button
-      class="m-2 p-2"
-      label="Publicar Convocatoria"
-      (click)="confirmacion($event, 'publicar', item.id!)"
-      [severity]="statusColor(item.status)"
-      [disabled]="habilitar(item.status)"
-    />
-    }
-    <!--  -->
-    <!-- <p-button
-      class="m-2 p-2"
-      label="Competencias Convocatoria"
-      [severity]="statusColor(item.status)"
-      [disabled]="habilitar(item.status)"
-      (click)="competenciaConvocatoria(item.id!)"
-    />
-    <p-button
-      class="m-2 p-2"
-      label="Crear competencia"
-      (click)="crearCompetencia(item.id!)"
-      [severity]="statusColor(item.status)"
-      [disabled]="habilitar(item.status)"
-    /> -->
-    <p-button
-      class="m-2 p-2"
-      label="Cancelar Convocatoria"
-      (click)="confirmacion($event, 'cancelar', item.id!)"
-      [severity]="statusColor(item.status)"
-      [disabled]="habilitar(item.status)"
-    />
-
-    <p-button
-      class="m-2 p-2"
-      label="Cerrar Convocatoria"
-      (click)="confirmacion($event, 'cerrar', item.id!)"
-      [severity]="statusColor(item.status)"
-      [disabled]="habilitar(item.status)"
-    />
   </div>
-  } }@else {
+  } @else {
   <app-no-data [type]="type()" />
   }
 </div>

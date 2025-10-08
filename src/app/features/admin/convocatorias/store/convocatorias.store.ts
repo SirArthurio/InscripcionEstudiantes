@@ -103,14 +103,13 @@ export const convocatoriasStore = signalStore(
       },
 
       async closeConvocatoria(
-        id: string,
-        name: string
+        id: string
       ): Promise<ContentResponse<convocatoriaDTO>> {
         try {
           queryClient.invalidateQueries({ queryKey: ['convocatoria'] });
 
           const response = await firstValueFrom(
-            convocatoriaService.CloseConvocatoria(id, name)
+            convocatoriaService.CloseConvocatoria(id)
           );
           if (!response) throw Error;
           return response;

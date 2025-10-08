@@ -42,6 +42,7 @@ interface tableData {
 })
 export class TableComponent {
   //inputs
+  showFiltros = input<boolean>(true);
   data = input.required<tableData>();
   totalPages = input<number>(1);
   rutaEdit = input<string>('');
