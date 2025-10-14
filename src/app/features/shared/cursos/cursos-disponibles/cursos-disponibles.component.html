@@ -1,76 +1,301 @@
-<div class="card">
-  <p-confirmdialog />
-  <p-toast />
-  <header class="flex flex-row items-center">
-    <i
-      class="pi pi-book"
-      style="font-size: 4rem"
-      style="color: var(--primary-color)"
-    ></i>
-    <div class="ml-2 text-2xl font-bold">{{ texto.title }}</div>
-  </header>
-  <hr />
-  @if((this.obtenerGrupos.data()?.length || 0) > 0){
-
-  <!--  -->
-  @for (item of this.obtenerGrupos.data(); track $index) {
-  <div class="bg-surface-50 dark:bg-surface-950 rounded-md m-2 p-2">
-    <div class="text-xl font-semibold">{{ item.observations | titlecase }}</div>
-    <div class="flex flex-row justify-between items-center w-full m-2">
-      <div class="text-sm font-light">{{ item.code }} {{ texto.credits }}</div>
-
-      <p-button
-        class="pr-2"
-        label="Matricular"
-        [severity]="statusColor(item.status)"
-        [disabled]="item.availableSeats === 0"
-        (click)="confirmacionMatricula(item.id!)"
-      />
+<div class="container mx-auto space-y-6">
+  @if (gruposDisponibles().length > 0 && gruposDisponibles()[0].call) {
+  <div class="card rounded-2xl p-6 transition-colors shadow-md rounded-2xl">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+          {{ gruposDisponibles()[0].call.name }}
+        </h1>
+        <p-tag
+          [severity]="statusColor(gruposDisponibles()[0].call.status)"
+          [value]="gruposDisponibles()[0].call.status | titlecase"
+          [rounded]="true"
+        >
+        </p-tag>
+      </div>
     </div>
 
-    <div class="text-sm m-2">
-      {{ item.modality }}
-    </div>
+    <p class="text-gray-600 dark:text-gray-300 mb-6">
+      {{ gruposDisponibles()[0].call.description }}
+    </p>
 
-    <div class="text-sm font-light flex flex-wrap">
-      <section class="p-2">
-        <i
-          class="pi pi-user"
-          style="font-size: 4rem"
-          style="color: var(--primary-color)"
-        ></i>
-        {{ item.professor }}
-      </section>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div
+        class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 shadow-md rounded-2xl transition-colors"
+      >
+        <i class="pi pi-calendar text-blue-600 text-2xl"></i>
+        <div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold">
+            Fecha de inicio
+          </p>
+          <p class="text-sm font-semibold text-gray-800 dark:text-gray-100">
+            {{
+              gruposDisponibles()[0].call.enrollmentStartDate
+                | date : "dd/MM/yyyy"
+            }}
+          </p>
+        </div>
+      </div>
 
-      <!-- <section class="p-2">
-        <i
-          class="pi pi-calendar-clock"
-          style="font-size: 4rem"
-          style="color: var(--primary-color)"
-        ></i>
-        {{ item.date }}
-      </section> -->
+      <div
+        class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 shadow-md rounded-2xl transition-colors"
+      >
+        <i class="pi pi-calendar-times text-red-600 text-2xl"></i>
+        <div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold">
+            Fecha de cierre
+          </p>
+          <p class="text-sm font-semibold text-gray-800 dark:text-gray-100">
+            {{
+              gruposDisponibles()[0].call.enrollmentEndDate
+                | date : "dd/MM/yyyy"
+            }}
+          </p>
+        </div>
+      </div>
 
-      <!-- <section class="p-2">
-        <i
-          class="pi pi-id-card"
-          style="font-size: 4rem"
-          style="color: var(--primary-color)"
-        ></i
-        >{{ item.room }}
-      </section> -->
-    </div>
-
-    <div class="text-sm font-light">
-      {{ texto.availableSeats }}:
-
-      <p-tag [severity]="statusColor(item.status)">{{
-        item.availableSeats
-      }}</p-tag>
+      <div
+        class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 shadow-md rounded-2xl transition-colors"
+      >
+        <i class="pi pi-book text-green-600 text-2xl"></i>
+        <div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold">
+            Competencias disponibles
+          </p>
+          <p class="text-sm font-semibold text-gray-800 dark:text-gray-100">
+            {{ competencias().length }}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
   }
-  <!--  -->
-  } @else if (this.obtenerGrupos.isLoading()) { cargando... } @else { no hay
-  datos :c }
+
+  <!-- Loading State -->
+  @if (obtenerGrupos.isPending()) {
+  <div class="card">
+    <div class="flex justify-center py-12">
+      <no-info></no-info>
+    </div>
+  </div>
+  }
+
+  <!-- TabView de Competencias -->
+  @if (!obtenerGrupos.isPending() && competencias().length > 0) {
+  <div
+    class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6 transition-colors"
+  >
+    <p-tabView>
+      @for (competencia of competencias(); track competencia.id) {
+      <p-tabPanel [header]="competencia.name">
+        <!-- Cursos por Competencia -->
+        <div class="space-y-6 mt-4">
+          @for (grupo of gruposDisponibles(); track grupo.id) { @if
+          (grupo.course.competency.id === competencia.id) {
+          <div
+            class="bg-gray-50 dark:bg-gray-700 shadow-md rounded-2xl p-5 transition-colors"
+          >
+            <!-- Información del Curso -->
+            <div
+              class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-600"
+            >
+              <h3
+                class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2"
+              >
+                {{ grupo.course.name }}
+              </h3>
+              <div class="flex gap-6 text-sm text-gray-600 dark:text-gray-300">
+                <span class="flex items-center gap-1">
+                  <i class="pi pi-star-fill text-yellow-500"></i>
+                  <strong>Créditos:</strong> {{ grupo.course.credits }}
+                </span>
+                <span class="flex items-center gap-1">
+                  <i class="pi pi-clock text-blue-500"></i>
+                  <strong>Horas/semana:</strong> {{ grupo.course.weeklyHours }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card de Grupo -->
+            <div
+              class="bg-white dark:bg-gray-800 shadow-sm rounded-xl p-4 hover:shadow-lg transition-shadow transition-colors"
+            >
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Columna Izquierda -->
+                <div class="space-y-3">
+                  <div class="flex items-center gap-2">
+                    <p-tag
+                      [value]="grupo.modality | titlecase"
+                      [severity]="
+                        grupo.modality === 'presencial' ? 'success' : 'info'
+                      "
+                      [rounded]="true"
+                    >
+                    </p-tag>
+                    <p-tag
+                      [value]="
+                        (grupo.capacity ?? 0) - grupo.occupiedSeats + ' cupos'
+                      "
+                      severity="warning"
+                      [rounded]="true"
+                    >
+                    </p-tag>
+                  </div>
+
+                  <div class="flex items-start gap-2">
+                    <i
+                      class="pi pi-user text-gray-500 dark:text-gray-400 mt-1"
+                    ></i>
+                    <div>
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 font-semibold"
+                      >
+                        Profesor
+                      </p>
+                      <p
+                        class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                      >
+                        {{ grupo.professor.firstName || "Por asignar" }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2">
+                    <i
+                      class="pi pi-calendar text-gray-500 dark:text-gray-400 mt-1"
+                    ></i>
+                    <div>
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 font-semibold"
+                      >
+                        Horario
+                      </p>
+                      <div class="text-sm text-gray-800 dark:text-gray-100">
+                        @for (schedule of grupo.schedules; track $index) {
+                        <p class="font-medium">
+                          {{ schedule.day }}: {{ schedule.startTime }} -
+                          {{ schedule.endTime }}
+                        </p>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columna Derecha -->
+                <div class="space-y-3">
+                  <div class="flex items-start gap-2">
+                    <i
+                      class="pi pi-map-marker text-gray-500 dark:text-gray-400 mt-1"
+                    ></i>
+                    <div>
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 font-semibold"
+                      >
+                        Observaciones
+                      </p>
+                      <p
+                        class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                      >
+                        {{ grupo.observations || "Por confirmar" }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2">
+                    <i
+                      class="pi pi-users text-gray-500 dark:text-gray-400 mt-1"
+                    ></i>
+                    <div>
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 font-semibold"
+                      >
+                        Estudiantes matriculados
+                      </p>
+                      <p
+                        class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                      >
+                        {{ grupo.occupiedSeats }} /
+                        {{ grupo.capacity ?? 0 }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2">
+                    <i
+                      class="pi pi-info-circle text-gray-500 dark:text-gray-400 mt-1"
+                    ></i>
+                    <div>
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 font-semibold"
+                      >
+                        Estado
+                      </p>
+                      <p-tag
+                        [value]="grupo.status | titlecase"
+                        [severity]="statusColor(grupo.status)"
+                      >
+                      </p-tag>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2">
+                    <i
+                      class="pi pi-code text-gray-500 dark:text-gray-400 mt-1"
+                    ></i>
+                    <div>
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 font-semibold"
+                      >
+                        Código del grupo
+                      </p>
+                      <p
+                        class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                      >
+                        {{ grupo.code }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botón de Matricular -->
+              <div
+                class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600"
+              >
+                <p-button
+                  label="Matricular"
+                  icon="pi pi-check"
+                  severity="success"
+                  [disabled]="(grupo.capacity ?? 0) - grupo.occupiedSeats <= 0"
+                  class="w-full"
+                >
+                </p-button>
+              </div>
+            </div>
+          </div>
+          } } @if (!tieneGruposEnCompetencia(competencia.id!)) {
+          <div class="text-center py-8">
+            <app-no-data></app-no-data>
+          </div>
+          }
+        </div>
+      </p-tabPanel>
+      }
+    </p-tabView>
+  </div>
+  }
+
+  <!-- No hay competencias -->
+  @if (!obtenerGrupos.isPending() && competencias().length === 0) {
+  <div
+    class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-8 transition-colors"
+  >
+    <app-no-data></app-no-data>
+  </div>
+  }
 </div>
+
+<!-- Toast y Confirm Dialog -->
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>

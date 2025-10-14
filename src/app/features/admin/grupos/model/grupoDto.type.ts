@@ -11,6 +11,7 @@ export type grupoDto = Omit<baseCode, 'name' | 'description'> & {
   course: cursoDto;
   capacity: number | null;
   availableSeats: number | null;
+  occupiedSeats: number;
   status: string;
   schedules: schedule[];
 };

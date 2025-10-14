@@ -1,0 +1,205 @@
+<div class="card">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 bg bg-color">
+    
+    <!-- Header -->
+    <div class="mb-10 text-center">
+      <h1 class="text-4xl font-bold text-primary-700">Configuración de Perfil</h1>
+      <p class="text-surface-600 mt-2 text-lg">
+        Gestiona tu información personal y la configuración de tu cuenta
+      </p>
+    </div>
+
+    <!-- Profile Card -->
+    @if (currentStore.user(); as user) {
+      <p-card class="mb-8 shadow-md shadow-green-100 rounded-2xl overflow-hidden">
+        <ng-template pTemplate="header">
+          <div class="flex items-center justify-between p-6 border-b bg-primary-50">
+            <div class="flex items-center gap-4">
+              <p-avatar 
+                [label]="getInitials(user.username)"
+                size="xlarge"
+                styleClass="bg-primary-500 text-white font-semibold shadow-md">
+              </p-avatar>
+              <div>
+                <h2 class="text-2xl font-semibold text-gray-900">
+                  @if (user.role === 'student') {
+                      @if (currentStore.student(); as student) {
+                        {{ (student.firstName + ' ' + student.lastName) || user.username || user.institutionalEmail || 'Usuario' }}
+                      }
+                  }
+                  @else if (user.role === 'superadmin') {
+                      @if (currentStore.superadmin(); as superadmin) {
+                        {{ (superadmin.firstName + ' ' + superadmin.lastName) || user.username || user.institutionalEmail || 'Usuario' }}
+                      }
+                  }
+                  @else {
+                      {{ user.username || user.institutionalEmail || 'Usuario' }}
+                  }
+                </h2>
+
+                <p class="text-sm text-gray-600">{{ user.institutionalEmail }}</p>
+
+                <p-tag 
+                  [value]="getRoleDisplayName(user.role)" 
+                  [severity]="getRoleColor(user.role)"
+                  class="mt-2">
+                </p-tag>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="content">
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- Nombre -->
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium text-gray-700">Nombre Completo</label>
+                <input 
+                  pInputText
+                  [value]="user.username"
+                  disabled
+                  class="w-full bg-surface-100">
+              </div>
+
+              <!-- Email -->
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium text-gray-700">Correo Electrónico</label>
+                <input 
+                  pInputText
+                  [value]="user.institutionalEmail"
+                  disabled
+                  class="w-full bg-surface-100">
+              </div>
+
+            </div>
+
+            @if (user.role === 'student') {
+              @if (currentStore.student(); as student) {
+                <p-divider class="my-6"></p-divider>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-700">Cedula</label>
+                    <input 
+                      pInputText
+                      [value]="student.documentNumber || 'No especificado'"
+                      disabled
+                      class="w-full bg-surface-100">
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-700">Telefono</label>
+                    <input 
+                      pInputText
+                      [value]="student.phone || 'No especificado'"
+                      disabled
+                      class="w-full bg-surface-100">
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-700">Programa Académico</label>
+                    <input 
+                      pInputText
+                      [value]="student.program || 'No especificado'"
+                      disabled
+                      class="w-full bg-surface-100">
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-700">Semestre Académico</label>
+                    <input 
+                      pInputText
+                      [value]="student.semester || 'No especificado'"
+                      disabled
+                      class="w-full bg-surface-100">
+                  </div>
+                </div>
+              }
+            }
+
+            @if (user.role === 'superadmin') {
+              @if (currentStore.superadmin(); as superadmin) {
+                <p-divider class="my-6"></p-divider>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Información Administrativa</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-700">ID Administrativo</label>
+                    <input 
+                      pInputText
+                      [value]="superadmin.id"
+                      disabled
+                      class="w-full bg-surface-100">
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-700">Lugar de nacimiento</label>
+                    <input 
+                      pInputText
+                      [value]="superadmin.birthPlace || 'No especificado'"
+                      disabled
+                      class="w-full bg-surface-100">
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-700">No. Documento</label>
+                    <input 
+                      pInputText
+                      [value]="superadmin.documentNumber || 'No especificado'"
+                      disabled
+                      class="w-full bg-surface-100">
+                  </div>
+
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-700">Telefono</label>
+                    <input 
+                      pInputText
+                      [value]="superadmin.phone || 'No especificado'"
+                      disabled
+                      class="w-full bg-surface-100">
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </ng-template>
+      </p-card>
+    }
+
+    <!-- Security Section -->
+    <p-card class="shadow-md shadow-green-100 rounded-2xl overflow-hidden px-10">
+      <ng-template pTemplate="header">
+        <div class="p-6 border-b bg-primary-50">
+          <h3 class="text-xl font-semibold text-primary-800">Seguridad</h3>
+          <p class="text-surface-600 mt-1">Gestiona tu contraseña y configuración de seguridad</p>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="content">
+        <div class="space-y-6 p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-medium text-gray-900">Contraseña</h4>
+              <p class="text-sm text-gray-600">Cambia tu contraseña</p>
+            </div>
+            <p-button 
+              label="Cambiar Contraseña"
+              icon="pi pi-key"
+              severity="secondary"
+              outlined="true"
+              >
+            </p-button>
+          </div>
+
+          <p-divider></p-divider>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <div class="flex justify-center mt-8">
+      <p-button 
+        label="Cerrar Sesión"
+        icon="pi pi-sign-out"
+        severity="danger"
+        >
+      </p-button>
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>

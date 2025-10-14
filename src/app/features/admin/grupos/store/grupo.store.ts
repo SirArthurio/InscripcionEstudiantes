@@ -95,17 +95,11 @@ export const GrupoStore = signalStore(
       },
       //peticiones
       getGruposPorConvocatoriaStudent(
-        page: number,
-        idConvocatoria: string,
-        studentId: string
+        callId: string
       ): Promise<ContentResponse<grupoDto[]>> {
         try {
           const response = firstValueFrom(
-            grupoService.GetGruposPorConvocatoriaStudent(
-              page,
-              idConvocatoria,
-              studentId
-            )
+            grupoService.GetGrupos(callId)
           );
           if (!response) throw Error;
           return response;
@@ -170,6 +164,7 @@ export const GrupoStore = signalStore(
           throw error;
         }
       },
+      
       sincronizarSchedule(grupoId: string, schedule: schedule[]) {
         try {
           const response = firstValueFrom(

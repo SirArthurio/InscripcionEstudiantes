@@ -17,10 +17,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NoDataComponent } from '@core/shared/components/no-data/no-data.component';
 import { statusConvocatorias } from '@core/shared/enums/status-convocatorias-type.enum';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-convocatorias-activas',
-  imports: [TagModule, ButtonModule, NoDataComponent],
+  imports: [TagModule, ButtonModule, NoDataComponent, CommonModule],
   templateUrl: './convocatorias-activas.component.html',
   styleUrl: './convocatorias-activas.component.scss',
 })
@@ -61,6 +62,13 @@ export class ConvocatoriasActivasComponent implements OnInit {
       this.alertService.showErrors(error?.error?.message);
     }
   }
+  selectedId = signal<string | null>(null);
+
+  seleccionarConvocatoria(item: convocatoriaDTO) {
+    this.selectedId.set(item.id!);
+    this.verConvocatoria(item.id!);
+  }
+
 
   getConvocatorias = effect(() => {
     this.filtradas.set(this.convocatoriasActivas(this.convocatoria()));

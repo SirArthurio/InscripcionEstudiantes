@@ -3,21 +3,25 @@
   <p-toast />
 
   <div>
-    <form [formGroup]="formLogin">
+    <!-- Aquí agregamos el ngSubmit -->
+    <form [formGroup]="formLogin" (ngSubmit)="enviarFormulario()">
       <label
         for="username"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
         >Usuario</label
       >
-      <input
-        pInputText
-        appValidationClass
-        id="username"
-        type="text"
-        placeholder="Usuario "
-        class="w-full md:w-[30rem] mb-8"
-        formControlName="username"
-      />
+      <p-inputGroup class="w-full md:w-[30rem] mb-8">
+        <input
+          pInputText
+          appValidationClass
+          id="username"
+          type="text"
+          placeholder="Usuario"
+          formControlName="username"
+        />
+        <p-inputGroupAddon>&#64;unicesar.edu.co</p-inputGroupAddon>
+      </p-inputGroup>
+      
 
       <label
         for="password1"
@@ -34,6 +38,13 @@
         [feedback]="false"
         appValidationClass
       ></p-password>
+
+      <!-- El botón debe ser submit -->
+      <p-button
+        type="submit"
+        label="Sign In"
+        styleClass="w-full"
+      ></p-button>
     </form>
 
     <div class="flex items-center justify-between mt-2 mb-8 gap-8">
@@ -48,13 +59,8 @@
         >No tienes cuenta?, registrate!</span
       >
     </div>
-    <p-button
-      (click)="enviarFormulario()"
-      label="Sign In"
-      styleClass="w-full"
-      (keydown.enter)="enviarFormulario()"
-    ></p-button>
   </div>
+
   <app-send-institucional-email
     (cerrar)="this.visible.set(false)"
     [show]="this.visible()"

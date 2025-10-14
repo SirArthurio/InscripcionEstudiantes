@@ -29,6 +29,8 @@ import { competenciaDto } from '../../model/competenciaDto.type';
 import { statusCursos } from '@core/shared/enums/status-cursos-type.enum';
 import { statusCompetencia } from '@core/shared/enums/status-competencia-type.enum';
 import { Toast } from 'primeng/toast';
+import { FormUtils } from '@core/shared/types/formUtils/form-utils';
+import { Message } from "primeng/message";
 
 @Component({
   selector: 'app-crear-facultad',
@@ -42,7 +44,8 @@ import { Toast } from 'primeng/toast';
     InputText,
     ValidationClassDirective,
     Toast,
-  ],
+    Message
+],
   templateUrl: './crear-compentencia.component.html',
   styleUrl: './crear-compentencia.component.scss',
 })
@@ -74,6 +77,7 @@ export default class CrearCompentenciaComponent {
   idCompetencia = signal<string>('');
   competencia = signal<competenciaDto | null>(null);
   textAccionArchivarActivar = signal(false);
+  formUtils = FormUtils
 
   ngOnInit(): void {
     this.formularioCompetencia();
@@ -135,8 +139,8 @@ export default class CrearCompentenciaComponent {
 
   formularioCompetencia() {
     this.formCompetencias = this.form.group({
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(3)]],
     });
   }
 

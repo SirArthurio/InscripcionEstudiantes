@@ -1,0 +1,143 @@
+<div class="competencias-cursos-container">
+  <p-toast />
+  <p-confirmdialog />
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="pi pi-book"></i>
+      Cursos
+    </h1>
+  </div>
+
+  <!-- Estado vacío -->
+
+  <!-- Cursos de la Competencia Seleccionada -->
+  <div class="cursos-section">
+    <div class="section-header">
+      <h2 class="section-title">
+        <i class="pi pi-list"></i>
+        Cursos disponibles
+      </h2>
+      <div class="section-meta">
+        <span class="p-badge m-2 p-2 rounded-md"
+          >{{ cursos().length }} cursos</span
+        >
+      </div>
+    </div>
+
+    @if((this.obtenerCurso.data()?.data?.page?.length ?? 0) > 0){
+    <div class="cursos-grid">
+      @for (curso of this.obtenerCurso.data()?.data?.page; track $index; let i =
+      $index) {
+      <div class="curso-card p-card" [style.animation-delay]="i * 0.1 + 's'">
+        <!-- Header del curso -->
+        <div class="curso-header">
+          <div class="curso-code" *ngIf="curso.code">
+            Competencia: {{ curso.competency.name }}
+          </div>
+        </div>
+
+        <!-- Contenido del curso -->
+        <div class="curso-content">
+          <h3 class="curso-nombre">{{ curso.name }}</h3>
+          <p class="curso-descripcion">{{ curso.description }}</p>
+
+          <!-- Información del curso -->
+          <div class="curso-info">
+            <div class="info-item">
+              <i class="pi pi-clock"></i>
+              <span>{{ curso.weeklyHours }} horas/semana</span>
+            </div>
+            <div class="info-item">
+              <i class="pi pi-star"></i>
+              <span>{{ curso.credits }} créditos</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer del curso -->
+        <div class="curso-footer">
+          <button
+            class="p-button p-button-primary agregar-curso-btn"
+            (click)="abrirModalGrupo(curso); $event.stopPropagation()"
+          >
+            <i class="pi pi-plus"></i>
+            <span>Agregar a Grupo</span>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+    }
+
+    <!-- Estado vacío para cursos -->
+    @if (cursos().length===0) {
+    <div class="empty-state">
+      <i class="pi pi-book empty-icon"></i>
+      <h3 class="empty-title">No hay cursos disponibles</h3>
+      <p class="empty-description">
+        Esta competencia no tiene cursos asignados
+      </p>
+    </div>
+    }
+  </div>
+
+  <!-- Modal para seleccionar grupo -->
+  @if (mostrarModalGrupo()) {
+  <div class="modal-overlay" (click)="cerrarModalGrupo()">
+    <div class="modal-container p-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="pi pi-users"></i>
+          Agregar curso a grupo
+        </h3>
+        <button
+          class="p-button p-button-text modal-close"
+          (click)="cerrarModalGrupo()"
+        >
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-content">
+        @if (cursoParaAgregar()) {
+        <div class="curso-seleccionado p-card">
+          <h4 class="curso-modal-nombre">{{ cursoParaAgregar()?.name }}</h4>
+          <p class="curso-modal-descripcion">
+            {{ cursoParaAgregar()?.description }}
+          </p>
+          <div class="curso-modal-info">
+            <span class="info-badge">
+              <i class="pi pi-clock"></i>
+              {{ cursoParaAgregar()?.weeklyHours }}h/semana
+            </span>
+            <span class="info-badge">
+              <i class="pi pi-star"></i>
+              {{ cursoParaAgregar()?.credits }} créditos
+            </span>
+          </div>
+        </div>
+        }
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="p-button p-button-secondary"
+          (click)="cerrarModalGrupo()"
+        >
+          <i class="pi pi-times"></i>
+          <span>Cancelar</span>
+        </button>
+        <button
+          class="p-button p-button-primary"
+          [disabled]="!grupoSeleccionado()"
+          (click)="confirmarAgregarCurso()"
+        >
+          <i class="pi pi-check"></i>
+          <span>Agregar Curso</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

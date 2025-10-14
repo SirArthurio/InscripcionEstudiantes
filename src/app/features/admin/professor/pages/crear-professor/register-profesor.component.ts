@@ -39,6 +39,8 @@ import { dataVerProfessor } from '../../const/data-verProfessor.const';
 import { datosProfessorVerificacion } from '../../const/datosProfessorVerificar';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { throwError } from 'rxjs';
+import { FormUtils } from '@core/shared/types/formUtils/form-utils';
+import { Message } from "primeng/message";
 
 interface documentType {
   id: number;
@@ -60,6 +62,7 @@ interface documentType {
     ValidationClassDirective,
     CardFormularioValidacionComponent,
     ConfirmDialogModule,
+    Message
   ],
   templateUrl: './register-profesor.component.html',
   styleUrl: './register-profesor.component.scss',
@@ -78,6 +81,7 @@ export default class RegisterProfesorComponent implements OnInit {
   form = inject(FormBuilder);
   router = inject(ActivatedRoute);
   navigate = inject(Router);
+  formUtils=FormUtils
 
   //signals
   documentsTypes = signal<documentType[] | []>(documentTypes);
@@ -91,26 +95,26 @@ export default class RegisterProfesorComponent implements OnInit {
   professorId = signal<string>('');
 
   RegisterForm() {
-    this.formRegister = this.form.group({
-      user: this.form.group({
-        institutionalEmail: ['', [Validators.required, UnicesarValidator()]],
-        password: ['', Validators.required],
-      }),
-      specialty: ['', [Validators.required]],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      birthPlace: ['', [Validators.required]],
-      placeOfResidence: ['', [Validators.required]],
-      documentNumber: [
-        '',
-        [Validators.required, documentNumberValidator(6, 10)],
-      ],
-      documentType: ['', Validators.required],
-      gender: ['', Validators.required],
-      phone: ['', [Validators.required, longitudExactaValidator(10)]],
-    });
-  }
+  this.formRegister = this.form.group({
+    user: this.form.group({
+      institutionalEmail: ['',[Validators.required, UnicesarValidator()],],
+      password: ['',[Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['',[Validators.required, Validators.minLength(8)]]
+    }),
+    specialty: ['',[Validators.required]],
+    firstName: ['',[Validators.required, Validators.minLength(2)]],
+    lastName: ['',[Validators.required, Validators.minLength(2)]],
+    birthDate: ['',[Validators.required]],
+    birthPlace: ['',[Validators.required, Validators.minLength(3)]],
+    placeOfResidence: ['',[Validators.required, Validators.minLength(4)]],
+    documentNumber: ['',[Validators.required, documentNumberValidator(6, 10)]],
+    documentType: ['',[Validators.required]],
+    gender: ['',[Validators.required]],
+    phone: ['',[Validators.required, longitudExactaValidator(10)]]
+  });
+}
+
+
   nuevoProfessor() {
     this.formRegister.reset();
     this.progress.set(0);

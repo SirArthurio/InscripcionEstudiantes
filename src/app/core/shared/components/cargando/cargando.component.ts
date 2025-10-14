@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
 interface LoadingMessage {
   text: string;
   emoji: string;
@@ -19,7 +20,6 @@ export default class CargandoComponent implements OnInit, OnDestroy {
   @Input() variant: 'student' | 'professor' | 'library' | 'graduation' =
     'student';
 
-  // Agregar esta línea para usar Math en el template
   Math = Math;
 
   currentMessageIndex = 0;
@@ -29,32 +29,32 @@ export default class CargandoComponent implements OnInit, OnDestroy {
 
   loadingMessages: Record<string, LoadingMessage[]> = {
     student: [
-      { text: 'Preparando tu aula virtual...', emoji: '📚' },
-      { text: 'Cargando tus materias favoritas...', emoji: '💖' },
-      { text: 'Organizando tu horario de clases...', emoji: '📅' },
-      { text: '¡Casi listo para estudiar!', emoji: '✨' },
-      { text: 'Conectando con tus compañeros...', emoji: '👥' },
+      { text: 'Cargando tu sesión de práctica...', emoji: '📘' },
+      { text: 'Revisando preguntas de ejemplo...', emoji: '✏️' },
+      { text: 'Preparando simulacro...', emoji: '📝' },
+      { text: 'Fortaleciendo competencias...', emoji: '📊' },
+      { text: '¡Listo para continuar tu preparación!', emoji: '🎓' },
     ],
     professor: [
-      { text: 'Preparando el salón de clases...', emoji: '🏫' },
-      { text: 'Cargando material didáctico...', emoji: '📖' },
-      { text: 'Organizando evaluaciones...', emoji: '📝' },
-      { text: '¡Listo para enseñar!', emoji: '🎓' },
-      { text: 'Conectando con estudiantes...', emoji: '👨‍🏫' },
+      { text: 'Organizando banco de preguntas...', emoji: '📂' },
+      { text: 'Cargando material de apoyo...', emoji: '📖' },
+      { text: 'Configurando simulacros...', emoji: '📝' },
+      { text: 'Analizando resultados previos...', emoji: '📊' },
+      { text: 'Listo para guiar la preparación...', emoji: '👨‍🏫' },
     ],
     library: [
-      { text: 'Buscando en la biblioteca...', emoji: '📚' },
-      { text: 'Catalogando recursos...', emoji: '📋' },
-      { text: 'Organizando por categorías...', emoji: '🗂️' },
-      { text: '¡Información encontrada!', emoji: '🔍' },
-      { text: 'Preparando resultados...', emoji: '✨' },
+      { text: 'Accediendo a material de estudio...', emoji: '📚' },
+      { text: 'Clasificando competencias...', emoji: '📑' },
+      { text: 'Preparando guías de repaso...', emoji: '📓' },
+      { text: 'Buscando referencias académicas...', emoji: '🔎' },
+      { text: 'Cargando recursos relevantes...', emoji: '📘' },
     ],
     graduation: [
-      { text: 'Preparando tu ceremonia...', emoji: '🎓' },
-      { text: 'Verificando logros académicos...', emoji: '🏆' },
-      { text: 'Organizando reconocimientos...', emoji: '🥇' },
-      { text: '¡Felicitaciones graduado!', emoji: '🎉' },
-      { text: 'Celebrando tu éxito...', emoji: '🌟' },
+      { text: 'Comprobando tu avance...', emoji: '📊' },
+      { text: 'Verificando logros obtenidos...', emoji: '🏅' },
+      { text: 'Consolidando tus resultados...', emoji: '📑' },
+      { text: '¡Cada paso te acerca al éxito!', emoji: '🌟' },
+      { text: 'Preparando tu camino a la graduación...', emoji: '🎓' },
     ],
   };
 

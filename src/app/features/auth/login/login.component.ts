@@ -12,6 +12,7 @@ import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { InputGroupModule } from 'primeng/inputgroup';
 import { login } from './model/Login.type';
 import { MessageModule } from 'primeng/message';
 import { CommonModule } from '@angular/common';
@@ -26,10 +27,13 @@ import { Dialog } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { HttpErrorResponse } from '@angular/common/http';
 import SendInstitucionalEmailComponent from '../../students/send-institucional-email/send-institucional-email.component';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-login',
   imports: [
+    
+    InputGroupModule,
     ButtonModule,
     CheckboxModule,
     InputTextModule,
@@ -41,6 +45,7 @@ import SendInstitucionalEmailComponent from '../../students/send-institucional-e
     MessageModule,
     CommonModule,
     CardFormularioComponent,
+    InputGroupAddonModule,
     Dialog,
     ToastModule,
     SendInstitucionalEmailComponent,

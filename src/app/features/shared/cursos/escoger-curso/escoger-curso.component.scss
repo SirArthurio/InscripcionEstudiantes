@@ -1,0 +1,381 @@
+/* Container Base usando variables de Sakai */
+.competencias-cursos-container {
+  @apply max-w-7xl mx-auto p-6 space-y-8;
+}
+
+/* Header */
+.page-header {
+  @apply text-center mb-8;
+}
+
+.page-title {
+  @apply text-3xl font-bold flex items-center justify-center gap-3 mb-4;
+  color: var(--text-color);
+}
+
+.page-title i {
+  color: var(--primary-color);
+}
+
+.page-subtitle {
+  @apply text-lg;
+  color: var(--text-color-secondary);
+}
+
+/* Secciones */
+.section-title {
+  @apply text-xl font-semibold flex items-center gap-2 mb-6;
+  color: var(--text-color);
+}
+
+.section-title i {
+  color: var(--primary-color);
+}
+
+.section-header {
+  @apply flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6;
+}
+
+.section-meta .p-badge {
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+/* Grid de Competencias */
+.competencias-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.competencia-card {
+  @apply cursor-pointer transition-all duration-300 border-2;
+  animation: card-appear 0.6s ease-out both;
+}
+
+.competencia-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
+}
+
+.competencia-card.selected {
+  border-color: var(--primary-color);
+  background: linear-gradient(
+    135deg,
+    var(--surface-card) 0%,
+    rgba(var(--primary-color-rgb), 0.05) 100%
+  );
+}
+
+.competencia-header {
+  @apply flex items-center justify-between mb-4;
+}
+
+.competencia-code {
+  @apply px-3 py-1 rounded-full text-sm font-semibold;
+  background-color: var(--surface-100);
+  color: var(--text-color);
+}
+
+.competencia-status {
+  @apply flex items-center gap-1 text-sm;
+  color: var(--green-500);
+}
+
+.competencia-content {
+  @apply space-y-3 mb-4;
+}
+
+.competencia-nombre {
+  @apply text-lg font-semibold;
+  color: var(--text-color);
+}
+
+.competencia-descripcion {
+  @apply text-sm leading-relaxed;
+  color: var(--text-color-secondary);
+}
+
+.competencia-footer {
+  @apply pt-4 border-t;
+  border-color: var(--surface-border);
+}
+
+.selection-indicator {
+  @apply flex items-center justify-between;
+}
+
+.indicator-text {
+  @apply font-medium;
+  color: var(--text-color);
+}
+
+.selection-indicator i {
+  color: var(--primary-color);
+}
+
+/* Grid de Cursos */
+.cursos-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+}
+
+.curso-card {
+  @apply cursor-pointer transition-all duration-300;
+  animation: card-appear 0.6s ease-out both;
+}
+
+.curso-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
+}
+
+.curso-header {
+  @apply flex items-center justify-between mb-4;
+}
+
+.curso-code {
+  @apply px-3 py-1 rounded-full text-sm font-semibold;
+  background-color: var(--surface-100);
+  color: var(--text-color);
+}
+
+.curso-status {
+  @apply flex items-center gap-1 text-sm;
+  color: var(--green-500);
+}
+
+.curso-content {
+  @apply space-y-4 mb-4;
+}
+
+.curso-nombre {
+  @apply text-lg font-semibold;
+  color: var(--text-color);
+}
+
+.curso-descripcion {
+  @apply text-sm leading-relaxed;
+  color: var(--text-color-secondary);
+}
+
+.curso-info {
+  @apply space-y-2;
+}
+
+.info-item {
+  @apply flex items-center gap-2 text-sm;
+  color: var(--text-color);
+}
+
+.info-item i {
+  color: var(--primary-color);
+}
+
+.curso-footer {
+  @apply pt-4 border-t;
+  border-color: var(--surface-border);
+}
+
+.agregar-curso-btn {
+  @apply w-full;
+}
+
+/* Modal usando clases de PrimeNG */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4;
+}
+
+.modal-container {
+  @apply max-w-2xl w-full max-h-[90vh] overflow-y-auto;
+}
+
+.modal-header {
+  @apply flex items-center justify-between p-6 border-b;
+  border-color: var(--surface-border);
+}
+
+.modal-title {
+  @apply text-xl font-semibold flex items-center gap-2;
+  color: var(--text-color);
+}
+
+.modal-title i {
+  color: var(--primary-color);
+}
+
+.modal-close {
+  @apply w-10 h-10 rounded-full;
+}
+
+.modal-content {
+  @apply p-6 space-y-6;
+}
+
+.curso-seleccionado {
+  @apply space-y-3;
+}
+
+.curso-modal-nombre {
+  @apply text-lg font-semibold;
+  color: var(--text-color);
+}
+
+.curso-modal-descripcion {
+  @apply text-sm;
+  color: var(--text-color-secondary);
+}
+
+.curso-modal-info {
+  @apply flex gap-3;
+}
+
+.info-badge {
+  @apply flex items-center gap-1 px-3 py-1 rounded-full text-sm;
+  background-color: var(--surface-100);
+  color: var(--text-color);
+}
+
+.info-badge i {
+  color: var(--primary-color);
+}
+
+.grupos-titulo {
+  @apply text-lg font-semibold mb-4;
+  color: var(--text-color);
+}
+
+.grupos-grid {
+  @apply space-y-3;
+}
+
+.grupo-card {
+  @apply cursor-pointer transition-all duration-200 border-2;
+}
+
+.grupo-card:hover {
+  background-color: var(--surface-hover);
+}
+
+.grupo-card.selected {
+  border-color: var(--primary-color);
+  background: linear-gradient(
+    135deg,
+    var(--surface-card) 0%,
+    rgba(var(--primary-color-rgb), 0.05) 100%
+  );
+}
+
+.grupo-content {
+  @apply flex items-center gap-4;
+}
+
+.grupo-icon {
+  @apply text-2xl;
+  color: var(--primary-color);
+}
+
+.grupo-info {
+  @apply flex-1;
+}
+
+.grupo-nombre {
+  @apply font-semibold mb-1;
+  color: var(--text-color);
+}
+
+.grupo-descripcion {
+  @apply text-sm;
+  color: var(--text-color-secondary);
+}
+
+.selector-icon {
+  @apply text-xl;
+  color: var(--surface-400);
+}
+
+.selector-icon.selected {
+  color: var(--primary-color);
+}
+
+.empty-grupos {
+  @apply text-center py-8;
+}
+
+.empty-grupos .empty-icon {
+  @apply text-3xl mb-4;
+  color: var(--text-color-secondary);
+}
+
+.empty-text {
+  color: var(--text-color-secondary);
+}
+
+.modal-footer {
+  @apply flex gap-3 p-6 border-t;
+  border-color: var(--surface-border);
+}
+
+.modal-footer .p-button {
+  @apply flex-1;
+}
+
+/* Estado vacío */
+.empty-state {
+  @apply text-center py-16;
+}
+
+.empty-icon {
+  @apply text-5xl mb-6;
+  color: var(--text-color-secondary);
+}
+
+.empty-title {
+  @apply text-xl font-semibold mb-4;
+  color: var(--text-color);
+}
+
+.empty-description {
+  @apply text-base;
+  color: var(--text-color-secondary);
+}
+
+/* Animaciones */
+@keyframes card-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .competencias-cursos-container {
+    @apply p-4;
+  }
+
+  .page-title {
+    @apply text-2xl;
+  }
+
+  .competencias-grid {
+    @apply grid-cols-1;
+  }
+
+  .cursos-grid {
+    @apply grid-cols-1;
+  }
+
+  .modal-footer {
+    @apply flex-col;
+  }
+}
+
+/* Focus States para accesibilidad */
+.competencia-card:focus,
+.curso-card:focus,
+.grupo-card:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}

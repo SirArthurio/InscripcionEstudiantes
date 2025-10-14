@@ -12,85 +12,133 @@
 
   <form
     #formulario
-    class="relative grid grid-cols-1 md:grid-cols-2 justify-items-center border-transparent rounded-xl p-2"
+    class="relative grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center border-transparent rounded-xl p-6"
     [formGroup]="formCompetencias"
   >
-    <div class="contenedor">
+    <!-- Campo Nombre -->
+    <div class="contenedor w-full md:w-auto">
       <label
         for="name"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Nombre</label
       >
+        Nombre
+      </label>
+
       <input
         pInputText
         id="name"
         type="text"
         placeholder="Nombre"
-        class="w-full md:w-[30rem] mb-8"
+        class="w-full md:w-[30rem] mb-2 transition-all duration-200 border rounded-lg p-2
+               focus:ring-2 focus:ring-primary-500
+               dark:bg-surface-800
+               "
         formControlName="name"
-        appValidationClass
+        [ngClass]="{
+          'border-red-500 bg-red-50 dark:bg-red-900/30': formUtils.isValidField(formCompetencias, 'name'),
+          'border-gray-300 dark:border-gray-700': !formUtils.isValidField(formCompetencias, 'name')
+        }"
       />
+
+      @if (formUtils.isValidField(formCompetencias, 'name')) {
+        <p-message
+          severity="error"
+          variant="simple"
+          size="small"
+          class="mt-1"
+        >
+          {{ formUtils.getFieldError(formCompetencias, 'name') }}
+        </p-message>
+      }
     </div>
-    <div class="contenedor">
+
+    <!-- Campo Descripción -->
+    <div class="contenedor w-full md:w-auto">
       <label
         for="description"
         class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Descripcion</label
       >
+        Descripción
+      </label>
+
       <input
         pInputText
         id="description"
         type="text"
-        placeholder="description"
-        class="w-full md:w-[30rem] mb-8"
+        placeholder="Descripción"
+        class="w-full md:w-[30rem] mb-2 transition-all duration-200 border rounded-lg p-2
+               focus:ring-2 focus:ring-primary-500
+               dark:bg-surface-800
+               "
         formControlName="description"
-        appValidationClass
+        [ngClass]="{
+          'border-red-500 bg-red-50 dark:bg-red-900/30': formUtils.isValidField(formCompetencias, 'description'),
+          'border-gray-300 dark:border-gray-700': !formUtils.isValidField(formCompetencias, 'description')
+        }"
       />
+
+      @if (formUtils.isValidField(formCompetencias, 'description')) {
+        <p-message
+          severity="error"
+          variant="simple"
+          size="small"
+          class="mt-1"
+        >
+          {{ formUtils.getFieldError(formCompetencias, 'description') }}
+        </p-message>
+      }
     </div>
 
-    <div class="contenedor">
+    <!-- Acciones -->
+    <div class="contenedor col-span-1 md:col-span-2 w-full text-center">
       <label
-        for=""
-        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-        >Acciones</label
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-3"
       >
-      @if (isEditar()) {
-      <p-button
-        class="w-full mb-4 m-2 p-2"
-        (click)="crearCurso()"
-        label="Crear Curso"
-        [outlined]="true"
-      />
-      <p-button
-        class="w-full mb-4 m-2 p-2"
-        (click)="verCursosCompetencia()"
-        label="Ver Cursos"
-        [outlined]="true"
-      />
-      <p-button
-        class="w-full mb-4"
-        (click)="archivarOActivar()"
-        [label]="this.textAccionArchivarActivar() ? 'Activar' : 'Archivar'"
-        [outlined]="true"
-      />
+        Acciones
+      </label>
 
-      } @if (progress()===0) {
-      <!--  -->
-      <p-button
-        class="w-full mb-4 m-2 p-2"
-        (click)="tipoDeAccion()"
-        [label]="datos().buttonText"
-        [outlined]="true"
-      />}@else if(progress()===1){ }
+      <div class="flex flex-wrap justify-center gap-3">
+        @if (isEditar()) {
+          <p-button
+            class="m-1"
+            (click)="crearCurso()"
+            label="Crear Curso"
+            [outlined]="true"
+          />
+          <p-button
+            class="m-1"
+            (click)="verCursosCompetencia()"
+            label="Ver Cursos"
+            [outlined]="true"
+          />
+          <p-button
+            class="m-1"
+            (click)="archivarOActivar()"
+            [label]="this.textAccionArchivarActivar() ? 'Activar' : 'Archivar'"
+            [outlined]="true"
+          />
+        }
+
+        @if (progress() === 0) {
+          <p-button
+            class="m-1"
+            (click)="tipoDeAccion()"
+            [label]="datos().buttonText"
+            [outlined]="true"
+          />
+        }
+      </div>
     </div>
 
-    <app-carta
-      [duration]="6"
-      [delay]="2"
-      [borderWidth]="2"
-      borderRadius="xl"
-      [reverse]="true"
-    >
-    </app-carta>
+    <!-- Carta -->
+    <div class="col-span-1 md:col-span-2 flex justify-center mt-4">
+      <app-carta
+        [duration]="6"
+        [delay]="2"
+        [borderWidth]="2"
+        borderRadius="xl"
+        [reverse]="true"
+      ></app-carta>
+    </div>
   </form>
 </app-card-formulario-validacion>

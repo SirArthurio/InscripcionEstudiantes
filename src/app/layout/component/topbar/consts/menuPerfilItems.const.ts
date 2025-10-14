@@ -9,6 +9,7 @@ export const menuPerfilItems = (cerrarSesion: () => void): MenuItem[] => {
         {
           label: 'Mi perfil',
           icon: 'pi pi-user-edit',
+          routerLink: '/pages/configuration'
         },
         {
           label: 'Update',

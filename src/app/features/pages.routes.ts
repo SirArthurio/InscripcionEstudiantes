@@ -1,10 +1,15 @@
 import { Routes } from '@angular/router';
 import { CursoGenericoComponent } from './shared/cursos/curso-generico/curso-generico.component';
+import { ConfigurationComponent } from './shared/config-profile/config-profile';
 
 export default [
   {
     path: 'mis-cursos',
     component: CursoGenericoComponent,
+  },
+  {
+    path: 'configuration',
+    component: ConfigurationComponent,
   },
   {
     path: 'calendario',

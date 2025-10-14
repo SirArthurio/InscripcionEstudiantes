@@ -37,6 +37,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { SoloNumerosDirective } from '@core/directives/solo-numeros.directive';
 import { ValidationClassDirective } from '@core/directives/app-validation-class.directive';
 import { programasStore } from 'src/app/features/admin/programas/store/programas.store';
+import { Message } from "primeng/message";
+import { FormUtils } from '@core/shared/types/formUtils/form-utils';
 
 interface documentType {
   id: number;
@@ -56,7 +58,8 @@ interface documentType {
     RegisterGenericComponent,
     SoloNumerosDirective,
     ValidationClassDirective,
-  ],
+    Message
+],
   templateUrl: './register-estudiante.component.html',
   styleUrl: './register-estudiante.component.scss',
 })
@@ -73,6 +76,7 @@ export default class RegisterEstudianteComponent implements OnInit {
   formRegister!: FormGroup;
   form = inject(FormBuilder);
   route = inject(Router);
+  formUtils=FormUtils
 
   //signals
   programas = signal<programs[]>([]);
@@ -145,7 +149,7 @@ export default class RegisterEstudianteComponent implements OnInit {
         ],
       ],
       documentType: ['', Validators.required],
-      gender: ['', Validators.required],
+      gender: ['', Validators.required, ],
       phone: ['', [Validators.required, longitudExactaValidator(10)]],
       admissionDate: ['', [Validators.required]],
     });

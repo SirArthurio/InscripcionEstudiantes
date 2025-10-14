@@ -29,7 +29,18 @@
             formControlName="firstName"
             appValidationClass
           />
+          @if(formUtils.isValidField(formRegister, 'firstName')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "firstName") }}
+            </p-message>
+          }
         </div>
+
 
         <div class="campo-wrapper">
           <label for="lastName" class="campo-label">Apellido</label>
@@ -42,6 +53,16 @@
             formControlName="lastName"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister, 'lastName')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "lastName") }}
+            </p-message>
+          }
         </div>
 
         <div class="campo-wrapper">
@@ -56,6 +77,16 @@
             formControlName="birthDate"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister, 'birthDate')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "birthDate") }}
+            </p-message>
+          }
         </div>
 
         <div class="campo-wrapper">
@@ -70,6 +101,16 @@
             formControlName="gender"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister, 'gender')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "gender") }}
+            </p-message>
+          }
         </div>
 
         <div class="campo-wrapper">
@@ -85,6 +126,16 @@
             class="campo-input"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister, 'documentType')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "documentType") }}
+            </p-message>
+          }
         </div>
 
         <div class="campo-wrapper">
@@ -103,6 +154,16 @@
             [minlength]="6"
             [maxlength]="10"
           />
+          @if (formUtils.isValidField(formRegister, 'documentNumber')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "documentNumber") }}
+            </p-message>
+          }
         </div>
       </div>
     </div>
@@ -129,6 +190,16 @@
             class="campo-input"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister, 'phone')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "phone") }}
+            </p-message>
+          }
         </div>
 
         <div class="campo-wrapper">
@@ -144,6 +215,16 @@
             class="campo-input"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister, 'birthPlace')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "birthPlace") }}
+            </p-message>
+          }
         </div>
 
         <div class="campo-wrapper">
@@ -159,6 +240,16 @@
             class="campo-input"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister, 'placeOfResidence')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "placeOfResidence") }}
+            </p-message>
+          }
         </div>
       </div>
     </div>
@@ -182,6 +273,16 @@
             formControlName="specialty"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister, 'specialty')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister, "specialty") }}
+            </p-message>
+          }
         </div>
 
         <div class="campo-wrapper" formGroupName="user">
@@ -197,6 +298,16 @@
             formControlName="institutionalEmail"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister.get('user')!, 'institutionalEmail')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister.get('user')!, "institutionalEmail") }}
+            </p-message>
+          }
         </div>
 
         <div class="campo-wrapper" formGroupName="user">
@@ -211,6 +322,16 @@
             [feedback]="false"
             appValidationClass
           />
+          @if (formUtils.isValidField(formRegister.get('user')!, 'password')) {
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              size="small" 
+              class="mt-2"
+            >
+              {{ formUtils.getFieldError(formRegister.get('user')!, "password") }}
+            </p-message>
+          }
         </div>
       </div>
     </div>

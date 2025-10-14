@@ -130,7 +130,7 @@ export const menu: itemsMenu[] = [
       },
       {
         label: 'Docente',
-        icon: 'pi pi-user',
+        icon: 'pi pi-user',/*  */
         items: [
           {
             icon: 'pi pi-user',
@@ -199,6 +199,18 @@ export const menu: itemsMenu[] = [
           //   roles: ['superadmin', 'profesor'],
           // },
         ],
+      },
+    ],
+  },
+  {
+    label: 'Configuracion',
+    roles: ['profesor', 'student', 'superadmin'],
+    items: [
+      {
+        label: 'Configurar perfil',
+        icon: 'pi pi-cog',
+        routerLink: ['/pages/configuration'],
+        roles: ['profesor', 'student', 'superadmin'],
       },
     ],
   },
